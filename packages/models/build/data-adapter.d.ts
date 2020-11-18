@@ -31,7 +31,7 @@ export interface DataAdapter {
      * @throws DataAdapterException
      *             An exception that occurs when none of the requested conversions could be processed.
      */
-    getExchangeRatesForTenant(conversionParameters: ConversionParametersForNonFixedRate[], tenant: Tenant, tenantSettings: TenantSettings | null | undefined): Promise<ExchangeRate[]>;
+    getExchangeRatesForTenant(conversionParameters: ConversionParametersForNonFixedRate[], tenant: Tenant, tenantSettings: TenantSettings | null | undefined): ExchangeRate[];
     /**
      * Returns the default {@link TenantSettings} associated with a {@link Tenant}.
      *
@@ -43,7 +43,7 @@ export interface DataAdapter {
      * @throws DataAdapterException
      *             An exception that occurs when none of the requested conversions could be processed.
      */
-    getDefaultSettingsForTenant(tenant: Tenant): Promise<TenantSettings>;
+    getDefaultSettingsForTenant(tenant: Tenant): TenantSettings | null | undefined;
     /**
      * Returns the {@link Map} of the {@link ExchangeRateTypeDetail} with the {@link RateType} as the key for a given
      * {@link Set} of {@link RateType}. It fetches the details of the given rate types. Based on that the details, we
@@ -60,5 +60,5 @@ export interface DataAdapter {
      * @throws DataAdapterException
      *             An exception that occurs when none of the requested conversions could be processed.
      */
-    getExchangeRateTypeDetailsForTenant(tenant: Tenant, rateTypeSet: Set<RateType>): Promise<Map<RateType, ExchangeRateTypeDetail>>;
+    getExchangeRateTypeDetailsForTenant(tenant: Tenant, rateTypeSet: Set<RateType>): Map<RateType, ExchangeRateTypeDetail>;
 }

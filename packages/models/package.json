@@ -1,0 +1,24 @@
+{
+  "name": "@sap-cloud-sdk/currency-conversion-models",
+  "version": "1.0.0",
+  "description": "Models for currency conversion",
+  "main": "./build/index.js",
+  "scripts": {
+    "compile": "yarn tsc -b",
+    "prepare": "yarn compile",
+    "test": "yarn jest --coverage",
+    "test:local": "yarn jest",
+    "coverage": "yarn jest --coverage"
+  },
+  "keywords": [
+    "currency"
+  ],
+  "files": [
+    "build/**/*.js",
+    "build/**/*.json",
+    "build/**/*.ts"
+  ],
+  "author": "SAP",
+  "license": "ISC",
+  "types": "build/index.d.ts"
+}

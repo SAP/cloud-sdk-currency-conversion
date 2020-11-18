@@ -1,0 +1,22 @@
+{
+  "name": "@sap-cloud-sdk/currency-conversion-core",
+  "version": "1.0.0",
+  "description": "Currency conversion library for converting currency rates",
+  "main": "./build/index.js",
+  "scripts": {
+    "compile": "yarn tsc -b",
+    "prepare": "yarn compile",
+    "test": "yarn jest --coverage",
+    "test:local": "yarn jest",
+    "coverage": "yarn jest --coverage"
+  },
+  "keywords": [
+    "currency"
+  ],
+  "author": "SAP",
+  "license": "ISC",
+  "types": "build/index.d.ts",
+  "dependencies": {
+    "@sap-cloud-sdk/currency-conversion-models": "1.0.0"
+  }
+}
