@@ -1,0 +1,32 @@
+import { Tenant } from '@sap-cloud-sdk/core/dist/scp-cf/tenant';
+import { CurrencyFactor } from './currency-factor';
+import { Currency } from './currency-type';
+import { ExchangeRateValue } from './exchange-rate-value-type';
+import { RateType } from './rate-type';
+import { RatesDataProviderCode } from './rates-data-provider-code';
+import { RatesDataSource } from './rates-data-source';
+export declare class ExchangeRate {
+    private _tenantIdentifier;
+    private _ratesDataProviderCode;
+    private _ratesDataSource;
+    private _exchangeRateType;
+    private _exchangeRateValue;
+    private _fromCurrency;
+    private _toCurrency;
+    private _validFromDateTime;
+    private _isIndirect;
+    private _fromCurrencyfactor;
+    private _toCurrencyfactor;
+    constructor(tenantIdentifier: Tenant | null | undefined, ratesDataProviderCode: RatesDataProviderCode | null | undefined, ratesDataSource: RatesDataSource | null | undefined, exchangeRateType: RateType, exchangeRateValue: ExchangeRateValue, fromCurrency: Currency, toCurrency: Currency, validFromDateTime: Date, isIndirect?: boolean, fromCurrencyfactor?: CurrencyFactor, toCurrencyfactor?: CurrencyFactor);
+    get tenantIdentifier(): Tenant | null | undefined;
+    get ratesDataProviderCode(): RatesDataProviderCode | null | undefined;
+    get ratesDataSource(): RatesDataSource | null | undefined;
+    get exchangeRateType(): RateType;
+    get exchangeRateValue(): ExchangeRateValue;
+    get fromCurrency(): Currency;
+    get toCurrency(): Currency;
+    get validFromDateTime(): Date;
+    get isIndirect(): boolean;
+    get fromCurrencyfactor(): CurrencyFactor;
+    get toCurrencyfactor(): CurrencyFactor;
+}

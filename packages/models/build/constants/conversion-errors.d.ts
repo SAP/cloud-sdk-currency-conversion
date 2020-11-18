@@ -1,0 +1,20 @@
+export declare enum ConversionErrors {
+    INVALID_PARAMS = "Conversion failed due to invalid parameters",
+    CONVERSION_FAILED = "Fixed Rate conversion failed",
+    INVALID_CURRENCY_CODES = "Provided currency code does not exist.",
+    NULL_CURRENCY_CODES = "Invalid currency code.",
+    ILLEGAL_EXCHANGE_RATE = "Exchange rate value must be a positive numeral value.",
+    NULL_RATE_TYPE = "Fields in rateType cannot be null.",
+    NEGATIVE_CURRENCY_FACTOR = "The CurrencyFactor must be a positive value.",
+    NULL_RATES_DATA_PROVIDER_CODE = "Fields in RatesDataProviderCode cannot be null.",
+    NULL_RATES_DATA_SOURCE = "Fields in RatesDataSource cannot be null.",
+    NO_MATCHING_EXCHANGE_RATE_RECORD = "No matching exchange rate record found for conversion. Check your conversion parameters against your exchange rate list and retry.",
+    MULTIPLE_CONVERSION_RECORD_FOUND = "Multiple matching exchange rate records (with different Data Provider Code or Data Source, but with the same time stamp) found for conversion.",
+    DUPLICATE_CONVERSION_RECORD_FOUND = "Duplicate exchange rate records (with the same time stamp, data provider code, and data source) found.",
+    ZERO_CURRENCY_FACTOR = "The currency factor in the exchange rate resulted in an exception. Check that the 'from' and 'to' currency factors are not zero.",
+    NULL_ADAPTER_TENANT = "Adapter or tenant cannot be null.",
+    ERROR_FETCHING_DEFAULT_SETTINGS = "Exception occured while fetching the default settings.",
+    ERR_FETCHING_EXCHANGE_RATES = "Exception occured whike fetching the exchange rates.",
+    NON_FIXED_CONVERSION_FAILED = "Non fixed conversion has failed",
+    ZERO_RATE_REFERENCE_CURRENCY = "The exchange rate derivation failed for the conversion based on reference currency. Check that the exchange rate values in 'from' to 'Reference Currency' or 'to' to 'Reference Currency' are not zero."
+}
