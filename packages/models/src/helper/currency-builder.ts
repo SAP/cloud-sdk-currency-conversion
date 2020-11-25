@@ -1,7 +1,8 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
+import { isNullish } from '@sap-cloud-sdk/util';
 import { Currency } from '../currency-type';
 import { CurrencyConversionError } from '../currency-conversion-error';
-import { ConversionModelErrors } from '../constants/conversion-model-errors';
+import { ConversionModelError } from '../constants/conversion-model-error';
 import codes from './currency-codes.json';
 /**
  * Currency builder from given currency code string,
@@ -11,26 +12,20 @@ import codes from './currency-codes.json';
  * @returns Currency object build from given currency code.
  */
 export function buildCurrency(currencyCode: string): Currency {
-  const curMnrUnits = 'CcyMnrUnts';
-  const curNumCode = 'CcyNbr';
-  if (
-    currencyCode === null ||
-    typeof currencyCode === 'undefined' ||
-    currencyCode.length === 0
-  ) {
-    throw new CurrencyConversionError(
-      ConversionModelErrors.NULL_CURRENCY_CODES
-    );
+  const defaultFractionDigits = 'CcyMnrUnts';
+  const numericCode = 'CcyNbr';
+  if (!currencyCode?.length) {
+    throw new CurrencyConversionError(ConversionModelError.NULL_CURRENCY_CODES);
   }
   const currency = (codes as any)[currencyCode];
-  if (currency === null || typeof currency === 'undefined') {
+  if (isNullish(currency)) {
     throw new CurrencyConversionError(
-      ConversionModelErrors.INVALID_CURRENCY_CODES
+      ConversionModelError.INVALID_CURRENCY_CODES
     );
   }
   return new Currency(
     currencyCode,
-    Number.parseInt(currency[curMnrUnits], 10),
-    currency[curNumCode]
+    Number.parseInt(currency[defaultFractionDigits], 10),
+    currency[numericCode]
   );
 }

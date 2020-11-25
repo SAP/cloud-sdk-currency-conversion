@@ -4,10 +4,10 @@ import { Currency } from './currency-type';
 export class ExchangeRateTypeDetail {
   private _isInversionAllowed: boolean;
   // @Beta
-  private _referenceCurrency: Currency | null | undefined;
+  private _referenceCurrency: Currency | undefined;
 
   constructor(
-    referenceCurrency: Currency | null | undefined,
+    referenceCurrency: Currency | undefined,
     isInversionAllowed = false
   ) {
     this._referenceCurrency = referenceCurrency;
@@ -18,7 +18,7 @@ export class ExchangeRateTypeDetail {
     return this._isInversionAllowed;
   }
 
-  get referenceCurrency(): Currency | null | undefined {
+  get referenceCurrency(): Currency | undefined {
     return this._referenceCurrency;
   }
 }

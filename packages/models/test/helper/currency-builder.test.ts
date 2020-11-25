@@ -1,5 +1,6 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
 
+import { ConversionModelError } from '../../src/constants/conversion-model-error';
 import { buildCurrency } from '../../src/helper/currency-builder';
 
 describe('Build currency objects tests', () => {
@@ -9,11 +10,13 @@ describe('Build currency objects tests', () => {
     expect(buildCurrency('INR').numericCode).toBe('356');
   });
   it('Build Currency Object Invalid Currency Code', () => {
-    let errorInput = new Error();
-    try {
-      expect(buildCurrency('123')).toThrow();
-    } catch (error) {
-      errorInput = error;
-    }
+    expect(() => buildCurrency('123')).toThrowError(
+      ConversionModelError.INVALID_CURRENCY_CODES
+    );
+  });
+  it('Build Currency Object null Currency Code', () => {
+    expect(() => buildCurrency('')).toThrowError(
+      ConversionModelError.NULL_CURRENCY_CODES
+    );
   });
 });

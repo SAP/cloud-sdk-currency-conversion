@@ -19,7 +19,7 @@ import {
   ConversionParametersForNonFixedRate
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { BigNumber } from 'bignumber.js';
-import { ConversionErrors } from '../../src/constants/conversion-errors';
+import { ConversionError } from '../../src/constants/conversion-error';
 import { CurrencyConverter } from '../../src/core/conversion-api';
 
 const TENANT_ID: Tenant = { id: 'TenantID' };
@@ -436,7 +436,7 @@ describe('Non Fixed Rate -- Inverted Rate conversion default tenant settings', (
     expect(
       (result.get(usdEurBConversionParamPastDate) as CurrencyConversionError)
         .message
-    ).toBe(ConversionErrors.NO_MATCHING_EXCHANGE_RATE_RECORD);
+    ).toBe(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
   });
 
   it('Inverted Conversion With New Exchange Rate Type', () => {
@@ -484,7 +484,7 @@ describe('Non Fixed Rate -- Inverted Rate conversion default tenant settings', (
     );
     expect(
       (result.get(usdEurBConversionParam) as CurrencyConversionError).message
-    ).toBe(ConversionErrors.NO_MATCHING_EXCHANGE_RATE_RECORD);
+    ).toBe(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
   });
 
   it('Conversion For Indirect False Inverted True Inverted Currency Pair', () => {
@@ -515,7 +515,7 @@ describe('Non Fixed Rate -- Inverted Rate conversion default tenant settings', (
     );
     expect(
       (result.get(usdEurBConversionParam) as CurrencyConversionError).message
-    ).toBe(ConversionErrors.NO_MATCHING_EXCHANGE_RATE_RECORD);
+    ).toBe(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
   });
 
   it('Conversion For Indirect True Inverted True Inverted Currency Pair Factor More Than One Rate', () => {
@@ -567,7 +567,7 @@ describe('Non Fixed Rate -- Inverted Rate conversion default tenant settings', (
     );
     expect(
       (result.get(usdEurBConversionParam) as CurrencyConversionError).message
-    ).toBe(ConversionErrors.NO_MATCHING_EXCHANGE_RATE_RECORD);
+    ).toBe(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
   });
 
   it('Conversion For Indirect True Inverted True Direct Currency Pair', () => {

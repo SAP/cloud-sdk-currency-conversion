@@ -49,9 +49,7 @@ export interface DataAdapter {
    * @throws DataAdapterException
    *             An exception that occurs when none of the requested conversions could be processed.
    */
-  getDefaultSettingsForTenant(
-    tenant: Tenant
-  ): TenantSettings | null | undefined;
+  getDefaultSettingsForTenant(tenant: Tenant): TenantSettings;
   /**
    * Returns the {@link Map} of the {@link ExchangeRateTypeDetail} with the {@link RateType} as the key for a given
    * {@link Set} of {@link RateType}. It fetches the details of the given rate types. Based on that the details, we

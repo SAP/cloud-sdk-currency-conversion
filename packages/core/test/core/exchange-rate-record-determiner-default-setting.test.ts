@@ -15,7 +15,7 @@ import {
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { BigNumber } from 'bignumber.js';
 import { ExchangeRateRecordDeterminer } from '../../src/core/exchange-rate-record-determiner';
-import { ConversionErrors } from '../../src/constants/conversion-errors';
+import { ConversionError } from '../../src/constants/conversion-error';
 
 const TENANT_ID: Tenant = { id: 'TenantID' };
 const TENANT_ID1: Tenant = { id: 'tenantId1' };
@@ -817,7 +817,7 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
       errInput = error;
     }
     expect(errInput.message).toBe(
-      ConversionErrors.NO_MATCHING_EXCHANGE_RATE_RECORD
+      ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD
     );
   });
 
@@ -856,7 +856,7 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
       errInput = error;
     }
     expect(errInput.message).toBe(
-      ConversionErrors.DUPLICATE_CONVERSION_RECORD_FOUND
+      ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND
     );
   });
 
@@ -881,7 +881,7 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
       errInput = error;
     }
     expect(errInput.message).toBe(
-      ConversionErrors.NO_MATCHING_EXCHANGE_RATE_RECORD
+      ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD
     );
   });
 
@@ -909,7 +909,7 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
       errInput = error;
     }
     expect(errInput.message).toBe(
-      ConversionErrors.NO_MATCHING_EXCHANGE_RATE_RECORD
+      ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD
     );
   });
 
@@ -954,7 +954,7 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
       errInput = error;
     }
     expect(errInput.message).toBe(
-      ConversionErrors.DUPLICATE_CONVERSION_RECORD_FOUND
+      ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND
     );
   });
 
@@ -972,7 +972,7 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
       errInput = error;
     }
     expect(errInput.message).toBe(
-      ConversionErrors.NO_MATCHING_EXCHANGE_RATE_RECORD
+      ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD
     );
   });
 
@@ -990,7 +990,7 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
       errInput = error;
     }
     expect(errInput.message).toBe(
-      ConversionErrors.NO_MATCHING_EXCHANGE_RATE_RECORD
+      ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD
     );
   });
 
@@ -1011,7 +1011,7 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
       errInput = error;
     }
     expect(errInput.message).toBe(
-      ConversionErrors.NO_MATCHING_EXCHANGE_RATE_RECORD
+      ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD
     );
   });
 
@@ -1063,7 +1063,7 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
       errInput = error;
     }
     expect(errInput.message).toBe(
-      ConversionErrors.DUPLICATE_CONVERSION_RECORD_FOUND
+      ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND
     );
   });
 
@@ -1088,7 +1088,7 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
       errInput = error;
     }
     expect(errInput.message).toBe(
-      ConversionErrors.NO_MATCHING_EXCHANGE_RATE_RECORD
+      ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD
     );
   });
 
@@ -1225,7 +1225,7 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
       errInput = error;
     }
     expect(errInput.message).toBe(
-      ConversionErrors.NO_MATCHING_EXCHANGE_RATE_RECORD
+      ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD
     );
   });
 
@@ -1276,7 +1276,7 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
       errInput = error;
     }
     expect(errInput.message).toBe(
-      ConversionErrors.ZERO_RATE_REFERENCE_CURRENCY
+      ConversionError.ZERO_RATE_REFERENCE_CURRENCY
     );
   });
 
@@ -1296,7 +1296,7 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
     } catch (error) {
       errInput = error;
     }
-    expect(errInput.message).toBe(ConversionErrors.ZERO_CURRENCY_FACTOR);
+    expect(errInput.message).toBe(ConversionError.ZERO_CURRENCY_FACTOR);
   });
 
   it('Reference Currency with zero factor and zero rate', () => {
@@ -1316,7 +1316,7 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
       errInput = error;
     }
     expect(errInput.message).toBe(
-      ConversionErrors.ZERO_RATE_REFERENCE_CURRENCY
+      ConversionError.ZERO_RATE_REFERENCE_CURRENCY
     );
   });
 
@@ -1354,7 +1354,7 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
       errInput = error;
     }
     expect(errInput.message).toBe(
-      ConversionErrors.DUPLICATE_CONVERSION_RECORD_FOUND
+      ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND
     );
   });
 
@@ -1378,7 +1378,7 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
       errInput = error;
     }
     expect(errInput.message).toBe(
-      ConversionErrors.DUPLICATE_CONVERSION_RECORD_FOUND
+      ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND
     );
   });
 
@@ -1403,7 +1403,7 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
       errInput = error;
     }
     expect(errInput.message).toBe(
-      ConversionErrors.DUPLICATE_CONVERSION_RECORD_FOUND
+      ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND
     );
   });
 

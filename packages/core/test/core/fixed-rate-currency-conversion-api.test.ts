@@ -8,7 +8,7 @@ import {
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { BigNumber } from 'bignumber.js';
 import { CurrencyConverter } from '../../src/core/conversion-api';
-import { ConversionErrors } from '../../src/constants/conversion-errors';
+import { ConversionError } from '../../src/constants/conversion-error';
 
 const inrUsdConversionParameter: ConversionParametersForFixedRate = new ConversionParametersForFixedRate(
   'INR',
@@ -134,7 +134,7 @@ describe('Convert Fixed Rate Currency', () => {
       errInput = error;
     }
     expect(errInput).toBeInstanceOf(CurrencyConversionError);
-    expect(errInput.message).toBe(ConversionErrors.INVALID_PARAMS);
+    expect(errInput.message).toBe(ConversionError.INVALID_PARAMS);
   });
 
   it('Convert Currency with same currency pair.', () => {
@@ -188,7 +188,7 @@ describe('Convert Fixed Rate Currency', () => {
     } catch (error) {
       errInput = error;
     }
-    expect(errInput.message).toBe(ConversionErrors.INVALID_PARAMS);
+    expect(errInput.message).toBe(ConversionError.INVALID_PARAMS);
   });
 
   it('Convert bulk fixed rate currency with maximum conversion parameters', () => {
@@ -236,7 +236,7 @@ describe('Convert Fixed Rate Currency', () => {
         currencyConverter.convertCurrenciesWithFixedRate(
           maximumConversionParameterList
         );
-      }).toThrowError(ConversionErrors.INVALID_PARAMS);
+      }).toThrowError(ConversionError.INVALID_PARAMS);
     } catch (error) {
       errInput = error;
     }

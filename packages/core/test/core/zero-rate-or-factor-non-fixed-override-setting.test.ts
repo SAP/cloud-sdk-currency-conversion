@@ -19,7 +19,7 @@ import {
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { BigNumber } from 'bignumber.js';
 import { CurrencyConverter } from '../../src/core/conversion-api';
-import { ConversionErrors } from '../../src/constants/conversion-errors';
+import { ConversionError } from '../../src/constants/conversion-error';
 
 const TENANT_ID: Tenant = { id: 'TenantID' };
 
@@ -593,7 +593,7 @@ describe('Non Fixed Rate -- zero rate or zero factor tests override tenant setti
       .get(inrEurMConversionParam) as CurrencyConversionError;
     expect(result).toBeTruthy();
     expect(result).toBeInstanceOf(Error);
-    expect(result.message).toBe(ConversionErrors.ZERO_CURRENCY_FACTOR);
+    expect(result.message).toBe(ConversionError.ZERO_CURRENCY_FACTOR);
   });
 
   it('Test Indirect Zero To Factor Zero Rate.', () => {
@@ -632,7 +632,7 @@ describe('Non Fixed Rate -- zero rate or zero factor tests override tenant setti
       .get(inrEurMConversionParam) as CurrencyConversionError;
     expect(result).toBeTruthy();
     expect(result).toBeInstanceOf(Error);
-    expect(result.message).toBe(ConversionErrors.ZERO_CURRENCY_FACTOR);
+    expect(result.message).toBe(ConversionError.ZERO_CURRENCY_FACTOR);
   });
 
   it('Test Direct Zero Factors Zero Rate.', () => {
@@ -652,7 +652,7 @@ describe('Non Fixed Rate -- zero rate or zero factor tests override tenant setti
       .get(inrEurMConversionParam) as CurrencyConversionError;
     expect(result).toBeTruthy();
     expect(result).toBeInstanceOf(Error);
-    expect(result.message).toBe(ConversionErrors.ZERO_CURRENCY_FACTOR);
+    expect(result.message).toBe(ConversionError.ZERO_CURRENCY_FACTOR);
   });
 
   it('Test Direct Zero From Fact Zero Rate.', () => {
@@ -672,7 +672,7 @@ describe('Non Fixed Rate -- zero rate or zero factor tests override tenant setti
       .get(inrEurMConversionParam) as CurrencyConversionError;
     expect(result).toBeTruthy();
     expect(result).toBeInstanceOf(Error);
-    expect(result.message).toBe(ConversionErrors.ZERO_CURRENCY_FACTOR);
+    expect(result.message).toBe(ConversionError.ZERO_CURRENCY_FACTOR);
   });
 
   it('Test Indirect Zero Factors Rate.', () => {
@@ -692,7 +692,7 @@ describe('Non Fixed Rate -- zero rate or zero factor tests override tenant setti
       .get(inrEurMConversionParam) as CurrencyConversionError;
     expect(result).toBeTruthy();
     expect(result).toBeInstanceOf(Error);
-    expect(result.message).toBe(ConversionErrors.ZERO_CURRENCY_FACTOR);
+    expect(result.message).toBe(ConversionError.ZERO_CURRENCY_FACTOR);
   });
 
   it('Test Indirect Zero From Factor Rate.', () => {
@@ -712,7 +712,7 @@ describe('Non Fixed Rate -- zero rate or zero factor tests override tenant setti
       .get(inrEurMConversionParam) as CurrencyConversionError;
     expect(result).toBeTruthy();
     expect(result).toBeInstanceOf(Error);
-    expect(result.message).toBe(ConversionErrors.ZERO_CURRENCY_FACTOR);
+    expect(result.message).toBe(ConversionError.ZERO_CURRENCY_FACTOR);
   });
 
   it('Test Direct Zero Factors Rate.', () => {
@@ -732,7 +732,7 @@ describe('Non Fixed Rate -- zero rate or zero factor tests override tenant setti
       .get(inrEurMConversionParam) as CurrencyConversionError;
     expect(result).toBeTruthy();
     expect(result).toBeInstanceOf(Error);
-    expect(result.message).toBe(ConversionErrors.ZERO_CURRENCY_FACTOR);
+    expect(result.message).toBe(ConversionError.ZERO_CURRENCY_FACTOR);
   });
 
   it('Test Direct Zero From Factor Rate.', () => {
@@ -752,6 +752,6 @@ describe('Non Fixed Rate -- zero rate or zero factor tests override tenant setti
       .get(inrEurMConversionParam) as CurrencyConversionError;
     expect(result).toBeTruthy();
     expect(result).toBeInstanceOf(Error);
-    expect(result.message).toBe(ConversionErrors.ZERO_CURRENCY_FACTOR);
+    expect(result.message).toBe(ConversionError.ZERO_CURRENCY_FACTOR);
   });
 });

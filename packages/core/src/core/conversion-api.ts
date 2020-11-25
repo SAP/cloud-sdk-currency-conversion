@@ -14,7 +14,7 @@ import {
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { BigNumber } from 'bignumber.js';
 import { logger as log } from '../helper/logger';
-import { ConversionErrors } from '../constants/conversion-errors';
+import { ConversionError } from '../constants/conversion-error';
 import {
   convertCurrenciesWithNonFixedRateHelper,
   CURR_FORMAT
@@ -58,8 +58,8 @@ export class CurrencyConverter {
     conversionParameters: ConversionParametersForFixedRate[]
   ): BulkFixedRateConversionResult {
     if (!this.validateBulkFixedConversionParameters(conversionParameters)) {
-      log?.error(ConversionErrors.INVALID_PARAMS);
-      throw new CurrencyConversionError(ConversionErrors.INVALID_PARAMS);
+      log?.error(ConversionError.INVALID_PARAMS);
+      throw new CurrencyConversionError(ConversionError.INVALID_PARAMS);
     }
     const resultMap: Map<
       ConversionParametersForFixedRate,
@@ -114,8 +114,8 @@ export class CurrencyConverter {
     conversionParameter: ConversionParametersForFixedRate
   ): SingleFixedRateConversionResult {
     if (!this.validateSingleFixedConversionParameter(conversionParameter)) {
-      log?.error(ConversionErrors.INVALID_PARAMS);
-      throw new CurrencyConversionError(ConversionErrors.INVALID_PARAMS);
+      log?.error(ConversionError.INVALID_PARAMS);
+      throw new CurrencyConversionError(ConversionError.INVALID_PARAMS);
     }
     const singleConversionResult: SingleFixedRateConversionResult = this.performSingleFixedConversion(
       conversionParameter
@@ -170,8 +170,8 @@ export class CurrencyConverter {
     overrideTenantSetting?: OverrideTenantSetting
   ): SingleNonFixedRateConversionResult {
     if (!this.validateSingleNonFixedConversionParameter(conversionParameter)) {
-      log?.error(ConversionErrors.INVALID_PARAMS);
-      throw new CurrencyConversionError(ConversionErrors.INVALID_PARAMS);
+      log?.error(ConversionError.INVALID_PARAMS);
+      throw new CurrencyConversionError(ConversionError.INVALID_PARAMS);
     }
     const bulkConversionResult: BulkNonFixedRateConversionResult = convertCurrenciesWithNonFixedRateHelper(
       Array.of(conversionParameter),
@@ -236,8 +236,8 @@ export class CurrencyConverter {
     overrideTenantSetting?: OverrideTenantSetting
   ): BulkNonFixedRateConversionResult {
     if (!this.validateBulkNonFixedConversionParameters(conversionParameter)) {
-      log?.error(ConversionErrors.INVALID_PARAMS);
-      throw new CurrencyConversionError(ConversionErrors.INVALID_PARAMS);
+      log?.error(ConversionError.INVALID_PARAMS);
+      throw new CurrencyConversionError(ConversionError.INVALID_PARAMS);
     }
     const bulkConversionResult: BulkNonFixedRateConversionResult = convertCurrenciesWithNonFixedRateHelper(
       conversionParameter,

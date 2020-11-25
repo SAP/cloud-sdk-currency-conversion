@@ -13,7 +13,7 @@ import {
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { BigNumber } from 'bignumber.js';
 import { logger as log } from '../helper/logger';
-import { ConversionErrors } from '../constants/conversion-errors';
+import { ConversionError } from '../constants/conversion-error';
 import { setBigNumberConfig } from '../helper/non-fixed-rate-helper';
 
 export class ExchangeRateRecordDeterminer {
@@ -335,7 +335,7 @@ export class ExchangeRateRecordDeterminer {
       JSON.stringify(exchangeRateValue) === JSON.stringify(new BigNumber(0))
     ) {
       throw new CurrencyConversionError(
-        ConversionErrors.ZERO_RATE_REFERENCE_CURRENCY
+        ConversionError.ZERO_RATE_REFERENCE_CURRENCY
       );
     }
     const bigNum = setBigNumberConfig(fromExchangeRateValueScale);
@@ -361,7 +361,7 @@ export class ExchangeRateRecordDeterminer {
       log?.error(
         "The currency factor in the exchange rate resulted in an exception. Either 'from' or 'to' currency factor is zero"
       );
-      throw new CurrencyConversionError(ConversionErrors.ZERO_CURRENCY_FACTOR);
+      throw new CurrencyConversionError(ConversionError.ZERO_CURRENCY_FACTOR);
     }
   }
 
@@ -637,7 +637,7 @@ export class ExchangeRateRecordDeterminer {
           firstItemFromList.validFromDateTime;
         log?.error(errorMessage);
         throw new CurrencyConversionError(
-          ConversionErrors.DUPLICATE_CONVERSION_RECORD_FOUND
+          ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND
         );
       }
     }
@@ -683,7 +683,7 @@ export class ExchangeRateRecordDeterminer {
             JSON.stringify(exchangeRate.ratesDataSource);
           log?.debug(errorMessage);
           throw new CurrencyConversionError(
-            ConversionErrors.MULTIPLE_CONVERSION_RECORD_FOUND
+            ConversionError.MULTIPLE_CONVERSION_RECORD_FOUND
           );
         }
       }
@@ -706,7 +706,7 @@ export class ExchangeRateRecordDeterminer {
         log?.error('Multiple Exchange Rate Records found for same timestamp.');
         log?.debug(errorMessage);
         throw new CurrencyConversionError(
-          ConversionErrors.DUPLICATE_CONVERSION_RECORD_FOUND
+          ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND
         );
       }
     }
@@ -721,7 +721,7 @@ export class ExchangeRateRecordDeterminer {
        */
       log?.error('No Matching exchange rate record found for conversion.');
       throw new CurrencyConversionError(
-        ConversionErrors.NO_MATCHING_EXCHANGE_RATE_RECORD
+        ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD
       );
     } else {
       return filterdExchangeRateList[0];

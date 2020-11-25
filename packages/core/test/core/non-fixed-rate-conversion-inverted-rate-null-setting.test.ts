@@ -19,7 +19,7 @@ import {
   ConversionParametersForNonFixedRate
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { BigNumber } from 'bignumber.js';
-import { ConversionErrors } from '../../src/constants/conversion-errors';
+import { ConversionError } from '../../src/constants/conversion-error';
 import { CurrencyConverter } from '../../src/core/conversion-api';
 
 const TENANT_ID: Tenant = { id: 'TenantID' };
@@ -741,7 +741,7 @@ describe('Non Fixed Rate -- Inverted Rate conversion null tenant settings', () =
     );
     expect(
       (result.get(usdEurMConversionParam) as CurrencyConversionError).message
-    ).toBe(ConversionErrors.DUPLICATE_CONVERSION_RECORD_FOUND);
+    ).toBe(ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND);
   });
 
   it('Conversion With Exchange Rate Record Having Future Date', () => {
@@ -759,7 +759,7 @@ describe('Non Fixed Rate -- Inverted Rate conversion null tenant settings', () =
     expect(
       (result.get(usdEurBConversionParamPastDate) as CurrencyConversionError)
         .message
-    ).toBe(ConversionErrors.NO_MATCHING_EXCHANGE_RATE_RECORD);
+    ).toBe(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
   });
 
   it('Inverted Conversion With Direct Currency Pair And Multiple Data Provider', () => {
@@ -776,7 +776,7 @@ describe('Non Fixed Rate -- Inverted Rate conversion null tenant settings', () =
     );
     expect(
       (result.get(usdEurMConversionParam) as CurrencyConversionError).message
-    ).toBe(ConversionErrors.MULTIPLE_CONVERSION_RECORD_FOUND);
+    ).toBe(ConversionError.MULTIPLE_CONVERSION_RECORD_FOUND);
   });
 
   it('Inverted Bulk Conversion With Indirect Currency Pair Duplicate Record', () => {
@@ -793,7 +793,7 @@ describe('Non Fixed Rate -- Inverted Rate conversion null tenant settings', () =
     );
     expect(
       (result.get(usdEurMConversionParam) as CurrencyConversionError).message
-    ).toBe(ConversionErrors.DUPLICATE_CONVERSION_RECORD_FOUND);
+    ).toBe(ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND);
   });
 
   it('Inverted Conversion With Indirect Currency Pair And Multiple Data Provider', () => {
@@ -810,7 +810,7 @@ describe('Non Fixed Rate -- Inverted Rate conversion null tenant settings', () =
     );
     expect(
       (result.get(usdEurMConversionParam) as CurrencyConversionError).message
-    ).toBe(ConversionErrors.MULTIPLE_CONVERSION_RECORD_FOUND);
+    ).toBe(ConversionError.MULTIPLE_CONVERSION_RECORD_FOUND);
   });
 
   it('Inverted Bulk Conversion With Direct Currency Pair', () => {
@@ -886,7 +886,7 @@ describe('Non Fixed Rate -- Inverted Rate conversion null tenant settings', () =
     );
     expect(
       (result.get(usdEurBConversionParam) as CurrencyConversionError).message
-    ).toBe(ConversionErrors.NO_MATCHING_EXCHANGE_RATE_RECORD);
+    ).toBe(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
   });
 
   it('Conversion For Indirect False Inverted True Inverted Currency Pair', () => {
@@ -923,7 +923,7 @@ describe('Non Fixed Rate -- Inverted Rate conversion null tenant settings', () =
     );
     expect(
       (result.get(usdEurBConversionParam) as CurrencyConversionError).message
-    ).toBe(ConversionErrors.NO_MATCHING_EXCHANGE_RATE_RECORD);
+    ).toBe(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
   });
 
   it('Conversion For Indirect True Inverted True Inverted Currency Pair Factor More Than One Rate', () => {
@@ -960,7 +960,7 @@ describe('Non Fixed Rate -- Inverted Rate conversion null tenant settings', () =
     );
     expect(
       (result.get(usdEurBConversionParam) as CurrencyConversionError).message
-    ).toBe(ConversionErrors.NO_MATCHING_EXCHANGE_RATE_RECORD);
+    ).toBe(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
   });
 
   it('Conversion For Indirect False Inverted True Inverted Currency Pair Factor More Than One Rate', () => {
@@ -997,7 +997,7 @@ describe('Non Fixed Rate -- Inverted Rate conversion null tenant settings', () =
     );
     expect(
       (result.get(usdEurBConversionParam) as CurrencyConversionError).message
-    ).toBe(ConversionErrors.NO_MATCHING_EXCHANGE_RATE_RECORD);
+    ).toBe(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
   });
 
   it('Conversion For Indirect True Inverted True Direct Currency Pair', () => {

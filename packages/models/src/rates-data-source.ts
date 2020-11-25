@@ -1,6 +1,6 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
 import { CurrencyConversionError } from './currency-conversion-error';
-import { ConversionModelErrors } from './constants/conversion-model-errors';
+import { ConversionModelError } from './constants/conversion-model-error';
 
 export class RatesDataSource {
   private _dataSource: string;
@@ -8,7 +8,7 @@ export class RatesDataSource {
   constructor(dataSource: string) {
     if (!dataSource || !dataSource.trim()) {
       throw new CurrencyConversionError(
-        ConversionModelErrors.NULL_RATES_DATA_SOURCE
+        ConversionModelError.NULL_RATES_DATA_SOURCE
       );
     }
     this._dataSource = dataSource.trim();

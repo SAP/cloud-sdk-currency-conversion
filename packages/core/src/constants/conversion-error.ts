@@ -1,5 +1,5 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
-export enum ConversionErrors {
+export enum ConversionError {
   INVALID_PARAMS = 'Conversion failed due to invalid parameters',
   CONVERSION_FAILED = 'Fixed Rate conversion failed',
   NO_MATCHING_EXCHANGE_RATE_RECORD = 'No matching exchange rate record found for conversion. Check your conversion parameters against your exchange rate list and retry.',

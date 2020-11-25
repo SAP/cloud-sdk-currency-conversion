@@ -15,9 +15,9 @@ import {
   OverrideTenantSetting
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { BigNumber } from 'bignumber.js';
-import { ConversionErrors } from '../constants/conversion-errors';
-import { logger as log } from './logger';
+import { ConversionError } from '../constants/conversion-error';
 import { ExchangeRateRecordDeterminer } from '../core/exchange-rate-record-determiner';
+import { logger as log } from './logger';
 
 const DEFAULT_SCALE = 14;
 export const CURR_FORMAT = {
@@ -36,7 +36,7 @@ export function convertCurrenciesWithNonFixedRateHelper(
 ): BulkNonFixedRateConversionResult {
   let tenantSettings = null;
   if (dataAdapter === null || tenant === null || tenant.id === null) {
-    throw new CurrencyConversionError(ConversionErrors.NULL_ADAPTER_TENANT);
+    throw new CurrencyConversionError(ConversionError.NULL_ADAPTER_TENANT);
   }
   if (overrideTenantSetting === undefined) {
     tenantSettings = fetchDefaultTenantSettings(dataAdapter, tenant);
@@ -105,9 +105,9 @@ function fetchExchangeRate(
       tenantSettings
     );
   } catch (error) {
-    log?.error(ConversionErrors.ERR_FETCHING_EXCHANGE_RATES);
+    log?.error(ConversionError.ERR_FETCHING_EXCHANGE_RATES);
     throw new CurrencyConversionError(
-      ConversionErrors.ERR_FETCHING_EXCHANGE_RATES
+      ConversionError.ERR_FETCHING_EXCHANGE_RATES
     );
   }
   if (exchangeRateResultSet === null || exchangeRateResultSet.length === 0) {
@@ -115,9 +115,7 @@ function fetchExchangeRate(
       'Data Adpater returned empty list for exchange rates for tenant',
       JSON.stringify(tenant)
     );
-    throw new CurrencyConversionError(
-      ConversionErrors.EMPTY_EXCHANGE_RATE_LIST
-    );
+    throw new CurrencyConversionError(ConversionError.EMPTY_EXCHANGE_RATE_LIST);
   }
   return exchangeRateResultSet;
 }
@@ -141,9 +139,9 @@ function fetchExchangeRateType(
       rateTypeSet
     );
   } catch (error) {
-    log?.error(ConversionErrors.ERR_FETCHING_EXCHANGE_RATES);
+    log?.error(ConversionError.ERR_FETCHING_EXCHANGE_RATES);
     throw new CurrencyConversionError(
-      ConversionErrors.ERR_FETCHING_EXCHANGE_RATES
+      ConversionError.ERR_FETCHING_EXCHANGE_RATES
     );
   }
   return exchangeRateTypeDetailMap;
@@ -168,7 +166,7 @@ function performBulkNonFixedConversion(
       resultMap.set(conversionParameter, result);
     } catch (error) {
       log?.error(
-        ConversionErrors.NON_FIXED_CONVERSION_FAILED,
+        ConversionError.NON_FIXED_CONVERSION_FAILED,
         'for parameter : ',
         JSON.stringify(conversionParameter),
         'with exception :',
@@ -384,7 +382,7 @@ function isRatioNaNOrInfinite(currencyFactorRatio: number): void {
     log?.error(
       "The currency factor in the exchange rate resulted in an exception. Either 'from' or 'to' currency factor is zero"
     );
-    throw new CurrencyConversionError(ConversionErrors.ZERO_CURRENCY_FACTOR);
+    throw new CurrencyConversionError(ConversionError.ZERO_CURRENCY_FACTOR);
   }
 }
 
@@ -409,7 +407,7 @@ function fetchDefaultTenantSettings(
   } catch (ex) {
     log?.error('Error in fetching default tenant settings for tenant ', tenant);
     throw new CurrencyConversionError(
-      ConversionErrors.ERROR_FETCHING_DEFAULT_SETTINGS
+      ConversionError.ERROR_FETCHING_DEFAULT_SETTINGS
     );
   }
 }
@@ -447,7 +445,7 @@ function isOverrideTenantSettingIncomplete(
   if (overrideSetting == null) {
     log?.error('Override Tenant Setting can not be null');
     throw new CurrencyConversionError(
-      ConversionErrors.EMPTY_OVERRIDE_TENANT_SETTING
+      ConversionError.EMPTY_OVERRIDE_TENANT_SETTING
     );
   }
 }

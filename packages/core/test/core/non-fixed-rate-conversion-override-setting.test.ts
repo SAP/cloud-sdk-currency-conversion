@@ -20,7 +20,7 @@ import {
   BulkNonFixedRateConversionResult
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { BigNumber } from 'bignumber.js';
-import { ConversionErrors } from '../../src/constants/conversion-errors';
+import { ConversionError } from '../../src/constants/conversion-error';
 import { CurrencyConverter } from '../../src/core/conversion-api';
 
 const TENANT_ID: Tenant = { id: 'TenantID' };
@@ -802,7 +802,7 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
     }
     expect(errorInput).toBeInstanceOf(CurrencyConversionError);
     expect(errorInput.message).toBe(
-      ConversionErrors.NO_MATCHING_EXCHANGE_RATE_RECORD
+      ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD
     );
   });
 
@@ -830,7 +830,7 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
       errorInput = error;
     }
     expect(errorInput).toBeInstanceOf(CurrencyConversionError);
-    expect(errorInput.message).toBe(ConversionErrors.INVALID_PARAMS);
+    expect(errorInput.message).toBe(ConversionError.INVALID_PARAMS);
   });
 
   it('Bulk Conversion With Empty Exchange Rate Type Details', () => {
@@ -909,7 +909,7 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
     expect(
       (result.get(inrEurMConversionParamPastDate) as CurrencyConversionError)
         .message
-    ).toBe(ConversionErrors.NO_MATCHING_EXCHANGE_RATE_RECORD);
+    ).toBe(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
   });
 
   it('Bulk Conversion With Null Conversion Parameter', () => {
@@ -936,7 +936,7 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
       errorInput = error;
     }
     expect(errorInput).toBeInstanceOf(CurrencyConversionError);
-    expect(errorInput.message).toBe(ConversionErrors.INVALID_PARAMS);
+    expect(errorInput.message).toBe(ConversionError.INVALID_PARAMS);
   });
 
   it('Bulk Conversion With empty Conversion Parameter list', () => {
@@ -963,7 +963,7 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
       errorInput = error;
     }
     expect(errorInput).toBeInstanceOf(CurrencyConversionError);
-    expect(errorInput.message).toBe(ConversionErrors.INVALID_PARAMS);
+    expect(errorInput.message).toBe(ConversionError.INVALID_PARAMS);
   });
 
   it('Bulk Conversion With Direct Factor Five Ten Rate', () => {
@@ -1101,7 +1101,7 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
           TENANT_ID,
           overrideTenantSettings
         );
-      }).toThrowError(ConversionErrors.INVALID_PARAMS);
+      }).toThrowError(ConversionError.INVALID_PARAMS);
     } catch (error) {
       errInput = error;
     }
@@ -1160,7 +1160,7 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
     );
     expect(
       (result.get(eurInrMConversionParam) as CurrencyConversionError).message
-    ).toBe(ConversionErrors.NO_MATCHING_EXCHANGE_RATE_RECORD);
+    ).toBe(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
   });
 
   it('Bulk Indirect Conversion', () => {
@@ -1390,7 +1390,7 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
     expect(
       (result.get(invalidCurrenecyConversionParam) as CurrencyConversionError)
         .message
-    ).toBe(ConversionErrors.NO_MATCHING_EXCHANGE_RATE_RECORD);
+    ).toBe(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
   });
 
   it('Bulk Conversion With Different Tenant No Record', () => {
@@ -1410,7 +1410,7 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
     );
     expect(
       (result.get(inrEurMConversionParam) as CurrencyConversionError).message
-    ).toBe(ConversionErrors.NO_MATCHING_EXCHANGE_RATE_RECORD);
+    ).toBe(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
   });
 
   it('Bulk Conversion With Duplicate Exchange Rate Same TimeStamp', () => {
@@ -1430,7 +1430,7 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
     );
     expect(
       (result.get(inrEurMConversionParam) as CurrencyConversionError).message
-    ).toBe(ConversionErrors.DUPLICATE_CONVERSION_RECORD_FOUND);
+    ).toBe(ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND);
   });
 
   it('Bulk Conversion With Duplicate Exchange Rate Record', () => {
@@ -1450,7 +1450,7 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
     );
     expect(
       (result.get(inrEurMConversionParam) as CurrencyConversionError).message
-    ).toBe(ConversionErrors.DUPLICATE_CONVERSION_RECORD_FOUND);
+    ).toBe(ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND);
   });
 
   it('Bulk Conversion With No Record Found', () => {
@@ -1470,7 +1470,7 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
     );
     expect(
       (result.get(inrEurMConversionParam) as CurrencyConversionError).message
-    ).toBe(ConversionErrors.NO_MATCHING_EXCHANGE_RATE_RECORD);
+    ).toBe(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
   });
 
   it('Bulk Conversion With data Adapter Null', () => {
@@ -1487,7 +1487,7 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
       errorInput = err;
     }
     expect(errorInput).toBeInstanceOf(CurrencyConversionError);
-    expect(errorInput.message).toBe(ConversionErrors.NULL_ADAPTER_TENANT);
+    expect(errorInput.message).toBe(ConversionError.NULL_ADAPTER_TENANT);
   });
 
   it('Bulk Conversion With Exchange Rates Null', () => {
@@ -1504,7 +1504,7 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
       errorInput = err;
     }
     expect(errorInput).toBeInstanceOf(CurrencyConversionError);
-    expect(errorInput.message).toBe(ConversionErrors.EMPTY_EXCHANGE_RATE_LIST);
+    expect(errorInput.message).toBe(ConversionError.EMPTY_EXCHANGE_RATE_LIST);
   });
 
   it('Bulk Conversion With both Exchange Rates and default tenant settings Null', () => {
@@ -1521,7 +1521,7 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
       errorInput = err;
     }
     expect(errorInput).toBeInstanceOf(CurrencyConversionError);
-    expect(errorInput.message).toBe(ConversionErrors.EMPTY_EXCHANGE_RATE_LIST);
+    expect(errorInput.message).toBe(ConversionError.EMPTY_EXCHANGE_RATE_LIST);
   });
 
   it('Bulk Conversion With Exchange Rates Empty', () => {
@@ -1538,6 +1538,6 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
       errorInput = err;
     }
     expect(errorInput).toBeInstanceOf(CurrencyConversionError);
-    expect(errorInput.message).toBe(ConversionErrors.EMPTY_EXCHANGE_RATE_LIST);
+    expect(errorInput.message).toBe(ConversionError.EMPTY_EXCHANGE_RATE_LIST);
   });
 });

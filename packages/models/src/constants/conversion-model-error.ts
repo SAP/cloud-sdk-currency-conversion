@@ -1,5 +1,5 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
-export enum ConversionModelErrors {
+export enum ConversionModelError {
   INVALID_CURRENCY_CODES = 'Provided currency code does not exist.',
   NULL_CURRENCY_CODES = 'Invalid currency code.',
   ILLEGAL_EXCHANGE_RATE = 'Exchange rate value must be a positive numeral value.',
