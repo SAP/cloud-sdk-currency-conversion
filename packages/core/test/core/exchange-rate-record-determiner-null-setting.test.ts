@@ -8,7 +8,6 @@ import {
   ExchangeRateTypeDetail,
   ConversionParametersForNonFixedRate
 } from '@sap-cloud-sdk/currency-conversion-models';
-import { BigNumber } from 'bignumber.js';
 import { ExchangeRateRecordDeterminer } from '../../src/core/exchange-rate-record-determiner';
 import { ConversionError } from '../../src/constants/conversion-error';
 
@@ -780,8 +779,14 @@ function getExchangeRateTypeDetailsForTenant(): Map<
     ExchangeRateTypeDetail
   > = new Map();
   exchangeRateTypeDetailMap.set(A, new ExchangeRateTypeDetail(INR, true));
-  exchangeRateTypeDetailMap.set(M, new ExchangeRateTypeDetail(null as any, true));
-  exchangeRateTypeDetailMap.set(ASK, new ExchangeRateTypeDetail(null as any, true));
+  exchangeRateTypeDetailMap.set(
+    M,
+    new ExchangeRateTypeDetail(null as any, true)
+  );
+  exchangeRateTypeDetailMap.set(
+    ASK,
+    new ExchangeRateTypeDetail(null as any, true)
+  );
   return exchangeRateTypeDetailMap;
 }
 
@@ -1140,9 +1145,7 @@ describe('Exchange Rate Record Determiner Null Tenant Setting', () => {
       null as any,
       null as any,
       A,
-      new ExchangeRateValue(
-        '0.3333333336507937'
-      ),
+      new ExchangeRateValue('0.3333333336507937'),
       EUR,
       USD,
       S_2020_01_01T02_30_00Z,

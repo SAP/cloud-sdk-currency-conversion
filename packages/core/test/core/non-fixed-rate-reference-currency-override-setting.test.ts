@@ -12,7 +12,6 @@ import {
   SingleNonFixedRateConversionResult,
   TenantSettings
 } from '@sap-cloud-sdk/currency-conversion-models';
-import { BigNumber } from 'bignumber.js';
 import { CurrencyConverter } from '../../src/core/currency-converter';
 
 const TENANT_ID: Tenant = { id: 'TenantID' };
@@ -29,12 +28,9 @@ const INR: Currency = buildCurrency('INR');
 const EUR: Currency = buildCurrency('EUR');
 const USD: Currency = buildCurrency('USD');
 
-const S_2: ExchangeRateValue = new ExchangeRateValue('2', new BigNumber('2'));
-const S_5: ExchangeRateValue = new ExchangeRateValue('5', new BigNumber('5'));
-const S_10: ExchangeRateValue = new ExchangeRateValue(
-  '10',
-  new BigNumber('10')
-);
+const S_2: ExchangeRateValue = new ExchangeRateValue('2');
+const S_5: ExchangeRateValue = new ExchangeRateValue('5');
+const S_10: ExchangeRateValue = new ExchangeRateValue('10');
 
 const S_2020_01_01T02_30_00Z: Date = new Date('2020-01-01T02:30:00Z');
 const S_2020_02_01T02_30_00Z: Date = new Date('2020-02-01T02:30:00Z');
@@ -42,10 +38,7 @@ const S_2020_03_01T02_30_00Z: Date = new Date('2020-03-01T02:30:00Z');
 const S_1990_03_01T02_30_00Z: Date = new Date('1990-03-01T02:30:00Z');
 
 const defaultTenantSettings: TenantSettings = new TenantSettings(MRM, ECB);
-const overrideTenantSettings: OverrideTenantSetting = new OverrideTenantSetting(
-  MRM,
-  THR
-);
+const overrideTenantSettings: TenantSettings = new TenantSettings(MRM, THR);
 
 const eurUsdAConversionParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
   'EUR',
@@ -83,7 +76,7 @@ const eurUsdNewConversionParam: ConversionParametersForNonFixedRate = new Conver
   'EUR',
   'USD',
   '100',
-  new RateType('New'),
+  'New',
   S_1990_03_01T02_30_00Z
 );
 
@@ -226,8 +219,8 @@ const eurInrMrmEcbIndirectTrueFactorMoreThanOneRate: ExchangeRate = new Exchange
   INR,
   S_2020_02_01T02_30_00Z,
   true,
-  new CurrencyFactor(5),
-  new CurrencyFactor(10)
+  5,
+  10
 );
 
 const usdInrMrmEcbIndirectFalseFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
@@ -240,8 +233,8 @@ const usdInrMrmEcbIndirectFalseFactorMoreThanOneRate: ExchangeRate = new Exchang
   INR,
   S_2020_01_01T02_30_00Z,
   false,
-  new CurrencyFactor(10),
-  new CurrencyFactor(5)
+  10,
+  5
 );
 
 const usdInrMrmEcbIndirectTrueFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
@@ -254,8 +247,8 @@ const usdInrMrmEcbIndirectTrueFactorMoreThanOneRate: ExchangeRate = new Exchange
   INR,
   S_2020_01_01T02_30_00Z,
   true,
-  new CurrencyFactor(10),
-  new CurrencyFactor(5)
+  10,
+  5
 );
 
 const eurInrMrmEcbIndirectFalseFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
@@ -268,8 +261,8 @@ const eurInrMrmEcbIndirectFalseFactorMoreThanOneRate: ExchangeRate = new Exchang
   INR,
   S_2020_02_01T02_30_00Z,
   false,
-  new CurrencyFactor(5),
-  new CurrencyFactor(10)
+  5,
+  10
 );
 
 const usdInrMrmEcbADuplicateRate: ExchangeRate = new ExchangeRate(
@@ -543,8 +536,8 @@ const eurInrMrmThrIndirectTrueFactorMoreThanOneRate: ExchangeRate = new Exchange
   INR,
   S_2020_02_01T02_30_00Z,
   true,
-  new CurrencyFactor(5),
-  new CurrencyFactor(10)
+  5,
+  10
 );
 const eurInrMrmThrIndirectFalseFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
@@ -556,8 +549,8 @@ const eurInrMrmThrIndirectFalseFactorMoreThanOneRate: ExchangeRate = new Exchang
   INR,
   S_2020_02_01T02_30_00Z,
   false,
-  new CurrencyFactor(5),
-  new CurrencyFactor(10)
+  5,
+  10
 );
 
 const usdInrMrmThrIndirectTrueRate: ExchangeRate = new ExchangeRate(
@@ -597,8 +590,8 @@ const usdInrMrmThrIndirectTrueFactorMoreThanOneRate: ExchangeRate = new Exchange
   INR,
   S_2020_01_01T02_30_00Z,
   true,
-  new CurrencyFactor(10),
-  new CurrencyFactor(5)
+  10,
+  5
 );
 const usdInrMrmThrIndirectFalseFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
@@ -610,8 +603,8 @@ const usdInrMrmThrIndirectFalseFactorMoreThanOneRate: ExchangeRate = new Exchang
   INR,
   S_2020_01_01T02_30_00Z,
   false,
-  new CurrencyFactor(10),
-  new CurrencyFactor(5)
+  10,
+  5
 );
 
 /* Exchange Rate ends*/
@@ -631,15 +624,15 @@ function buildAdapter(exchangeRates: ExchangeRate[]): DataAdapter {
     defaultTenantSettings;
   adapter.getExchangeRateTypeDetailsForTenant = (
     tenant: Tenant,
-    rateTypeSet: Set<RateType>
-  ): Map<RateType, ExchangeRateTypeDetail> => {
-    const exchangeRate: Map<RateType, ExchangeRateTypeDetail> = new Map();
+    rateTypeSet: Set<string>
+  ): Map<string, ExchangeRateTypeDetail> => {
+    const exchangeRate: Map<string, ExchangeRateTypeDetail> = new Map();
     exchangeRate.set(A, new ExchangeRateTypeDetail(buildCurrency('INR'), true));
     exchangeRate.set(
       LAST,
       new ExchangeRateTypeDetail(buildCurrency('AFN'), true)
     );
-    exchangeRate.set(ASK, new ExchangeRateTypeDetail(null, false));
+    exchangeRate.set(ASK, new ExchangeRateTypeDetail(null as any, false));
     return exchangeRate;
   };
   return adapter;
@@ -660,7 +653,7 @@ describe('Non Fixed Rate Currency Conversion -- Reference currency Tests default
     );
     expect(result).toBeTruthy();
     expect(result.convertedAmount.valueString).toBe('50');
-    expect(result.exchangeRate.ratesDataSource?.dataSource).toBe('THR');
+    expect(result.exchangeRate.ratesDataSource).toBe('THR');
     expect(result.exchangeRate.fromCurrency.currencyCode).toBe('EUR');
     expect(result.exchangeRate.toCurrency.currencyCode).toBe('USD');
   });
@@ -681,7 +674,7 @@ describe('Non Fixed Rate Currency Conversion -- Reference currency Tests default
       .get(eurUsdAConversionParam) as SingleNonFixedRateConversionResult;
     expect(result).toBeTruthy();
     expect(result.convertedAmount.valueString).toBe('50');
-    expect(result.exchangeRate.ratesDataSource?.dataSource).toBe('THR');
+    expect(result.exchangeRate.ratesDataSource).toBe('THR');
     expect(result.exchangeRate.fromCurrency.currencyCode).toBe('EUR');
     expect(result.exchangeRate.toCurrency.currencyCode).toBe('USD');
   });
@@ -893,11 +886,9 @@ describe('Non Fixed Rate Currency Conversion -- Reference currency Tests default
     expect(result).toBeTruthy();
     expect(result.convertedAmount.valueString).toBe('200');
     expect(result.roundedOffConvertedAmount.valueString).toBe('200');
-    expect(result.exchangeRate.ratesDataProviderCode?.dataProviderCode).toBe(
-      'MRM'
-    );
-    expect(result.exchangeRate.ratesDataSource?.dataSource).toBe('THR');
-    expect(result.exchangeRate.exchangeRateType.rateType).toBe(A.rateType);
+    expect(result.exchangeRate.ratesDataProviderCode).toBe('MRM');
+    expect(result.exchangeRate.ratesDataSource).toBe('THR');
+    expect(result.exchangeRate.exchangeRateType).toBe(A);
     expect(result.exchangeRate.fromCurrency.currencyCode).toBe('EUR');
     expect(result.exchangeRate.toCurrency.currencyCode).toBe('USD');
   });
@@ -917,11 +908,9 @@ describe('Non Fixed Rate Currency Conversion -- Reference currency Tests default
     expect(result).toBeTruthy();
     expect(result.convertedAmount.valueString).toBe('2');
     expect(result.roundedOffConvertedAmount.valueString).toBe('2');
-    expect(result.exchangeRate.ratesDataProviderCode?.dataProviderCode).toBe(
-      'MRM'
-    );
-    expect(result.exchangeRate.ratesDataSource?.dataSource).toBe('THR');
-    expect(result.exchangeRate.exchangeRateType.rateType).toBe(A.rateType);
+    expect(result.exchangeRate.ratesDataProviderCode).toBe('MRM');
+    expect(result.exchangeRate.ratesDataSource).toBe('THR');
+    expect(result.exchangeRate.exchangeRateType).toBe(A);
     expect(result.exchangeRate.fromCurrency.currencyCode).toBe('EUR');
     expect(result.exchangeRate.toCurrency.currencyCode).toBe('USD');
   });
@@ -941,11 +930,9 @@ describe('Non Fixed Rate Currency Conversion -- Reference currency Tests default
     expect(result).toBeTruthy();
     expect(result.convertedAmount.valueString).toBe('5000');
     expect(result.roundedOffConvertedAmount.valueString).toBe('5000');
-    expect(result.exchangeRate.ratesDataProviderCode?.dataProviderCode).toBe(
-      'MRM'
-    );
-    expect(result.exchangeRate.ratesDataSource?.dataSource).toBe('THR');
-    expect(result.exchangeRate.exchangeRateType.rateType).toBe(A.rateType);
+    expect(result.exchangeRate.ratesDataProviderCode).toBe('MRM');
+    expect(result.exchangeRate.ratesDataSource).toBe('THR');
+    expect(result.exchangeRate.exchangeRateType).toBe(A);
     expect(result.exchangeRate.fromCurrency.currencyCode).toBe('EUR');
     expect(result.exchangeRate.toCurrency.currencyCode).toBe('USD');
   });
@@ -965,11 +952,9 @@ describe('Non Fixed Rate Currency Conversion -- Reference currency Tests default
     expect(result).toBeTruthy();
     expect(result.convertedAmount.valueString).toBe('50');
     expect(result.roundedOffConvertedAmount.valueString).toBe('50');
-    expect(result.exchangeRate.ratesDataProviderCode?.dataProviderCode).toBe(
-      'MRM'
-    );
-    expect(result.exchangeRate.ratesDataSource?.dataSource).toBe('THR');
-    expect(result.exchangeRate.exchangeRateType.rateType).toBe(A.rateType);
+    expect(result.exchangeRate.ratesDataProviderCode).toBe('MRM');
+    expect(result.exchangeRate.ratesDataSource).toBe('THR');
+    expect(result.exchangeRate.exchangeRateType).toBe(A);
     expect(result.exchangeRate.fromCurrency.currencyCode).toBe('EUR');
     expect(result.exchangeRate.toCurrency.currencyCode).toBe('USD');
   });
@@ -989,11 +974,9 @@ describe('Non Fixed Rate Currency Conversion -- Reference currency Tests default
     expect(result).toBeTruthy();
     expect(result.convertedAmount.valueString).toBe('800');
     expect(result.roundedOffConvertedAmount.valueString).toBe('800');
-    expect(result.exchangeRate.ratesDataProviderCode?.dataProviderCode).toBe(
-      'MRM'
-    );
-    expect(result.exchangeRate.ratesDataSource?.dataSource).toBe('THR');
-    expect(result.exchangeRate.exchangeRateType.rateType).toBe(A.rateType);
+    expect(result.exchangeRate.ratesDataProviderCode).toBe('MRM');
+    expect(result.exchangeRate.ratesDataSource).toBe('THR');
+    expect(result.exchangeRate.exchangeRateType).toBe(A);
     expect(result.exchangeRate.fromCurrency.currencyCode).toBe('EUR');
     expect(result.exchangeRate.toCurrency.currencyCode).toBe('USD');
   });
@@ -1013,11 +996,9 @@ describe('Non Fixed Rate Currency Conversion -- Reference currency Tests default
     expect(result).toBeTruthy();
     expect(result.convertedAmount.valueString).toBe('8');
     expect(result.roundedOffConvertedAmount.valueString).toBe('8');
-    expect(result.exchangeRate.ratesDataProviderCode?.dataProviderCode).toBe(
-      'MRM'
-    );
-    expect(result.exchangeRate.ratesDataSource?.dataSource).toBe('THR');
-    expect(result.exchangeRate.exchangeRateType.rateType).toBe(A.rateType);
+    expect(result.exchangeRate.ratesDataProviderCode).toBe('MRM');
+    expect(result.exchangeRate.ratesDataSource).toBe('THR');
+    expect(result.exchangeRate.exchangeRateType).toBe(A);
     expect(result.exchangeRate.fromCurrency.currencyCode).toBe('EUR');
     expect(result.exchangeRate.toCurrency.currencyCode).toBe('USD');
   });
@@ -1037,11 +1018,9 @@ describe('Non Fixed Rate Currency Conversion -- Reference currency Tests default
     expect(result).toBeTruthy();
     expect(result.convertedAmount.valueString).toBe('20000');
     expect(result.roundedOffConvertedAmount.valueString).toBe('20000');
-    expect(result.exchangeRate.ratesDataProviderCode?.dataProviderCode).toBe(
-      'MRM'
-    );
-    expect(result.exchangeRate.ratesDataSource?.dataSource).toBe('THR');
-    expect(result.exchangeRate.exchangeRateType.rateType).toBe(A.rateType);
+    expect(result.exchangeRate.ratesDataProviderCode).toBe('MRM');
+    expect(result.exchangeRate.ratesDataSource).toBe('THR');
+    expect(result.exchangeRate.exchangeRateType).toBe(A);
     expect(result.exchangeRate.fromCurrency.currencyCode).toBe('EUR');
     expect(result.exchangeRate.toCurrency.currencyCode).toBe('USD');
   });
@@ -1061,11 +1040,9 @@ describe('Non Fixed Rate Currency Conversion -- Reference currency Tests default
     expect(result).toBeTruthy();
     expect(result.convertedAmount.valueString).toBe('200');
     expect(result.roundedOffConvertedAmount.valueString).toBe('200');
-    expect(result.exchangeRate.ratesDataProviderCode?.dataProviderCode).toBe(
-      'MRM'
-    );
-    expect(result.exchangeRate.ratesDataSource?.dataSource).toBe('THR');
-    expect(result.exchangeRate.exchangeRateType.rateType).toBe(A.rateType);
+    expect(result.exchangeRate.ratesDataProviderCode).toBe('MRM');
+    expect(result.exchangeRate.ratesDataSource).toBe('THR');
+    expect(result.exchangeRate.exchangeRateType).toBe(A);
     expect(result.exchangeRate.fromCurrency.currencyCode).toBe('EUR');
     expect(result.exchangeRate.toCurrency.currencyCode).toBe('USD');
   });

@@ -14,7 +14,6 @@ import {
   ExchangeRateTypeDetail,
   ConversionParametersForNonFixedRate
 } from '@sap-cloud-sdk/currency-conversion-models';
-import { BigNumber } from 'bignumber.js';
 import { ConversionError } from '../../src/constants/conversion-error';
 import { CurrencyConverter } from '../../src/core/currency-converter';
 
@@ -30,18 +29,9 @@ const ABC = 'ABC';
 const EUR: Currency = buildCurrency('EUR');
 const USD: Currency = buildCurrency('USD');
 
-const S_20: ExchangeRateValue = new ExchangeRateValue(
-  '20',
-  new BigNumber('20')
-);
-const S_30: ExchangeRateValue = new ExchangeRateValue(
-  '30',
-  new BigNumber('30')
-);
-const S_100: ExchangeRateValue = new ExchangeRateValue(
-  '100',
-  new BigNumber('100')
-);
+const S_20: ExchangeRateValue = new ExchangeRateValue('20');
+const S_30: ExchangeRateValue = new ExchangeRateValue('30');
+const S_100: ExchangeRateValue = new ExchangeRateValue('100');
 
 const S_1: CurrencyAmount = new CurrencyAmount('1');
 const S_10000: CurrencyAmount = new CurrencyAmount('10000');
@@ -156,7 +146,7 @@ const usdEurMrmEcbIndirectTrueInvertedTrueFactorMoreThanOneRate: ExchangeRate = 
   S_2020_01_01T02_30_00Z,
   true,
   1,
-  new CurrencyFactor(10)
+  10
 );
 const usdEurMrmEcbIndirectTrueInvertedFalseFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
@@ -169,7 +159,7 @@ const usdEurMrmEcbIndirectTrueInvertedFalseFactorMoreThanOneRate: ExchangeRate =
   S_2020_01_01T02_30_00Z,
   true,
   1,
-  new CurrencyFactor(10)
+  10
 );
 const usdEurMrmEcbIndirectFalseInvertedTrueFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
@@ -182,7 +172,7 @@ const usdEurMrmEcbIndirectFalseInvertedTrueFactorMoreThanOneRate: ExchangeRate =
   S_2020_01_01T02_30_00Z,
   false,
   1,
-  new CurrencyFactor(10)
+  10
 );
 const usdEurMrmEcbIndirectFalseInvertedFalseFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
@@ -195,7 +185,7 @@ const usdEurMrmEcbIndirectFalseInvertedFalseFactorMoreThanOneRate: ExchangeRate 
   S_2020_01_01T02_30_00Z,
   false,
   1,
-  new CurrencyFactor(10)
+  10
 );
 
 // Inverted Currency Pair
@@ -262,8 +252,8 @@ const eurUsdMrmEcbIndirectTrueInvertedTrueFactorMoreThanOneRate: ExchangeRate = 
   USD,
   S_2020_01_01T02_30_00Z,
   true,
-  new CurrencyFactor(10),
-  new CurrencyFactor(100)
+  10,
+  100
 );
 const eurUsdMrmEcbIndirectTrueInvertedFalseFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
@@ -275,8 +265,8 @@ const eurUsdMrmEcbIndirectTrueInvertedFalseFactorMoreThanOneRate: ExchangeRate =
   USD,
   S_2020_01_01T02_30_00Z,
   true,
-  new CurrencyFactor(10),
-  new CurrencyFactor(100)
+  10,
+  100
 );
 const eurUsdMrmEcbIndirectFalseInvertedTrueFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
@@ -288,8 +278,8 @@ const eurUsdMrmEcbIndirectFalseInvertedTrueFactorMoreThanOneRate: ExchangeRate =
   USD,
   S_2020_01_01T02_30_00Z,
   false,
-  new CurrencyFactor(10),
-  new CurrencyFactor(100)
+  10,
+  100
 );
 const eurUsdMrmEcbIndirectFalseInvertedFalseFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
@@ -301,8 +291,8 @@ const eurUsdMrmEcbIndirectFalseInvertedFalseFactorMoreThanOneRate: ExchangeRate 
   USD,
   S_2020_01_01T02_30_00Z,
   false,
-  new CurrencyFactor(10),
-  new CurrencyFactor(100)
+  10,
+  100
 );
 
 const eurUsdMrmEcbNewRateType = new ExchangeRate(
@@ -336,14 +326,20 @@ function buildAdapter(exchangeRates: ExchangeRate[]): DataAdapter {
     defaultTenantSettings;
   adapter.getExchangeRateTypeDetailsForTenant = (
     tenant: Tenant,
-    rateTypeSet: Set<RateType>
-  ): Map<RateType, ExchangeRateTypeDetail> => {
+    rateTypeSet: Set<string>
+  ): Map<string, ExchangeRateTypeDetail> => {
     const exchangeRateTypeDetailMap: Map<
-      RateType,
+      string,
       ExchangeRateTypeDetail
     > = new Map();
-    exchangeRateTypeDetailMap.set(B, new ExchangeRateTypeDetail(null, false));
-    exchangeRateTypeDetailMap.set(M, new ExchangeRateTypeDetail(null, true));
+    exchangeRateTypeDetailMap.set(
+      B,
+      new ExchangeRateTypeDetail(null as any, false)
+    );
+    exchangeRateTypeDetailMap.set(
+      M,
+      new ExchangeRateTypeDetail(null as any, true)
+    );
     return exchangeRateTypeDetailMap;
   };
   return adapter;

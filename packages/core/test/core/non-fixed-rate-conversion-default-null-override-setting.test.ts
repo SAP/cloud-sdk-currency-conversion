@@ -35,19 +35,10 @@ const EUR: Currency = buildCurrency('EUR');
 const USD: Currency = buildCurrency('USD');
 const BHD: Currency = buildCurrency('BHD');
 
-const S_0_300623: ExchangeRateValue = new ExchangeRateValue(
-  '0.300623',
-  new BigNumber('0.300623')
-);
-const S_123_123: ExchangeRateValue = new ExchangeRateValue(
-  '123.123',
-  new BigNumber('123.123')
-);
-const S_100: ExchangeRateValue = new ExchangeRateValue(
-  '100',
-  new BigNumber('100')
-);
-const S_1: ExchangeRateValue = new ExchangeRateValue('1', new BigNumber('1'));
+const S_0_300623: ExchangeRateValue = new ExchangeRateValue('0.300623');
+const S_123_123: ExchangeRateValue = new ExchangeRateValue('123.123');
+const S_100: ExchangeRateValue = new ExchangeRateValue('100');
+const S_1: ExchangeRateValue = new ExchangeRateValue('1');
 
 const S_0_5: CurrencyAmount = new CurrencyAmount('0.5');
 const S_2: CurrencyAmount = new CurrencyAmount('2');
@@ -61,10 +52,7 @@ const S_2020_01_16T02_30_00Z: Date = new Date('2020-01-16T02:30:00Z');
 const S_2019_09_16T02_30_00Z: Date = new Date('2019-09-16T02:30:00Z');
 const S_1990_03_01T02_30_00Z: Date = new Date('1990-03-01T02:30:00Z');
 
-const overrideTenantSettings: OverrideTenantSetting = new OverrideTenantSetting(
-  MRM,
-  THR
-);
+const overrideTenantSettings: TenantSettings = new TenantSettings(MRM, THR);
 
 /* Conversion Parameter starts*/
 
@@ -324,8 +312,8 @@ const inrEurMrmThrMIndirectFactorFiveTenRate: ExchangeRate = new ExchangeRate(
   EUR,
   S_2019_09_16T02_30_00Z,
   true,
-  new CurrencyFactor(5),
-  new CurrencyFactor(10)
+  5,
+  10
 );
 const inrEurMrmThrMIndirectFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
@@ -337,8 +325,8 @@ const inrEurMrmThrMIndirectFactorMoreThanOneRate: ExchangeRate = new ExchangeRat
   EUR,
   S_2019_09_16T02_30_00Z,
   true,
-  new CurrencyFactor(10),
-  new CurrencyFactor(5)
+  10,
+  5
 );
 const inrEurMrmThrMDirectFactorFiveTenRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
@@ -350,8 +338,8 @@ const inrEurMrmThrMDirectFactorFiveTenRate: ExchangeRate = new ExchangeRate(
   EUR,
   S_2019_09_16T02_30_00Z,
   false,
-  new CurrencyFactor(5),
-  new CurrencyFactor(10)
+  5,
+  10
 );
 const inrEurMrmThrMDirectFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
@@ -363,8 +351,8 @@ const inrEurMrmThrMDirectFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
   EUR,
   S_2019_09_16T02_30_00Z,
   false,
-  new CurrencyFactor(10),
-  new CurrencyFactor(5)
+  10,
+  5
 );
 
 const usdEurMrmThrMRate: ExchangeRate = new ExchangeRate(
@@ -383,8 +371,8 @@ const usdEurMrmThrMRate: ExchangeRate = new ExchangeRate(
 
 const eurEurMrmThrMRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
-  null,
-  null,
+  null as any,
+  null as any,
   B,
   S_1,
   EUR,
@@ -396,8 +384,8 @@ const eurEurMrmThrMRate: ExchangeRate = new ExchangeRate(
 );
 const inrInrMrmThrMRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
-  null,
-  null,
+  null as any,
+  null as any,
   B,
   S_1,
   INR,
@@ -575,8 +563,8 @@ const usdEurMrmEcbMRate: ExchangeRate = new ExchangeRate(
 
 const eurEurMrmEcbMRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
-  null,
-  null,
+  null as any,
+  null as any,
   B,
   S_1,
   EUR,
@@ -588,8 +576,8 @@ const eurEurMrmEcbMRate: ExchangeRate = new ExchangeRate(
 );
 const inrInrMrmEcbMRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
-  null,
-  null,
+  null as any,
+  null as any,
   B,
   S_1,
   INR,
@@ -610,8 +598,8 @@ const inrEurMrmEcbMIndirectFactorFiveTenRate: ExchangeRate = new ExchangeRate(
   EUR,
   S_2019_09_16T02_30_00Z,
   true,
-  new CurrencyFactor(5),
-  new CurrencyFactor(10)
+  5,
+  10
 );
 const inrEurMrmEcbMIndirectFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
@@ -623,8 +611,8 @@ const inrEurMrmEcbMIndirectFactorMoreThanOneRate: ExchangeRate = new ExchangeRat
   EUR,
   S_2019_09_16T02_30_00Z,
   true,
-  new CurrencyFactor(10),
-  new CurrencyFactor(5)
+  10,
+  5
 );
 const inrEurMrmEcbMDirectFactorFiveTenRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
@@ -636,8 +624,8 @@ const inrEurMrmEcbMDirectFactorFiveTenRate: ExchangeRate = new ExchangeRate(
   EUR,
   S_2019_09_16T02_30_00Z,
   false,
-  new CurrencyFactor(5),
-  new CurrencyFactor(10)
+  5,
+  10
 );
 const inrEurMrmEcbMDirectFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
@@ -649,8 +637,8 @@ const inrEurMrmEcbMDirectFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
   EUR,
   S_2019_09_16T02_30_00Z,
   false,
-  new CurrencyFactor(10),
-  new CurrencyFactor(5)
+  10,
+  5
 );
 
 /* Exchange Rate ends*/
@@ -666,13 +654,12 @@ function buildAdapter(exchangeRates: ExchangeRate[]): DataAdapter {
     tenantSettings: TenantSettings
   ): ExchangeRate[] => exchangeRates;
 
-  adapter.getDefaultSettingsForTenant = (
-    tenant: Tenant
-  ): TenantSettings | null | undefined => null;
+  adapter.getDefaultSettingsForTenant = (tenant: Tenant): TenantSettings =>
+    null as any;
   adapter.getExchangeRateTypeDetailsForTenant = (
     tenant: Tenant,
-    rateTypeSet: Set<RateType>
-  ): Map<RateType, ExchangeRateTypeDetail> => new Map();
+    rateTypeSet: Set<string>
+  ): Map<string, ExchangeRateTypeDetail> => new Map();
   return adapter;
 }
 
@@ -687,13 +674,12 @@ function buildAdapterWithNullExchangeRateTypeDetails(
     tenantSettings: TenantSettings
   ): ExchangeRate[] => exchangeRates;
 
-  adapter.getDefaultSettingsForTenant = (
-    tenant: Tenant
-  ): TenantSettings | null | undefined => null;
+  adapter.getDefaultSettingsForTenant = (tenant: Tenant): TenantSettings =>
+    null as any;
   adapter.getExchangeRateTypeDetailsForTenant = (
     tenant: Tenant,
-    rateTypeSet: Set<RateType>
-  ): Map<RateType, ExchangeRateTypeDetail> => null as any;
+    rateTypeSet: Set<string>
+  ): Map<string, ExchangeRateTypeDetail> => null as any;
   return adapter;
 }
 
@@ -706,13 +692,12 @@ function buildAdapterWithNullExchangeRates(): DataAdapter {
     tenantSettings: TenantSettings
   ): ExchangeRate[] => null as any;
 
-  adapter.getDefaultSettingsForTenant = (
-    tenant: Tenant
-  ): TenantSettings | null | undefined => null;
+  adapter.getDefaultSettingsForTenant = (tenant: Tenant): TenantSettings =>
+    null as any;
   adapter.getExchangeRateTypeDetailsForTenant = (
     tenant: Tenant,
-    rateTypeSet: Set<RateType>
-  ): Map<RateType, ExchangeRateTypeDetail> => new Map();
+    rateTypeSet: Set<string>
+  ): Map<string, ExchangeRateTypeDetail> => new Map();
   return adapter;
 }
 
@@ -725,13 +710,12 @@ function buildAdapterWithEmptyExchangeRates(): DataAdapter {
     tenantSettings: TenantSettings
   ): ExchangeRate[] => [];
 
-  adapter.getDefaultSettingsForTenant = (
-    tenant: Tenant
-  ): TenantSettings | null | undefined => null;
+  adapter.getDefaultSettingsForTenant = (tenant: Tenant): TenantSettings =>
+    null as any;
   adapter.getExchangeRateTypeDetailsForTenant = (
     tenant: Tenant,
-    rateTypeSet: Set<RateType>
-  ): Map<RateType, ExchangeRateTypeDetail> => new Map();
+    rateTypeSet: Set<string>
+  ): Map<string, ExchangeRateTypeDetail> => new Map();
   return adapter;
 }
 
@@ -744,13 +728,12 @@ function buildAdapterWithNullExchangeRatesAndDefaultTenantSettings(): DataAdapte
     tenantSettings: TenantSettings
   ): ExchangeRate[] => null as any;
 
-  adapter.getDefaultSettingsForTenant = (
-    tenant: Tenant
-  ): TenantSettings | null | undefined => null;
+  adapter.getDefaultSettingsForTenant = (tenant: Tenant): TenantSettings =>
+    null as any;
   adapter.getExchangeRateTypeDetailsForTenant = (
     tenant: Tenant,
-    rateTypeSet: Set<RateType>
-  ): Map<RateType, ExchangeRateTypeDetail> => new Map();
+    rateTypeSet: Set<string>
+  ): Map<string, ExchangeRateTypeDetail> => new Map();
   return adapter;
 }
 describe('Non Fixed Rate Conversion with default settings null and override tenant settings', () => {
