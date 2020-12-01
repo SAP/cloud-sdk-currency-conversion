@@ -42,7 +42,7 @@ export class ExchangeRateRecordDeterminer {
   public getBestMatchedExchangeRateRecord(
     conversionParameter: ConversionParametersForNonFixedRate
   ): ExchangeRate {
-    const filterdExchangeRateList: ExchangeRate[] = this.getSortedFilteredExchangeRateResultSet(
+    const filterdExchangeRateList: ExchangeRate[] = this.getSortedFilteredExchangeRates(
       conversionParameter
     );
     const firstItemFromList: ExchangeRate = this.getFirstEntryFromList(
@@ -65,10 +65,10 @@ export class ExchangeRateRecordDeterminer {
     return firstItemFromList;
   }
 
-  private getSortedFilteredExchangeRateResultSet(
+  private getSortedFilteredExchangeRates(
     conversionParameter: ConversionParametersForNonFixedRate
   ): ExchangeRate[] {
-    let exchangeRateResultSetforConversion: ExchangeRate[];
+    let exchangeRatesforConversion: ExchangeRate[];
     this.validateString(
       conversionParameter.exchangeRateType,
       ConversionModelError.NULL_RATE_TYPE
@@ -85,7 +85,7 @@ export class ExchangeRateRecordDeterminer {
           )?.referenceCurrency
         )
       );
-      exchangeRateResultSetforConversion = this.getResultSetWithReferenceCurrency(
+      exchangeRatesforConversion = this.getResultSetWithReferenceCurrency(
         conversionParameter
       );
     } else {
@@ -102,12 +102,12 @@ export class ExchangeRateRecordDeterminer {
       /* check if there is a record with direct currency pair as the conversion
        * parameter, else take the record with inverted currency pair.
        */
-      exchangeRateResultSetforConversion = this.getExchangeRateWithEitherDirectOrInvertedCurrencyPair(
+      exchangeRatesforConversion = this.getExchangeRateWithEitherDirectOrInvertedCurrencyPair(
         exchangeRateWithBothDirectAndInvertedCurrencyPair,
         conversionParameter
       );
     }
-    return exchangeRateResultSetforConversion;
+    return exchangeRatesforConversion;
   }
 
   private getResultSetWithReferenceCurrency(
@@ -504,9 +504,9 @@ export class ExchangeRateRecordDeterminer {
    */
   private getFilterdResultSetFromReferenceCurrencyPair(
     conversionParameter: ConversionParametersForNonFixedRate,
-    exchangeRateResultSetWithReferenceCurrency: ExchangeRate[]
+    exchangeRatesWithReferenceCurrency: ExchangeRate[]
   ): ExchangeRate[] {
-    const exchangeRateList: ExchangeRate[] = exchangeRateResultSetWithReferenceCurrency
+    const exchangeRateList: ExchangeRate[] = exchangeRatesWithReferenceCurrency
       .filter(
         exchangeRate =>
           this.ifRateToCurrencyMatchesReferenceCurrency(
@@ -540,9 +540,9 @@ export class ExchangeRateRecordDeterminer {
    */
   private getFilteredResultSetToReferenceCurrencyPair(
     conversionParameter: ConversionParametersForNonFixedRate,
-    exchangeRateResultSetWithReferenceCurrency: ExchangeRate[]
+    exchangeRatesWithReferenceCurrency: ExchangeRate[]
   ): ExchangeRate[] {
-    const exchangeRateList: ExchangeRate[] = exchangeRateResultSetWithReferenceCurrency
+    const exchangeRateList: ExchangeRate[] = exchangeRatesWithReferenceCurrency
       .filter(
         exchangeRate =>
           this.ifRateToCurrencyMatchesReferenceCurrency(
