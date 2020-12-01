@@ -10,7 +10,7 @@ import {
   DataAdapter,
   SingleNonFixedRateConversionResult,
   BulkNonFixedRateConversionResult,
-  OverrideTenantSetting
+  TenantSettings
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { BigNumber } from 'bignumber.js';
 import { logger as log } from '../helper/logger';
@@ -153,7 +153,7 @@ export class CurrencyConverter {
    * Representation of the tenant. A tenant represents the customer account
    * on cloud foundry.
    *
-   * @param {OverrideTenantSetting} overrideTenantSetting
+   * @param {TenantSettings} overrideTenantSetting
    * These settings are used for this conversion request. Default
    * {@link TenantSettings} provided by the {@link DataAdapter} are not used
    * during the conversion process because the override setting takes
@@ -167,7 +167,7 @@ export class CurrencyConverter {
     conversionParameter: ConversionParametersForNonFixedRate,
     adapter: DataAdapter,
     tenant: Tenant,
-    overrideTenantSetting?: OverrideTenantSetting
+    overrideTenantSetting?: TenantSettings
   ): SingleNonFixedRateConversionResult {
     if (!this.validateSingleNonFixedConversionParameter(conversionParameter)) {
       log?.error(ConversionError.INVALID_PARAMS);
@@ -219,7 +219,7 @@ export class CurrencyConverter {
    * Representation of the tenant. A tenant represents the customer account
    * on cloud foundry.
    *
-   * @param {OverrideTenantSetting} overrideTenantSetting
+   * @param {TenantSettings} overrideTenantSetting
    * These settings are used for this conversion request. Default
    * {@link TenantSettings} provided by the {@link DataAdapter} are not used
    * during the conversion process because the override setting takes
@@ -233,7 +233,7 @@ export class CurrencyConverter {
     conversionParameter: ConversionParametersForNonFixedRate[],
     adapter: DataAdapter,
     tenant: Tenant,
-    overrideTenantSetting?: OverrideTenantSetting
+    overrideTenantSetting?: TenantSettings
   ): BulkNonFixedRateConversionResult {
     if (!this.validateBulkNonFixedConversionParameters(conversionParameter)) {
       log?.error(ConversionError.INVALID_PARAMS);

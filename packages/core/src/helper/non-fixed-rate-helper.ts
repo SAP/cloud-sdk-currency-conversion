@@ -9,15 +9,16 @@ import {
   ExchangeRate,
   ExchangeRateTypeDetail,
   ExchangeRateValue,
-  RateType,
   SingleNonFixedRateConversionResult,
-  TenantSettings,
-  OverrideTenantSetting
+  TenantSettings
 } from '@sap-cloud-sdk/currency-conversion-models';
+import { isNullish } from '@sap-cloud-sdk/util';
 import { BigNumber } from 'bignumber.js';
 import { ConversionError } from '../constants/conversion-error';
 import { ExchangeRateRecordDeterminer } from '../core/exchange-rate-record-determiner';
 import { logger as log } from './logger';
+import { setBigNumberConfig } from './set-big-number-config';
+import { validateCurrencyFactor } from './validate-currency-factor';
 
 const DEFAULT_SCALE = 14;
 export const CURR_FORMAT = {
@@ -32,10 +33,10 @@ export function convertCurrenciesWithNonFixedRateHelper(
   conversionParameters: ConversionParametersForNonFixedRate[],
   dataAdapter: DataAdapter,
   tenant: Tenant,
-  overrideTenantSetting?: OverrideTenantSetting
+  overrideTenantSetting?: TenantSettings
 ): BulkNonFixedRateConversionResult {
-  let tenantSettings = null;
-  if (dataAdapter === null || tenant === null || tenant.id === null) {
+  let tenantSettings;
+  if (isNullish(dataAdapter) || isNullish(tenant) || isNullish(tenant.id)) {
     throw new CurrencyConversionError(ConversionError.NULL_ADAPTER_TENANT);
   }
   if (overrideTenantSetting === undefined) {
@@ -51,14 +52,6 @@ export function convertCurrenciesWithNonFixedRateHelper(
   );
 }
 
-export function setBigNumberConfig(scaleForDivision: number): typeof BigNumber {
-  const bigNum = BigNumber.clone({
-    DECIMAL_PLACES: scaleForDivision,
-    ROUNDING_MODE: 4
-  });
-  return bigNum;
-}
-
 /*
  * Conversion logic for all the APIs for Non Fixed Rate.
  */
@@ -66,7 +59,7 @@ function convertCurrencies(
   conversionParameters: ConversionParametersForNonFixedRate[],
   dataAdapter: DataAdapter,
   tenant: Tenant,
-  tenantSettings: TenantSettings | null | undefined
+  tenantSettings: TenantSettings
 ): BulkNonFixedRateConversionResult {
   const exchangeRateResultSet = fetchExchangeRate(
     conversionParameters,
@@ -74,7 +67,7 @@ function convertCurrencies(
     tenant,
     tenantSettings
   );
-  const exchangeRateTypeDetalsMap = fetchExchangeRateType(
+  const exchangeRateTypeDetailsMap = fetchExchangeRateType(
     conversionParameters,
     dataAdapter,
     tenant
@@ -83,7 +76,7 @@ function convertCurrencies(
     tenant,
     tenantSettings,
     exchangeRateResultSet,
-    exchangeRateTypeDetalsMap
+    exchangeRateTypeDetailsMap
   );
   return performBulkNonFixedConversion(
     exchnageRateDeterminer,
@@ -95,7 +88,7 @@ function fetchExchangeRate(
   conversionParameters: ConversionParametersForNonFixedRate[],
   dataAdapter: DataAdapter,
   tenant: Tenant,
-  tenantSettings: TenantSettings | null | undefined
+  tenantSettings: TenantSettings
 ): ExchangeRate[] {
   let exchangeRateResultSet: ExchangeRate[] = new Array();
   try {
@@ -124,13 +117,13 @@ function fetchExchangeRateType(
   conversionParameters: ConversionParametersForNonFixedRate[],
   dataAdapter: DataAdapter,
   tenant: Tenant
-): Map<RateType, ExchangeRateTypeDetail> {
+): Map<string, ExchangeRateTypeDetail> {
   let exchangeRateTypeDetailMap: Map<
-    RateType,
+    string,
     ExchangeRateTypeDetail
   > = new Map();
   try {
-    const rateTypeSet: Set<RateType> = new Set();
+    const rateTypeSet: Set<string> = new Set();
     for (const conversionParameter of conversionParameters) {
       rateTypeSet.add(conversionParameter.exchangeRateType);
     }
@@ -197,10 +190,10 @@ function performSingleNonFixedConversion(
     );
     exchangeRateUsedForConversion = new ExchangeRate(
       tenant,
-      null,
-      null,
+      null as any,
+      null as any,
       conversionParameters.exchangeRateType,
-      new ExchangeRateValue('1', new BigNumber(1)),
+      new ExchangeRateValue('1'),
       conversionParameters.fromCurrency,
       conversionParameters.toCurrency,
       conversionParameters.conversionAsOfDateTime
@@ -364,9 +357,10 @@ function getEffecttiveRateForInvertedCurrencyPair(
  * (also foreign or source currency).
  */
 function getCurrencyFactorRatio(exchangeRate: ExchangeRate): BigNumber {
+  validateCurrencyFactor(exchangeRate.toCurrencyfactor);
+  validateCurrencyFactor(exchangeRate.fromCurrencyfactor);
   const currencyFactorRatio: number =
-    exchangeRate.toCurrencyfactor.currencyFactor /
-    exchangeRate.fromCurrencyfactor.currencyFactor;
+    exchangeRate.toCurrencyfactor / exchangeRate.fromCurrencyfactor;
   isRatioNaNOrInfinite(currencyFactorRatio);
   return new BigNumber(currencyFactorRatio);
 }
@@ -389,17 +383,17 @@ function isRatioNaNOrInfinite(currencyFactorRatio: number): void {
 function fetchDefaultTenantSettings(
   dataAdapter: DataAdapter,
   tenant: Tenant
-): TenantSettings | null | undefined {
+): TenantSettings {
   try {
     const tenantSettingsToBeUsed = dataAdapter.getDefaultSettingsForTenant(
       tenant
     );
     log?.debug(
       'Default Tenant settings returned from data adapter is : ',
-      tenantSettingsToBeUsed == null
+      isNullish(tenantSettingsToBeUsed)
         ? null
         : JSON.stringify(tenantSettingsToBeUsed.ratesDataProviderCode),
-      tenantSettingsToBeUsed == null
+      isNullish(tenantSettingsToBeUsed)
         ? null
         : JSON.stringify(tenantSettingsToBeUsed.ratesDataSource)
     );
@@ -413,7 +407,7 @@ function fetchDefaultTenantSettings(
 }
 
 function fetchOverrideTenantSettings(
-  overrideSetting: OverrideTenantSetting
+  overrideSetting: TenantSettings
 ): TenantSettings {
   isOverrideTenantSettingIncomplete(overrideSetting);
   // create a TenantSettings object from overrideSetting
@@ -440,9 +434,13 @@ function fetchOverrideTenantSettings(
  * overrideSetting.
  */
 function isOverrideTenantSettingIncomplete(
-  overrideSetting: OverrideTenantSetting
+  overrideSetting: TenantSettings
 ): void {
-  if (overrideSetting == null) {
+  if (
+    isNullish(overrideSetting) ||
+    isNullish(overrideSetting.ratesDataProviderCode) ||
+    isNullish(overrideSetting.ratesDataSource)
+  ) {
     log?.error('Override Tenant Setting can not be null');
     throw new CurrencyConversionError(
       ConversionError.EMPTY_OVERRIDE_TENANT_SETTING

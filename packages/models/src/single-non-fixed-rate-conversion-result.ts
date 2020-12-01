@@ -1,31 +1,15 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
 
-import { CurrencyAmount } from './currency-amount-type';
+import { CurrencyAmount } from './currency-amount';
 import { ExchangeRate } from './exchange-rate';
+import { SingleFixedRateConversionResult } from './single-fixed-rate-conversion-result';
 
-export class SingleNonFixedRateConversionResult {
-  private _exchangeRate: ExchangeRate;
-  private _convertedAmount: CurrencyAmount;
-  private _roundedOffConvertedAmount: CurrencyAmount;
-
+export class SingleNonFixedRateConversionResult extends SingleFixedRateConversionResult {
   constructor(
-    exchangeRate: ExchangeRate,
-    convertedAmt: CurrencyAmount,
-    roundedOffConvertedAmt: CurrencyAmount
+    readonly exchangeRate: ExchangeRate,
+    readonly convertedAmount: CurrencyAmount,
+    readonly roundedOffConvertedAmount: CurrencyAmount
   ) {
-    this._exchangeRate = exchangeRate;
-    this._convertedAmount = convertedAmt;
-    this._roundedOffConvertedAmount = roundedOffConvertedAmt;
-  }
-
-  get exchangeRate(): ExchangeRate {
-    return this._exchangeRate;
-  }
-
-  get convertedAmount(): CurrencyAmount {
-    return this._convertedAmount;
-  }
-  get roundedOffConvertedAmount(): CurrencyAmount {
-    return this._roundedOffConvertedAmount;
+    super(convertedAmount, roundedOffConvertedAmount);
   }
 }

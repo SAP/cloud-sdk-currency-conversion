@@ -28,5 +28,5 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.json"
-  ],
+, "../core/src/helper/sanitize_string.ts"  ],
 }

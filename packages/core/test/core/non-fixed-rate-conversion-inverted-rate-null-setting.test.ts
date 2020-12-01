@@ -5,14 +5,10 @@ import {
   BulkNonFixedRateConversionResult,
   Currency,
   CurrencyConversionError,
-  CurrencyFactor,
   CurrencyAmount,
   DataAdapter,
   ExchangeRate,
   ExchangeRateValue,
-  RateType,
-  RatesDataProviderCode,
-  RatesDataSource,
   SingleNonFixedRateConversionResult,
   TenantSettings,
   ExchangeRateTypeDetail,
@@ -20,17 +16,17 @@ import {
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { BigNumber } from 'bignumber.js';
 import { ConversionError } from '../../src/constants/conversion-error';
-import { CurrencyConverter } from '../../src/core/conversion-api';
+import { CurrencyConverter } from '../../src/core/currency-converter';
 
 const TENANT_ID: Tenant = { id: 'TenantID' };
 
-const MRM: RatesDataProviderCode = new RatesDataProviderCode('MRM');
-const ECB: RatesDataSource = new RatesDataSource('ECB');
-const THR: RatesDataSource = new RatesDataSource('THR');
+const MRM = 'MRM';
+const ECB = 'ECB';
+const THR = 'THR';
 
-const M: RateType = new RateType('M');
-const B: RateType = new RateType('B');
-const ABC: RateType = new RateType('ABC');
+const B = 'B';
+const M = 'M';
+const ABC = 'ABC';
 
 const EUR: Currency = buildCurrency('EUR');
 const USD: Currency = buildCurrency('USD');
@@ -107,8 +103,8 @@ const usdEurMrmEcbMultipleProviderDirectRate: ExchangeRate = new ExchangeRate(
   EUR,
   S_2020_01_02T02_30_00Z,
   true,
-  new CurrencyFactor(1),
-  new CurrencyFactor(1)
+  1,
+  1
 );
 
 const usdEurMrmEcbIndirectTrueInvertedTrueDuplicateDateRate: ExchangeRate = new ExchangeRate(
@@ -121,8 +117,8 @@ const usdEurMrmEcbIndirectTrueInvertedTrueDuplicateDateRate: ExchangeRate = new 
   EUR,
   S_2020_01_02T02_30_00Z,
   true,
-  new CurrencyFactor(1),
-  new CurrencyFactor(1)
+  1,
+  1
 );
 
 const usdEurMrmEcbIndirectTrueInvertedTrueRate: ExchangeRate = new ExchangeRate(
@@ -135,8 +131,8 @@ const usdEurMrmEcbIndirectTrueInvertedTrueRate: ExchangeRate = new ExchangeRate(
   EUR,
   S_2020_01_02T02_30_00Z,
   true,
-  new CurrencyFactor(1),
-  new CurrencyFactor(1)
+  1,
+  1
 );
 const usdEurMrmEcbIndirectTrueInvertedFalseRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
@@ -148,8 +144,8 @@ const usdEurMrmEcbIndirectTrueInvertedFalseRate: ExchangeRate = new ExchangeRate
   EUR,
   S_2020_01_02T02_30_00Z,
   true,
-  new CurrencyFactor(1),
-  new CurrencyFactor(1)
+  1,
+  1
 );
 const usdEurMrmEcbIndirectFalseInvertedTrueRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
@@ -161,8 +157,8 @@ const usdEurMrmEcbIndirectFalseInvertedTrueRate: ExchangeRate = new ExchangeRate
   EUR,
   S_2020_01_02T02_30_00Z,
   false,
-  new CurrencyFactor(1),
-  new CurrencyFactor(1)
+  1,
+  1
 );
 const usdEurMrmEcbIndirectFalseInvertedFalseRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
@@ -174,8 +170,8 @@ const usdEurMrmEcbIndirectFalseInvertedFalseRate: ExchangeRate = new ExchangeRat
   EUR,
   S_2020_01_02T02_30_00Z,
   false,
-  new CurrencyFactor(1),
-  new CurrencyFactor(1)
+  1,
+  1
 );
 
 const usdEurMrmEcbIndirectTrueInvertedTrueFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
@@ -188,7 +184,7 @@ const usdEurMrmEcbIndirectTrueInvertedTrueFactorMoreThanOneRate: ExchangeRate = 
   EUR,
   S_2020_01_02T02_30_00Z,
   true,
-  new CurrencyFactor(1),
+  1,
   new CurrencyFactor(10)
 );
 const usdEurMrmEcbIndirectTrueInvertedFalseFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
@@ -201,7 +197,7 @@ const usdEurMrmEcbIndirectTrueInvertedFalseFactorMoreThanOneRate: ExchangeRate =
   EUR,
   S_2020_01_02T02_30_00Z,
   true,
-  new CurrencyFactor(1),
+  1,
   new CurrencyFactor(10)
 );
 const usdEurMrmEcbIndirectFalseInvertedTrueFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
@@ -214,7 +210,7 @@ const usdEurMrmEcbIndirectFalseInvertedTrueFactorMoreThanOneRate: ExchangeRate =
   EUR,
   S_2020_01_02T02_30_00Z,
   false,
-  new CurrencyFactor(1),
+  1,
   new CurrencyFactor(10)
 );
 const usdEurMrmEcbIndirectFalseInvertedFalseFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
@@ -227,7 +223,7 @@ const usdEurMrmEcbIndirectFalseInvertedFalseFactorMoreThanOneRate: ExchangeRate 
   EUR,
   S_2020_01_02T02_30_00Z,
   false,
-  new CurrencyFactor(1),
+  1,
   new CurrencyFactor(10)
 );
 
@@ -256,8 +252,8 @@ const eurUsdMrmEcbIndirectTrueInvertedTrueDuplicateDateRate: ExchangeRate = new 
   USD,
   S_2020_01_01T02_30_00Z,
   true,
-  new CurrencyFactor(1),
-  new CurrencyFactor(1)
+  1,
+  1
 );
 
 const eurUsdMrmEcbIndirectTrueInvertedTrueRate: ExchangeRate = new ExchangeRate(
@@ -270,8 +266,8 @@ const eurUsdMrmEcbIndirectTrueInvertedTrueRate: ExchangeRate = new ExchangeRate(
   USD,
   S_2020_01_01T02_30_00Z,
   true,
-  new CurrencyFactor(1),
-  new CurrencyFactor(1)
+  1,
+  1
 );
 const eurUsdMrmEcbIndirectTrueInvertedFalseRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
@@ -283,8 +279,8 @@ const eurUsdMrmEcbIndirectTrueInvertedFalseRate: ExchangeRate = new ExchangeRate
   USD,
   S_2020_01_01T02_30_00Z,
   true,
-  new CurrencyFactor(1),
-  new CurrencyFactor(1)
+  1,
+  1
 );
 const eurUsdMrmEcbIndirectFalseInvertedTrueRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
@@ -296,8 +292,8 @@ const eurUsdMrmEcbIndirectFalseInvertedTrueRate: ExchangeRate = new ExchangeRate
   USD,
   S_2020_01_01T02_30_00Z,
   false,
-  new CurrencyFactor(1),
-  new CurrencyFactor(1)
+  1,
+  1
 );
 const eurUsdMrmEcbIndirectFalseInvertedFalseRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
@@ -309,8 +305,8 @@ const eurUsdMrmEcbIndirectFalseInvertedFalseRate: ExchangeRate = new ExchangeRat
   USD,
   S_2020_01_01T02_30_00Z,
   false,
-  new CurrencyFactor(1),
-  new CurrencyFactor(1)
+  1,
+  1
 );
 
 const eurUsdMrmEcbIndirectTrueInvertedTrueFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
@@ -376,8 +372,8 @@ const eurUsdMrmEcbNewRateType: ExchangeRate = new ExchangeRate(
   EUR,
   S_2020_01_01T02_30_00Z,
   false,
-  new CurrencyFactor(1),
-  new CurrencyFactor(1)
+  1,
+  1
 );
 
 // Direct Currency Pair MRM, THR
@@ -391,8 +387,8 @@ const usdEurMrmThrMultipleProviderDirectRate: ExchangeRate = new ExchangeRate(
   EUR,
   S_2020_01_02T02_30_00Z,
   true,
-  new CurrencyFactor(1),
-  new CurrencyFactor(1)
+  1,
+  1
 );
 
 const usdEurMrmThrIndirectTrueInvertedTrueRate: ExchangeRate = new ExchangeRate(
@@ -405,8 +401,8 @@ const usdEurMrmThrIndirectTrueInvertedTrueRate: ExchangeRate = new ExchangeRate(
   EUR,
   S_2020_01_01T02_30_00Z,
   true,
-  new CurrencyFactor(1),
-  new CurrencyFactor(1)
+  1,
+  1
 );
 const usdEurMrmThrIndirectTrueInvertedFalseRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
@@ -418,8 +414,8 @@ const usdEurMrmThrIndirectTrueInvertedFalseRate: ExchangeRate = new ExchangeRate
   EUR,
   S_2020_01_01T02_30_00Z,
   true,
-  new CurrencyFactor(1),
-  new CurrencyFactor(1)
+  1,
+  1
 );
 const usdEurMrmThrIndirectFalseInvertedTrueRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
@@ -431,8 +427,8 @@ const usdEurMrmThrIndirectFalseInvertedTrueRate: ExchangeRate = new ExchangeRate
   EUR,
   S_2020_01_01T02_30_00Z,
   false,
-  new CurrencyFactor(1),
-  new CurrencyFactor(1)
+  1,
+  1
 );
 const usdEurMrmThrIndirectFalseInvertedFalseRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
@@ -444,8 +440,8 @@ const usdEurMrmThrIndirectFalseInvertedFalseRate: ExchangeRate = new ExchangeRat
   EUR,
   S_2020_01_01T02_30_00Z,
   false,
-  new CurrencyFactor(1),
-  new CurrencyFactor(1)
+  1,
+  1
 );
 
 const usdEurMrmThrIndirectTrueInvertedTrueFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
@@ -458,7 +454,7 @@ const usdEurMrmThrIndirectTrueInvertedTrueFactorMoreThanOneRate: ExchangeRate = 
   EUR,
   S_2020_01_01T02_30_00Z,
   true,
-  new CurrencyFactor(1),
+  1,
   new CurrencyFactor(10)
 );
 const usdEurMrmThrIndirectTrueInvertedFalseFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
@@ -471,7 +467,7 @@ const usdEurMrmThrIndirectTrueInvertedFalseFactorMoreThanOneRate: ExchangeRate =
   EUR,
   S_2020_01_01T02_30_00Z,
   true,
-  new CurrencyFactor(1),
+  1,
   new CurrencyFactor(10)
 );
 const usdEurMrmThrIndirectFalseInvertedTrueFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
@@ -484,7 +480,7 @@ const usdEurMrmThrIndirectFalseInvertedTrueFactorMoreThanOneRate: ExchangeRate =
   EUR,
   S_2020_01_01T02_30_00Z,
   false,
-  new CurrencyFactor(1),
+  1,
   new CurrencyFactor(10)
 );
 const usdEurMrmThrIndirectFalseInvertedFalseFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
@@ -497,7 +493,7 @@ const usdEurMrmThrIndirectFalseInvertedFalseFactorMoreThanOneRate: ExchangeRate 
   EUR,
   S_2020_01_01T02_30_00Z,
   false,
-  new CurrencyFactor(1),
+  1,
   new CurrencyFactor(10)
 );
 
@@ -513,8 +509,8 @@ const eurUsdMrmThrMultipleProviderIndirectRate: ExchangeRate = new ExchangeRate(
   USD,
   S_2020_01_01T02_30_00Z,
   true,
-  new CurrencyFactor(1),
-  new CurrencyFactor(1)
+  1,
+  1
 );
 
 const eurUsdMrmThrIndirectTrueInvertedTrueRate: ExchangeRate = new ExchangeRate(
@@ -527,8 +523,8 @@ const eurUsdMrmThrIndirectTrueInvertedTrueRate: ExchangeRate = new ExchangeRate(
   USD,
   S_2020_01_02T02_30_00Z,
   true,
-  new CurrencyFactor(1),
-  new CurrencyFactor(1)
+  1,
+  1
 );
 const eurUsdMrmThrIndirectTrueInvertedFalseRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
@@ -540,8 +536,8 @@ const eurUsdMrmThrIndirectTrueInvertedFalseRate: ExchangeRate = new ExchangeRate
   USD,
   S_2020_01_02T02_30_00Z,
   true,
-  new CurrencyFactor(1),
-  new CurrencyFactor(1)
+  1,
+  1
 );
 const eurUsdMrmThrIndirectFalseInvertedTrueRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
@@ -553,8 +549,8 @@ const eurUsdMrmThrIndirectFalseInvertedTrueRate: ExchangeRate = new ExchangeRate
   USD,
   S_2020_01_02T02_30_00Z,
   false,
-  new CurrencyFactor(1),
-  new CurrencyFactor(1)
+  1,
+  1
 );
 const eurUsdMrmThrIndirectFalseInvertedFalseRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
@@ -566,8 +562,8 @@ const eurUsdMrmThrIndirectFalseInvertedFalseRate: ExchangeRate = new ExchangeRat
   USD,
   S_2020_01_02T02_30_00Z,
   false,
-  new CurrencyFactor(1),
-  new CurrencyFactor(1)
+  1,
+  1
 );
 
 const eurUsdMrmThrIndirectTrueInvertedTrueFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
@@ -633,8 +629,8 @@ const eurUsdMrmThrNewRateType: ExchangeRate = new ExchangeRate(
   EUR,
   S_2020_01_02T02_30_00Z,
   false,
-  new CurrencyFactor(1),
-  new CurrencyFactor(1)
+  1,
+  1
 );
 
 /* Exchange Rate ends*/

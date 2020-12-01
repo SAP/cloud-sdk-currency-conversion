@@ -4,30 +4,25 @@ import {
   buildCurrency,
   Currency,
   CurrencyConversionError,
-  CurrencyFactor,
   ConversionParametersForNonFixedRate,
   DataAdapter,
   ExchangeRate,
   ExchangeRateTypeDetail,
   ExchangeRateValue,
-  RateType,
-  RatesDataProviderCode,
-  RatesDataSource,
   SingleNonFixedRateConversionResult,
-  TenantSettings,
-  OverrideTenantSetting
+  TenantSettings
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { BigNumber } from 'bignumber.js';
-import { CurrencyConverter } from '../../src/core/conversion-api';
+import { CurrencyConverter } from '../../src/core/currency-converter';
 import { ConversionError } from '../../src/constants/conversion-error';
 
 const TENANT_ID: Tenant = { id: 'TenantID' };
 
-const MRM: RatesDataProviderCode = new RatesDataProviderCode('MRM');
-const ECB: RatesDataSource = new RatesDataSource('ECB');
-const THR: RatesDataSource = new RatesDataSource('THR');
+const MRM = 'MRM';
+const ECB = 'ECB';
+const THR = 'THR';
 
-const M: RateType = new RateType('M');
+const M = 'M';
 
 const INR: Currency = buildCurrency('INR');
 const EUR: Currency = buildCurrency('EUR');
@@ -68,8 +63,8 @@ const inrEurMrmEcbDirectZeroRate: ExchangeRate = new ExchangeRate(
   EUR,
   S_2019_09_16T02_30_00Z,
   false,
-  new CurrencyFactor(1),
-  new CurrencyFactor(1)
+  1,
+  1
 );
 
 const inrEurMrmEcbDirectZeroToFactorRate: ExchangeRate = new ExchangeRate(
@@ -82,7 +77,7 @@ const inrEurMrmEcbDirectZeroToFactorRate: ExchangeRate = new ExchangeRate(
   EUR,
   S_2019_09_16T02_30_00Z,
   false,
-  new CurrencyFactor(1),
+  1,
   new CurrencyFactor(0)
 );
 
@@ -96,8 +91,8 @@ const inrEurMrmEcbIndirectZeroRate: ExchangeRate = new ExchangeRate(
   EUR,
   S_2019_09_16T02_30_00Z,
   true,
-  new CurrencyFactor(1),
-  new CurrencyFactor(1)
+  1,
+  1
 );
 
 const inrEurMrmEcbIndirectZeroFactorsZeroRate: ExchangeRate = new ExchangeRate(
@@ -124,7 +119,7 @@ const inrEurMrmEcbIndirectZeroToFactorZeroRate: ExchangeRate = new ExchangeRate(
   EUR,
   S_2019_09_16T02_30_00Z,
   true,
-  new CurrencyFactor(1),
+  1,
   new CurrencyFactor(0)
 );
 
@@ -139,7 +134,7 @@ const inrEurMrmEcbIndirectZeroFromFactZeroRate: ExchangeRate = new ExchangeRate(
   S_2019_09_16T02_30_00Z,
   true,
   new CurrencyFactor(0),
-  new CurrencyFactor(1)
+  1
 );
 
 const inrEurMrmEcbDirectZeroFactorsZeroRate: ExchangeRate = new ExchangeRate(
@@ -167,7 +162,7 @@ const inrEurMrmEcbDirectZeroFromFactZeroRate: ExchangeRate = new ExchangeRate(
   S_2019_09_16T02_30_00Z,
   false,
   new CurrencyFactor(0),
-  new CurrencyFactor(1)
+  1
 );
 
 const inrEurMrmEcbIndirectZeroFactorsRate: ExchangeRate = new ExchangeRate(
@@ -195,7 +190,7 @@ const inrEurMrmEcbIndirectZeroFromFactorRate: ExchangeRate = new ExchangeRate(
   S_2019_09_16T02_30_00Z,
   true,
   new CurrencyFactor(0),
-  new CurrencyFactor(1)
+  1
 );
 
 const inrEurMrmEcbDirectZeroFactorsRate: ExchangeRate = new ExchangeRate(
@@ -223,7 +218,7 @@ const inrEurMrmEcbDirectZeroFromFactorRate: ExchangeRate = new ExchangeRate(
   S_2019_09_16T02_30_00Z,
   false,
   new CurrencyFactor(0),
-  new CurrencyFactor(1)
+  1
 );
 /* MRM ECB */
 
@@ -237,7 +232,7 @@ const inrEurMrmEcbIndirectZeroToFactorRate: ExchangeRate = new ExchangeRate(
   EUR,
   S_2019_09_16T02_30_00Z,
   true,
-  new CurrencyFactor(1),
+  1,
   new CurrencyFactor(0)
 );
 
@@ -251,7 +246,7 @@ const inrEurMrmEcbDirectZeroToFactorZeroRate: ExchangeRate = new ExchangeRate(
   EUR,
   S_2019_09_16T02_30_00Z,
   false,
-  new CurrencyFactor(1),
+  1,
   new CurrencyFactor(0)
 );
 
@@ -266,8 +261,8 @@ const inrEurMrmThrIndirectZeroRate: ExchangeRate = new ExchangeRate(
   EUR,
   S_2019_09_16T02_30_00Z,
   true,
-  new CurrencyFactor(1),
-  new CurrencyFactor(1)
+  1,
+  1
 );
 const inrEurMrmThrDirectZeroRate: ExchangeRate = new ExchangeRate(
   TENANT_ID,
@@ -279,8 +274,8 @@ const inrEurMrmThrDirectZeroRate: ExchangeRate = new ExchangeRate(
   EUR,
   S_2019_09_16T02_30_00Z,
   false,
-  new CurrencyFactor(1),
-  new CurrencyFactor(1)
+  1,
+  1
 );
 
 const inrEurMrmThrIndirectZeroFactorsZeroRate: ExchangeRate = new ExchangeRate(
@@ -306,7 +301,7 @@ const inrEurMrmThrIndirectZeroToFactorZeroRate: ExchangeRate = new ExchangeRate(
   EUR,
   S_2019_09_16T02_30_00Z,
   true,
-  new CurrencyFactor(1),
+  1,
   new CurrencyFactor(0)
 );
 const inrEurMrmThrIndirectZeroFromFactZeroRate: ExchangeRate = new ExchangeRate(
@@ -320,7 +315,7 @@ const inrEurMrmThrIndirectZeroFromFactZeroRate: ExchangeRate = new ExchangeRate(
   S_2019_09_16T02_30_00Z,
   true,
   new CurrencyFactor(0),
-  new CurrencyFactor(1)
+  1
 );
 
 const inrEurMrmThrDirectZeroFactorsZeroRate: ExchangeRate = new ExchangeRate(
@@ -346,7 +341,7 @@ const inrEurMrmThrDirectZeroToFactorZeroRate: ExchangeRate = new ExchangeRate(
   EUR,
   S_2019_09_16T02_30_00Z,
   false,
-  new CurrencyFactor(1),
+  1,
   new CurrencyFactor(0)
 );
 const inrEurMrmThrDirectZeroFromFactZeroRate: ExchangeRate = new ExchangeRate(
@@ -360,7 +355,7 @@ const inrEurMrmThrDirectZeroFromFactZeroRate: ExchangeRate = new ExchangeRate(
   S_2019_09_16T02_30_00Z,
   false,
   new CurrencyFactor(0),
-  new CurrencyFactor(1)
+  1
 );
 
 const inrEurMrmThrIndirectZeroFactorsRate: ExchangeRate = new ExchangeRate(
@@ -386,7 +381,7 @@ const inrEurMrmThrIndirectZeroToFactorRate: ExchangeRate = new ExchangeRate(
   EUR,
   S_2019_09_16T02_30_00Z,
   true,
-  new CurrencyFactor(1),
+  1,
   new CurrencyFactor(0)
 );
 const inrEurMrmThrIndirectZeroFromFactorRate: ExchangeRate = new ExchangeRate(
@@ -400,7 +395,7 @@ const inrEurMrmThrIndirectZeroFromFactorRate: ExchangeRate = new ExchangeRate(
   S_2019_09_16T02_30_00Z,
   true,
   new CurrencyFactor(0),
-  new CurrencyFactor(1)
+  1
 );
 
 const inrEurMrmThrDirectZeroFactorsRate: ExchangeRate = new ExchangeRate(
@@ -426,7 +421,7 @@ const inrEurMrmThrDirectZeroToFactorRate: ExchangeRate = new ExchangeRate(
   EUR,
   S_2019_09_16T02_30_00Z,
   false,
-  new CurrencyFactor(1),
+  1,
   new CurrencyFactor(0)
 );
 const inrEurMrmThrDirectZeroFromFactorRate: ExchangeRate = new ExchangeRate(
@@ -440,7 +435,7 @@ const inrEurMrmThrDirectZeroFromFactorRate: ExchangeRate = new ExchangeRate(
   S_2019_09_16T02_30_00Z,
   false,
   new CurrencyFactor(0),
-  new CurrencyFactor(1)
+  1
 );
 
 /* Exchange Rate ends*/
@@ -462,7 +457,7 @@ function buildAdapter(exchangeRates: ExchangeRate[]): DataAdapter {
 }
 function buildAdapterWithDataSource(
   exchangeRates: ExchangeRate[],
-  dataSource: RatesDataSource
+  dataSource: string
 ): DataAdapter {
   const adapter: DataAdapter = {} as DataAdapter;
 

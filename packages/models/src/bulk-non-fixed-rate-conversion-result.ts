@@ -4,19 +4,12 @@ import { SingleNonFixedRateConversionResult } from './single-non-fixed-rate-conv
 import { CurrencyConversionError } from './currency-conversion-error';
 
 export class BulkNonFixedRateConversionResult {
-  private readonly resultMap: Map<
-    ConversionParametersForNonFixedRate,
-    SingleNonFixedRateConversionResult | CurrencyConversionError
-  >;
-
   constructor(
-    resultMap: Map<
+    readonly resultMap: Map<
       ConversionParametersForNonFixedRate,
       SingleNonFixedRateConversionResult | CurrencyConversionError
     >
-  ) {
-    this.resultMap = resultMap;
-  }
+  ) {}
 
   public get(
     conversionParametersForFixedRate: ConversionParametersForNonFixedRate

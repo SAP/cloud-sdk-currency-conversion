@@ -7,7 +7,7 @@ import {
   CurrencyConversionError
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { BigNumber } from 'bignumber.js';
-import { CurrencyConverter } from '../../src/core/conversion-api';
+import { CurrencyConverter } from '../../src/core/currency-converter';
 import { ConversionError } from '../../src/constants/conversion-error';
 
 const inrUsdConversionParameter: ConversionParametersForFixedRate = new ConversionParametersForFixedRate(

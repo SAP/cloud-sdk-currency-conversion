@@ -1,2 +1,2 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
-export * from './core/conversion-api';
+export * from './core/currency-converter';
