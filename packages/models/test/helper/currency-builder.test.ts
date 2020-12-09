@@ -10,13 +10,9 @@ describe('Build currency objects tests', () => {
     expect(buildCurrency('INR').numericCode).toBe('356');
   });
   it('Build Currency Object Invalid Currency Code', () => {
-    expect(() => buildCurrency('123')).toThrowError(
-      ConversionModelError.INVALID_CURRENCY_CODES
-    );
+    expect(() => buildCurrency('123')).toThrowError(ConversionModelError.INVALID_CURRENCY_CODES);
   });
   it('Build Currency Object null Currency Code', () => {
-    expect(() => buildCurrency('')).toThrowError(
-      ConversionModelError.NULL_CURRENCY_CODES
-    );
+    expect(() => buildCurrency('')).toThrowError(ConversionModelError.NULL_CURRENCY_CODES);
   });
 });

@@ -31,10 +31,7 @@ const inrUsdConversionParameter2: ConversionParametersForFixedRate = new Convers
 );
 const currAmount: CurrencyAmount = new CurrencyAmount('702.3');
 const roundedAmount: CurrencyAmount = new CurrencyAmount('702.30');
-const inrUsdExpectedSingleFixedRateConversionResult: SingleFixedRateConversionResult = new SingleFixedRateConversionResult(
-  currAmount,
-  roundedAmount
-);
+const inrUsdExpectedSingleFixedRateConversionResult = new SingleFixedRateConversionResult(currAmount, roundedAmount);
 
 const usdEurConversionParameter: ConversionParametersForFixedRate = new ConversionParametersForFixedRate(
   'USD',
@@ -93,19 +90,12 @@ describe('Convert Fixed Rate Currency', () => {
     expect(result.convertedAmount.valueString).toEqual('702.3');
     expect(result.convertedAmount.decimalValue).toEqual(new BigNumber(702.3));
     expect(result.roundedOffConvertedAmount.valueString).toEqual('702.30');
-    expect(result.roundedOffConvertedAmount.decimalValue).toEqual(
-      new BigNumber(702.3)
-    );
+    expect(result.roundedOffConvertedAmount.decimalValue).toEqual(new BigNumber(702.3));
   });
 
   it('Convert Currency for very small currency rate.', () => {
     const result: SingleFixedRateConversionResult = currencyConverter.convertCurrencyWithFixedRate(
-      new ConversionParametersForFixedRate(
-        'VES',
-        'EUR',
-        '10.00',
-        '0.00000283242'
-      )
+      new ConversionParametersForFixedRate('VES', 'EUR', '10.00', '0.00000283242')
     );
     expect(result.convertedAmount.valueString).toEqual('0.0000283242');
   });
@@ -125,11 +115,9 @@ describe('Convert Fixed Rate Currency', () => {
   it('Convert Currency with null as conversion parameter', () => {
     let errInput = new Error();
     try {
-      const inputArray: ConversionParametersForFixedRate[] = new Array();
+      const inputArray: ConversionParametersForFixedRate[] = [];
       const inputParam: ConversionParametersForFixedRate = inputArray[0];
-      const result: SingleFixedRateConversionResult = currencyConverter.convertCurrencyWithFixedRate(
-        inputParam
-      );
+      const result: SingleFixedRateConversionResult = currencyConverter.convertCurrencyWithFixedRate(inputParam);
     } catch (error) {
       errInput = error;
     }
@@ -139,52 +127,37 @@ describe('Convert Fixed Rate Currency', () => {
 
   it('Convert Currency with same currency pair.', () => {
     const result: SingleFixedRateConversionResult = currencyConverter.convertCurrencyWithFixedRate(
-      new ConversionParametersForFixedRate(
-        'EUR',
-        'EUR',
-        '10.00',
-        '0.00000283242'
-      )
+      new ConversionParametersForFixedRate('EUR', 'EUR', '10.00', '0.00000283242')
     );
     expect(result.convertedAmount.valueString).toEqual('10');
     expect(result.convertedAmount.decimalValue).toEqual(new BigNumber(10));
     expect(result.roundedOffConvertedAmount.valueString).toEqual('10.00');
-    expect(result.roundedOffConvertedAmount.decimalValue).toEqual(
-      new BigNumber(10.0)
-    );
+    expect(result.roundedOffConvertedAmount.decimalValue).toEqual(new BigNumber(10.0));
   });
 
   it('Convert bulk fixed rate currency with single conversion parameter', () => {
     const result: BulkFixedRateConversionResult = currencyConverter.convertCurrenciesWithFixedRate(
       Array.of(inrUsdConversionParameter)
     );
-    expect(result.get(inrUsdConversionParameter)).toBeInstanceOf(
-      SingleFixedRateConversionResult
-    );
+    expect(result.get(inrUsdConversionParameter)).toBeInstanceOf(SingleFixedRateConversionResult);
     expect(
-      (result.get(inrUsdConversionParameter) as SingleFixedRateConversionResult)
-        .convertedAmount.valueString
+      (result.get(inrUsdConversionParameter) as SingleFixedRateConversionResult).convertedAmount.valueString
     ).toEqual('702.3');
     expect(
-      (result.get(inrUsdConversionParameter) as SingleFixedRateConversionResult)
-        .convertedAmount.decimalValue
+      (result.get(inrUsdConversionParameter) as SingleFixedRateConversionResult).convertedAmount.decimalValue
     ).toEqual(new BigNumber(702.3));
     expect(
-      (result.get(inrUsdConversionParameter) as SingleFixedRateConversionResult)
-        .roundedOffConvertedAmount.valueString
+      (result.get(inrUsdConversionParameter) as SingleFixedRateConversionResult).roundedOffConvertedAmount.valueString
     ).toEqual('702.30');
     expect(
-      (result.get(inrUsdConversionParameter) as SingleFixedRateConversionResult)
-        .roundedOffConvertedAmount.decimalValue
+      (result.get(inrUsdConversionParameter) as SingleFixedRateConversionResult).roundedOffConvertedAmount.decimalValue
     ).toEqual(new BigNumber(702.3));
   });
 
   it('Convert bulk fixed rate currency with empty conversion parameter list', () => {
     let errInput = new Error();
     try {
-      const result: BulkFixedRateConversionResult = currencyConverter.convertCurrenciesWithFixedRate(
-        []
-      );
+      const result: BulkFixedRateConversionResult = currencyConverter.convertCurrenciesWithFixedRate([]);
     } catch (error) {
       errInput = error;
     }
@@ -201,26 +174,20 @@ describe('Convert Fixed Rate Currency', () => {
     );
     for (const param of maximumConversionParameterList) {
       expect(
-        (actualConversionResult.get(
-          inrUsdConversionParameter
-        ) as SingleFixedRateConversionResult).convertedAmount.valueString
+        (actualConversionResult.get(inrUsdConversionParameter) as SingleFixedRateConversionResult).convertedAmount
+          .valueString
       ).toEqual('702.3');
       expect(
-        (actualConversionResult.get(
-          inrUsdConversionParameter
-        ) as SingleFixedRateConversionResult).convertedAmount.decimalValue
+        (actualConversionResult.get(inrUsdConversionParameter) as SingleFixedRateConversionResult).convertedAmount
+          .decimalValue
       ).toEqual(new BigNumber(702.3));
       expect(
-        (actualConversionResult.get(
-          inrUsdConversionParameter
-        ) as SingleFixedRateConversionResult).roundedOffConvertedAmount
-          .valueString
+        (actualConversionResult.get(inrUsdConversionParameter) as SingleFixedRateConversionResult)
+          .roundedOffConvertedAmount.valueString
       ).toEqual('702.30');
       expect(
-        (actualConversionResult.get(
-          inrUsdConversionParameter
-        ) as SingleFixedRateConversionResult).roundedOffConvertedAmount
-          .decimalValue
+        (actualConversionResult.get(inrUsdConversionParameter) as SingleFixedRateConversionResult)
+          .roundedOffConvertedAmount.decimalValue
       ).toEqual(new BigNumber(702.3));
     }
   });
@@ -233,9 +200,7 @@ describe('Convert Fixed Rate Currency', () => {
     }
     try {
       expect(() => {
-        currencyConverter.convertCurrenciesWithFixedRate(
-          maximumConversionParameterList
-        );
+        currencyConverter.convertCurrenciesWithFixedRate(maximumConversionParameterList);
       }).toThrowError(ConversionError.INVALID_PARAMS);
     } catch (error) {
       errInput = error;
@@ -244,88 +209,58 @@ describe('Convert Fixed Rate Currency', () => {
 
   it('Convert bulk fixed rate currency Rounded Off Value Exponent Four', () => {
     // For USD to CLF(exponent = 4)
-    const convParam = new ConversionParametersForFixedRate(
-      'USD',
-      'CLF',
-      '100.173412345',
-      '1'
-    );
+    const convParam = new ConversionParametersForFixedRate('USD', 'CLF', '100.173412345', '1');
     const currencyConvParamsArray = Array.of(convParam);
-    const bulkResult = currencyConverter.convertCurrenciesWithFixedRate(
-      currencyConvParamsArray
-    );
+    const bulkResult = currencyConverter.convertCurrenciesWithFixedRate(currencyConvParamsArray);
     expect(() => {
       bulkResult.get(convParam);
     }).toBeTruthy();
     expect(
-      (bulkResult.get(
-        convParam
-      ) as SingleFixedRateConversionResult).roundedOffConvertedAmount.decimalValue.dp()
+      (bulkResult.get(convParam) as SingleFixedRateConversionResult).roundedOffConvertedAmount.decimalValue.dp()
     ).toBe(4);
   });
 
   it('Convert bulk fixed rate currency Rounded Off Value Exponent Three', () => {
     // For USD to BHD(exponent = 3)
-    const convParam = new ConversionParametersForFixedRate(
-      'USD',
-      'BHD',
-      '100.1237891',
-      '1'
-    );
+    const convParam = new ConversionParametersForFixedRate('USD', 'BHD', '100.1237891', '1');
     const currencyConvParamsArray = Array.of(convParam);
-    const bulkResult = currencyConverter.convertCurrenciesWithFixedRate(
-      currencyConvParamsArray
-    );
+    const bulkResult = currencyConverter.convertCurrenciesWithFixedRate(currencyConvParamsArray);
     expect(() => {
       bulkResult.get(convParam);
     }).toBeTruthy();
     expect(
-      (bulkResult.get(
-        convParam
-      ) as SingleFixedRateConversionResult).roundedOffConvertedAmount.decimalValue.dp()
+      (bulkResult.get(convParam) as SingleFixedRateConversionResult).roundedOffConvertedAmount.decimalValue.dp()
     ).toBe(3);
   });
 
   it('Convert bulk fixed rate currency Decimal Value ====> 120.4576776757575757567', () => {
-    const convParam = new ConversionParametersForFixedRate(
-      'INR',
-      'EUR',
-      '120.4576776757575757567',
-      '123.123'
-    );
+    const convParam = new ConversionParametersForFixedRate('INR', 'EUR', '120.4576776757575757567', '123.123');
     const currencyConvParamsArray = Array.of(convParam);
-    const bulkResult = currencyConverter.convertCurrenciesWithFixedRate(
-      currencyConvParamsArray
-    );
+    const bulkResult = currencyConverter.convertCurrenciesWithFixedRate(currencyConvParamsArray);
     expect(() => {
       bulkResult.get(convParam);
     }).toBeTruthy();
-    expect(
-      (bulkResult.get(
-        convParam
-      ) as SingleFixedRateConversionResult).convertedAmount.valueString.toString()
-    ).toBe('14831.1106484722999998921741');
+    expect((bulkResult.get(convParam) as SingleFixedRateConversionResult).convertedAmount.valueString.toString()).toBe(
+      '14831.1106484722999998921741'
+    );
   });
 
   it('Convert bulk fixed rate currency large Value ====> ', () => {
     const convParam = new ConversionParametersForFixedRate(
       'INR',
       'EUR',
+      // eslint-disable-next-line max-len
       '98787865267567768726875264186578699878786526756776872687526418657869815869878786526756776872687526418657869987878652675677687268752641865786981586486148652875878268575386757936757578578543646785378158648614865287587826857538675793675757857854364678537486148652875878268575386757936757578578543646785378158648614865287587826857538675793675757857854364678537',
+      // eslint-disable-next-line max-len
       '98787865267567768726875264186578699878786526756776872687526418657869815864861486528758782685753867579367575785785436467853781586486148652879878786526756776872687526418657869987878652675677687268752641865786981586486148652875878268575386757936757578578543646785378158648614865287587826857538675793675757857854364678537587826857538675793675757857854364678537'
     );
     const currencyConvParamsArray = Array.of(convParam);
-    const bulkResult = currencyConverter.convertCurrenciesWithFixedRate(
-      currencyConvParamsArray
-    );
+    const bulkResult = currencyConverter.convertCurrenciesWithFixedRate(currencyConvParamsArray);
     expect(() => {
       bulkResult.get(convParam);
     }).toBeTruthy();
-    expect(
-      (bulkResult.get(
-        convParam
-      ) as SingleFixedRateConversionResult).convertedAmount.valueString.toString()
-    ).toBe(
+    expect((bulkResult.get(convParam) as SingleFixedRateConversionResult).convertedAmount.valueString.toString()).toBe(
+      // eslint-disable-next-line max-len
       '9759042324123122302276061802084751464976205790260865591072287979066261419563108862799067524457558067333455238181122387950338776464101064405392363553859884776235439642336862137098624773464369412489441645107681992741690571986804714033924438698423945613898596598094590792477646246778385770794637768975892188997724724234578609227199862948634377561872645406774206371896931236263178320706352918747432640380741764141688662050143056646393053901852212510025676270162036150233056954684103220172384813423425962350128295185226282971890577013965996593910502231759659534028035715341044275293098314251411026435748929919354059397749444716033924452049862780212050821509511644077922039260288451162314136847941253034349631348460369'
     );
   });
@@ -337,26 +272,12 @@ describe('Convert Fixed Rate Currency', () => {
       SingleFixedRateConversionResult | CurrencyConversionError
     > = new Map();
 
-    resultMap.set(
-      inrUsdConversionParameter,
-      expectedSingleFixedRateConversionResult
-    );
-    resultMap.set(
-      usdEurConversionParameter,
-      expectedSingleFixedRateConversionResult1
-    );
-    resultMap.set(
-      usdInrConversionParameter,
-      expectedSingleFixedRateConversionResult2
-    );
-    resultMap.set(
-      eurInrConversionParameter,
-      expectedSingleFixedRateConversionResult3
-    );
+    resultMap.set(inrUsdConversionParameter, expectedSingleFixedRateConversionResult);
+    resultMap.set(usdEurConversionParameter, expectedSingleFixedRateConversionResult1);
+    resultMap.set(usdInrConversionParameter, expectedSingleFixedRateConversionResult2);
+    resultMap.set(eurInrConversionParameter, expectedSingleFixedRateConversionResult3);
 
-    const expectedConversionResult: BulkFixedRateConversionResult = new BulkFixedRateConversionResult(
-      resultMap
-    );
+    const expectedConversionResult: BulkFixedRateConversionResult = new BulkFixedRateConversionResult(resultMap);
 
     conversionParameterList.push(inrUsdConversionParameter);
     conversionParameterList.push(usdEurConversionParameter);
@@ -369,32 +290,20 @@ describe('Convert Fixed Rate Currency', () => {
     expect(actualConversionResult.entrySet()).toEqual(expectedEntrySet);
     for (const param of conversionParameterList) {
       expect(
-        (actualConversionResult.get(param) as SingleFixedRateConversionResult)
-          .convertedAmount.valueString
+        (actualConversionResult.get(param) as SingleFixedRateConversionResult).convertedAmount.valueString
+      ).toEqual((expectedConversionResult.get(param) as SingleFixedRateConversionResult).convertedAmount.valueString);
+      expect(
+        (actualConversionResult.get(param) as SingleFixedRateConversionResult).convertedAmount.decimalValue
+      ).toEqual((expectedConversionResult.get(param) as SingleFixedRateConversionResult).convertedAmount.decimalValue);
+      expect(
+        (actualConversionResult.get(param) as SingleFixedRateConversionResult).roundedOffConvertedAmount.valueString
       ).toEqual(
-        (expectedConversionResult.get(param) as SingleFixedRateConversionResult)
-          .convertedAmount.valueString
+        (expectedConversionResult.get(param) as SingleFixedRateConversionResult).roundedOffConvertedAmount.valueString
       );
       expect(
-        (actualConversionResult.get(param) as SingleFixedRateConversionResult)
-          .convertedAmount.decimalValue
+        (actualConversionResult.get(param) as SingleFixedRateConversionResult).roundedOffConvertedAmount.decimalValue
       ).toEqual(
-        (expectedConversionResult.get(param) as SingleFixedRateConversionResult)
-          .convertedAmount.decimalValue
-      );
-      expect(
-        (actualConversionResult.get(param) as SingleFixedRateConversionResult)
-          .roundedOffConvertedAmount.valueString
-      ).toEqual(
-        (expectedConversionResult.get(param) as SingleFixedRateConversionResult)
-          .roundedOffConvertedAmount.valueString
-      );
-      expect(
-        (actualConversionResult.get(param) as SingleFixedRateConversionResult)
-          .roundedOffConvertedAmount.decimalValue
-      ).toEqual(
-        (expectedConversionResult.get(param) as SingleFixedRateConversionResult)
-          .roundedOffConvertedAmount.decimalValue
+        (expectedConversionResult.get(param) as SingleFixedRateConversionResult).roundedOffConvertedAmount.decimalValue
       );
     }
   });
@@ -406,22 +315,11 @@ describe('Convert Fixed Rate Currency', () => {
       SingleFixedRateConversionResult | CurrencyConversionError
     > = new Map();
 
-    resultMap.set(
-      inrUsdConversionParameter,
-      expectedSingleFixedRateConversionResult
-    );
-    resultMap.set(
-      usdEurConversionParameter,
-      expectedSingleFixedRateConversionResult1
-    );
-    resultMap.set(
-      inrUsdConversionParameter2,
-      inrUsdExpectedSingleFixedRateConversionResult
-    );
+    resultMap.set(inrUsdConversionParameter, expectedSingleFixedRateConversionResult);
+    resultMap.set(usdEurConversionParameter, expectedSingleFixedRateConversionResult1);
+    resultMap.set(inrUsdConversionParameter2, inrUsdExpectedSingleFixedRateConversionResult);
 
-    const expectedConversionResult: BulkFixedRateConversionResult = new BulkFixedRateConversionResult(
-      resultMap
-    );
+    const expectedConversionResult: BulkFixedRateConversionResult = new BulkFixedRateConversionResult(resultMap);
 
     conversionParameterList.push(inrUsdConversionParameter);
     conversionParameterList.push(usdEurConversionParameter);
@@ -432,113 +330,77 @@ describe('Convert Fixed Rate Currency', () => {
     );
     for (const param of conversionParameterList) {
       expect(
-        (actualConversionResult.get(param) as SingleFixedRateConversionResult)
-          .convertedAmount.valueString
+        (actualConversionResult.get(param) as SingleFixedRateConversionResult).convertedAmount.valueString
+      ).toEqual((expectedConversionResult.get(param) as SingleFixedRateConversionResult).convertedAmount.valueString);
+      expect(
+        (actualConversionResult.get(param) as SingleFixedRateConversionResult).convertedAmount.decimalValue
+      ).toEqual((expectedConversionResult.get(param) as SingleFixedRateConversionResult).convertedAmount.decimalValue);
+      expect(
+        (actualConversionResult.get(param) as SingleFixedRateConversionResult).roundedOffConvertedAmount.valueString
       ).toEqual(
-        (expectedConversionResult.get(param) as SingleFixedRateConversionResult)
-          .convertedAmount.valueString
+        (expectedConversionResult.get(param) as SingleFixedRateConversionResult).roundedOffConvertedAmount.valueString
       );
       expect(
-        (actualConversionResult.get(param) as SingleFixedRateConversionResult)
-          .convertedAmount.decimalValue
+        (actualConversionResult.get(param) as SingleFixedRateConversionResult).roundedOffConvertedAmount.decimalValue
       ).toEqual(
-        (expectedConversionResult.get(param) as SingleFixedRateConversionResult)
-          .convertedAmount.decimalValue
-      );
-      expect(
-        (actualConversionResult.get(param) as SingleFixedRateConversionResult)
-          .roundedOffConvertedAmount.valueString
-      ).toEqual(
-        (expectedConversionResult.get(param) as SingleFixedRateConversionResult)
-          .roundedOffConvertedAmount.valueString
-      );
-      expect(
-        (actualConversionResult.get(param) as SingleFixedRateConversionResult)
-          .roundedOffConvertedAmount.decimalValue
-      ).toEqual(
-        (expectedConversionResult.get(param) as SingleFixedRateConversionResult)
-          .roundedOffConvertedAmount.decimalValue
+        (expectedConversionResult.get(param) as SingleFixedRateConversionResult).roundedOffConvertedAmount.decimalValue
       );
     }
     expect(
-      (actualConversionResult.get(
-        inrUsdConversionParameter
-      ) as SingleFixedRateConversionResult).convertedAmount.valueString
-    ).toEqual(
-      (expectedConversionResult.get(
-        inrUsdConversionParameter2
-      ) as SingleFixedRateConversionResult).convertedAmount.valueString
-    );
-    expect(
-      (actualConversionResult.get(
-        inrUsdConversionParameter
-      ) as SingleFixedRateConversionResult).convertedAmount.decimalValue
-    ).toEqual(
-      (expectedConversionResult.get(
-        inrUsdConversionParameter2
-      ) as SingleFixedRateConversionResult).convertedAmount.decimalValue
-    );
-    expect(
-      (actualConversionResult.get(
-        inrUsdConversionParameter
-      ) as SingleFixedRateConversionResult).roundedOffConvertedAmount
+      (actualConversionResult.get(inrUsdConversionParameter) as SingleFixedRateConversionResult).convertedAmount
         .valueString
     ).toEqual(
-      (expectedConversionResult.get(
-        inrUsdConversionParameter2
-      ) as SingleFixedRateConversionResult).roundedOffConvertedAmount
+      (expectedConversionResult.get(inrUsdConversionParameter2) as SingleFixedRateConversionResult).convertedAmount
         .valueString
     );
     expect(
-      (actualConversionResult.get(
-        inrUsdConversionParameter
-      ) as SingleFixedRateConversionResult).roundedOffConvertedAmount
+      (actualConversionResult.get(inrUsdConversionParameter) as SingleFixedRateConversionResult).convertedAmount
         .decimalValue
     ).toEqual(
-      (expectedConversionResult.get(
-        inrUsdConversionParameter2
-      ) as SingleFixedRateConversionResult).roundedOffConvertedAmount
+      (expectedConversionResult.get(inrUsdConversionParameter2) as SingleFixedRateConversionResult).convertedAmount
         .decimalValue
     );
     expect(
-      (actualConversionResult.get(
-        inrUsdConversionParameter2
-      ) as SingleFixedRateConversionResult).convertedAmount.valueString
+      (actualConversionResult.get(inrUsdConversionParameter) as SingleFixedRateConversionResult)
+        .roundedOffConvertedAmount.valueString
     ).toEqual(
-      (expectedConversionResult.get(
-        inrUsdConversionParameter
-      ) as SingleFixedRateConversionResult).convertedAmount.valueString
+      (expectedConversionResult.get(inrUsdConversionParameter2) as SingleFixedRateConversionResult)
+        .roundedOffConvertedAmount.valueString
     );
     expect(
-      (actualConversionResult.get(
-        inrUsdConversionParameter2
-      ) as SingleFixedRateConversionResult).convertedAmount.decimalValue
+      (actualConversionResult.get(inrUsdConversionParameter) as SingleFixedRateConversionResult)
+        .roundedOffConvertedAmount.decimalValue
     ).toEqual(
-      (expectedConversionResult.get(
-        inrUsdConversionParameter
-      ) as SingleFixedRateConversionResult).convertedAmount.decimalValue
+      (expectedConversionResult.get(inrUsdConversionParameter2) as SingleFixedRateConversionResult)
+        .roundedOffConvertedAmount.decimalValue
     );
     expect(
-      (actualConversionResult.get(
-        inrUsdConversionParameter2
-      ) as SingleFixedRateConversionResult).roundedOffConvertedAmount
+      (actualConversionResult.get(inrUsdConversionParameter2) as SingleFixedRateConversionResult).convertedAmount
         .valueString
     ).toEqual(
-      (expectedConversionResult.get(
-        inrUsdConversionParameter
-      ) as SingleFixedRateConversionResult).roundedOffConvertedAmount
+      (expectedConversionResult.get(inrUsdConversionParameter) as SingleFixedRateConversionResult).convertedAmount
         .valueString
     );
     expect(
-      (actualConversionResult.get(
-        inrUsdConversionParameter2
-      ) as SingleFixedRateConversionResult).roundedOffConvertedAmount
+      (actualConversionResult.get(inrUsdConversionParameter2) as SingleFixedRateConversionResult).convertedAmount
         .decimalValue
     ).toEqual(
-      (expectedConversionResult.get(
-        inrUsdConversionParameter
-      ) as SingleFixedRateConversionResult).roundedOffConvertedAmount
+      (expectedConversionResult.get(inrUsdConversionParameter) as SingleFixedRateConversionResult).convertedAmount
         .decimalValue
+    );
+    expect(
+      (actualConversionResult.get(inrUsdConversionParameter2) as SingleFixedRateConversionResult)
+        .roundedOffConvertedAmount.valueString
+    ).toEqual(
+      (expectedConversionResult.get(inrUsdConversionParameter) as SingleFixedRateConversionResult)
+        .roundedOffConvertedAmount.valueString
+    );
+    expect(
+      (actualConversionResult.get(inrUsdConversionParameter2) as SingleFixedRateConversionResult)
+        .roundedOffConvertedAmount.decimalValue
+    ).toEqual(
+      (expectedConversionResult.get(inrUsdConversionParameter) as SingleFixedRateConversionResult)
+        .roundedOffConvertedAmount.decimalValue
     );
   });
 });

@@ -1,5 +1,5 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
-import { Tenant } from '@sap-cloud-sdk/core/dist/scp-cf/tenant';
+import { Tenant } from '@sap-cloud-sdk/core';
 import {
   buildCurrency,
   ConversionParametersForNonFixedRate,
@@ -45,9 +45,7 @@ const S_100: ExchangeRateValue = new ExchangeRateValue('100');
 const S_200: ExchangeRateValue = new ExchangeRateValue('200');
 const S_7_0: ExchangeRateValue = new ExchangeRateValue('7.0');
 const S_21_0: ExchangeRateValue = new ExchangeRateValue('21.0');
-const S_0_33333333333333: ExchangeRateValue = new ExchangeRateValue(
-  '0.33333333333333'
-);
+const S_0_33333333333333: ExchangeRateValue = new ExchangeRateValue('0.33333333333333');
 
 const S_2020_01_01T02_30_00Z: Date = new Date('2020-01-01T02:30:00Z');
 const S_2020_02_01T02_30_00Z: Date = new Date('2020-02-01T02:30:00Z');
@@ -72,7 +70,7 @@ const eurInrMConversionParam: ConversionParametersForNonFixedRate = new Conversi
   M,
   S_2020_01_01T02_30_00Z
 );
-const eurInrInvalidCurrPairConversionParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const eurInrInvalidCurrPairConversionParam = new ConversionParametersForNonFixedRate(
   'AUD',
   'BSD',
   '100',
@@ -1168,9 +1166,7 @@ const usdInrMrmThrScaleMoreThanDefaultRate: ExchangeRate = new ExchangeRate(
 
 /* Exchange Rate ends*/
 
-function instantiateExchangeRateRecordDeterminer(
-  exchangeRateResultSet: ExchangeRate[]
-): ExchangeRateRecordDeterminer {
+function instantiateExchangeRateRecordDeterminer(exchangeRateResultSet: ExchangeRate[]): ExchangeRateRecordDeterminer {
   return new ExchangeRateRecordDeterminer(
     TENANT_ID,
     overrideTenantSettings,
@@ -1179,23 +1175,11 @@ function instantiateExchangeRateRecordDeterminer(
   );
 }
 
-function getExchangeRateTypeDetailsForTenant(): Map<
-  string,
-  ExchangeRateTypeDetail
-> {
-  const exchangeRateTypeDetailMap: Map<
-    string,
-    ExchangeRateTypeDetail
-  > = new Map();
+function getExchangeRateTypeDetailsForTenant(): Map<string, ExchangeRateTypeDetail> {
+  const exchangeRateTypeDetailMap: Map<string, ExchangeRateTypeDetail> = new Map();
   exchangeRateTypeDetailMap.set(A, new ExchangeRateTypeDetail(INR, true));
-  exchangeRateTypeDetailMap.set(
-    M,
-    new ExchangeRateTypeDetail(null as any, true)
-  );
-  exchangeRateTypeDetailMap.set(
-    ASK,
-    new ExchangeRateTypeDetail(null as any, true)
-  );
+  exchangeRateTypeDetailMap.set(M, new ExchangeRateTypeDetail(null as any, true));
+  exchangeRateTypeDetailMap.set(ASK, new ExchangeRateTypeDetail(null as any, true));
   return exchangeRateTypeDetailMap;
 }
 
@@ -1236,9 +1220,7 @@ describe('Exchange Rate Record Determiner Override Tenant Setting', () => {
     } catch (error) {
       errInput = error;
     }
-    expect(errInput.message).toBe(
-      ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD
-    );
+    expect(errInput.message).toBe(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
   });
 
   it('exchange rate record with different data providers', () => {
@@ -1281,9 +1263,7 @@ describe('Exchange Rate Record Determiner Override Tenant Setting', () => {
     } catch (error) {
       errInput = error;
     }
-    expect(errInput.message).toBe(
-      ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND
-    );
+    expect(errInput.message).toBe(ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND);
   });
 
   it('No exchange rate record for currency pair AUD-BSD', () => {
@@ -1312,9 +1292,7 @@ describe('Exchange Rate Record Determiner Override Tenant Setting', () => {
     } catch (error) {
       errInput = error;
     }
-    expect(errInput.message).toBe(
-      ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD
-    );
+    expect(errInput.message).toBe(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
   });
 
   it('No exchange rate record for different tenant', () => {
@@ -1346,9 +1324,7 @@ describe('Exchange Rate Record Determiner Override Tenant Setting', () => {
     } catch (error) {
       errInput = error;
     }
-    expect(errInput.message).toBe(
-      ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD
-    );
+    expect(errInput.message).toBe(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
   });
 
   it('Single exchange rate record for different tenant', () => {
@@ -1404,9 +1380,7 @@ describe('Exchange Rate Record Determiner Override Tenant Setting', () => {
     } catch (error) {
       errInput = error;
     }
-    expect(errInput.message).toBe(
-      ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND
-    );
+    expect(errInput.message).toBe(ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND);
   });
 
   it('Inverted conversion exchange rate record with exchange rate type detail null', () => {
@@ -1430,9 +1404,7 @@ describe('Exchange Rate Record Determiner Override Tenant Setting', () => {
     } catch (error) {
       errInput = error;
     }
-    expect(errInput.message).toBe(
-      ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD
-    );
+    expect(errInput.message).toBe(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
   });
 
   /* INVERTED RATE TEST CASE ENDS */
@@ -1573,9 +1545,7 @@ describe('Exchange Rate Record Determiner Override Tenant Setting', () => {
     } catch (error) {
       errInput = error;
     }
-    expect(errInput.message).toBe(
-      ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD
-    );
+    expect(errInput.message).toBe(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
   });
 
   it('Reference Currency with Direct Rate No From Reference Pair', () => {
@@ -1716,9 +1686,7 @@ describe('Exchange Rate Record Determiner Override Tenant Setting', () => {
     } catch (error) {
       errInput = error;
     }
-    expect(errInput.message).toBe(
-      ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND
-    );
+    expect(errInput.message).toBe(ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND);
   });
 
   it('Reference Currency with duplicate to reference pair', () => {
@@ -1745,9 +1713,7 @@ describe('Exchange Rate Record Determiner Override Tenant Setting', () => {
     } catch (error) {
       errInput = error;
     }
-    expect(errInput.message).toBe(
-      ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND
-    );
+    expect(errInput.message).toBe(ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND);
   });
 
   it('Reference Currency with duplicate from and to reference pair', () => {
@@ -1776,9 +1742,7 @@ describe('Exchange Rate Record Determiner Override Tenant Setting', () => {
     } catch (error) {
       errInput = error;
     }
-    expect(errInput.message).toBe(
-      ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND
-    );
+    expect(errInput.message).toBe(ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND);
   });
 
   /* Combination of indirect in 'From' and 'To' Currency */

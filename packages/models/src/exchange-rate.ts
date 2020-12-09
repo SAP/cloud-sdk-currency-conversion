@@ -1,5 +1,5 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
-import { Tenant } from '@sap-cloud-sdk/core/dist/scp-cf/tenant';
+import { Tenant } from '@sap-cloud-sdk/core';
 import { Currency } from './currency';
 import { ExchangeRateValue } from './exchange-rate-value';
 

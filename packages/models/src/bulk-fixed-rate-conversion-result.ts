@@ -5,10 +5,7 @@ import { CurrencyConversionError } from './currency-conversion-error';
 
 export class BulkFixedRateConversionResult {
   constructor(
-    readonly resultMap: Map<
-      ConversionParametersForFixedRate,
-      SingleFixedRateConversionResult | CurrencyConversionError
-    >
+    readonly resultMap: Map<ConversionParametersForFixedRate, SingleFixedRateConversionResult | CurrencyConversionError>
   ) {}
 
   public get(

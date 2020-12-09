@@ -1,5 +1,5 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
-import { Tenant } from '@sap-cloud-sdk/core/dist/scp-cf/tenant';
+import { Tenant } from '@sap-cloud-sdk/core';
 import {
   buildCurrency,
   Currency,
@@ -358,18 +358,14 @@ function buildAdapter(exchangeRates: ExchangeRate[]): DataAdapter {
     tenantSettings: TenantSettings
   ): ExchangeRate[] => exchangeRates;
 
-  adapter.getDefaultSettingsForTenant = (tenant: Tenant): TenantSettings =>
-    defaultTenantSettings;
+  adapter.getDefaultSettingsForTenant = (tenant: Tenant): TenantSettings => defaultTenantSettings;
   adapter.getExchangeRateTypeDetailsForTenant = (
     tenant: Tenant,
     rateTypeSet: Set<string>
   ): Map<string, ExchangeRateTypeDetail> => {
     const exchangeRate: Map<string, ExchangeRateTypeDetail> = new Map();
     exchangeRate.set(A, new ExchangeRateTypeDetail(buildCurrency('INR'), true));
-    exchangeRate.set(
-      LAST,
-      new ExchangeRateTypeDetail(buildCurrency('AFN'), true)
-    );
+    exchangeRate.set(LAST, new ExchangeRateTypeDetail(buildCurrency('AFN'), true));
     exchangeRate.set(ASK, new ExchangeRateTypeDetail(null as any, false));
     return exchangeRate;
   };
@@ -448,11 +444,7 @@ describe('Non Fixed Rate Currency Conversion -- Reference currency Tests default
   it('Test Reference Currency With Direct Rate No From Reference Pair', () => {
     const result = currencyConverter.convertCurrencyWithNonFixedRate(
       eurUsdAConversionParam,
-      buildAdapter([
-        usdInrMrmEcbARate,
-        eurUsdMrmEcbIndirectTrueRate,
-        eurUsdMrmEcbIndirectFalseRate
-      ]),
+      buildAdapter([usdInrMrmEcbARate, eurUsdMrmEcbIndirectTrueRate, eurUsdMrmEcbIndirectFalseRate]),
       TENANT_ID
     );
     expect(result).toBeTruthy();
@@ -465,11 +457,7 @@ describe('Non Fixed Rate Currency Conversion -- Reference currency Tests default
     const result = currencyConverter
       .convertCurrenciesWithNonFixedRate(
         Array.of(eurUsdAConversionParam),
-        buildAdapter([
-          eurInrMrmEcbARate,
-          eurUsdMrmEcbIndirectTrueRate,
-          eurUsdMrmEcbIndirectFalseRate
-        ]),
+        buildAdapter([eurInrMrmEcbARate, eurUsdMrmEcbIndirectTrueRate, eurUsdMrmEcbIndirectFalseRate]),
         TENANT_ID
       )
       .get(eurUsdAConversionParam) as SingleNonFixedRateConversionResult;
@@ -482,10 +470,7 @@ describe('Non Fixed Rate Currency Conversion -- Reference currency Tests default
   it('Test Reference Currency With Direct Rate No From And To Reference Pair', () => {
     const result = currencyConverter.convertCurrencyWithNonFixedRate(
       eurUsdAConversionParam,
-      buildAdapter([
-        eurUsdMrmEcbIndirectTrueRate,
-        eurUsdMrmEcbIndirectFalseRate
-      ]),
+      buildAdapter([eurUsdMrmEcbIndirectTrueRate, eurUsdMrmEcbIndirectFalseRate]),
       TENANT_ID
     );
     expect(result).toBeTruthy();
@@ -546,10 +531,7 @@ describe('Non Fixed Rate Currency Conversion -- Reference currency Tests default
   it('Test Reference Currency From Indirect To Indirect', () => {
     const result = currencyConverter.convertCurrencyWithNonFixedRate(
       eurUsdAConversionParam,
-      buildAdapter([
-        eurInrMrmEcbIndirectTrueRate,
-        usdInrMrmEcbIndirectTrueRate
-      ]),
+      buildAdapter([eurInrMrmEcbIndirectTrueRate, usdInrMrmEcbIndirectTrueRate]),
       TENANT_ID
     );
     expect(result).toBeTruthy();
@@ -565,10 +547,7 @@ describe('Non Fixed Rate Currency Conversion -- Reference currency Tests default
   it('Test Reference Currency From Indirect To Direct', () => {
     const result = currencyConverter.convertCurrencyWithNonFixedRate(
       eurUsdAConversionParam,
-      buildAdapter([
-        eurInrMrmEcbIndirectTrueRate,
-        usdInrMrmEcbIndirectFalseRate
-      ]),
+      buildAdapter([eurInrMrmEcbIndirectTrueRate, usdInrMrmEcbIndirectFalseRate]),
       TENANT_ID
     );
     expect(result).toBeTruthy();
@@ -584,10 +563,7 @@ describe('Non Fixed Rate Currency Conversion -- Reference currency Tests default
   it('Test Reference Currency From Direct To Indirect', () => {
     const result = currencyConverter.convertCurrencyWithNonFixedRate(
       eurUsdAConversionParam,
-      buildAdapter([
-        eurInrMrmEcbIndirectFalseRate,
-        usdInrMrmEcbIndirectTrueRate
-      ]),
+      buildAdapter([eurInrMrmEcbIndirectFalseRate, usdInrMrmEcbIndirectTrueRate]),
       TENANT_ID
     );
     expect(result).toBeTruthy();
@@ -603,10 +579,7 @@ describe('Non Fixed Rate Currency Conversion -- Reference currency Tests default
   it('Test Reference Currency From Direct To Direct', () => {
     const result = currencyConverter.convertCurrencyWithNonFixedRate(
       eurUsdAConversionParam,
-      buildAdapter([
-        eurInrMrmEcbIndirectFalseRate,
-        usdInrMrmEcbIndirectFalseRate
-      ]),
+      buildAdapter([eurInrMrmEcbIndirectFalseRate, usdInrMrmEcbIndirectFalseRate]),
       TENANT_ID
     );
     expect(result).toBeTruthy();
@@ -622,10 +595,7 @@ describe('Non Fixed Rate Currency Conversion -- Reference currency Tests default
   it('Test Reference Currency From Indirect To Indirect Factor More Than One', () => {
     const result = currencyConverter.convertCurrencyWithNonFixedRate(
       eurUsdAConversionParam,
-      buildAdapter([
-        eurInrMrmEcbIndirectTrueFactorMoreThanOneRate,
-        usdInrMrmEcbIndirectTrueFactorMoreThanOneRate
-      ]),
+      buildAdapter([eurInrMrmEcbIndirectTrueFactorMoreThanOneRate, usdInrMrmEcbIndirectTrueFactorMoreThanOneRate]),
       TENANT_ID
     );
     expect(result).toBeTruthy();
@@ -641,10 +611,7 @@ describe('Non Fixed Rate Currency Conversion -- Reference currency Tests default
   it('Test Reference Currency From Indirect To Direct Factor More Than One', () => {
     const result = currencyConverter.convertCurrencyWithNonFixedRate(
       eurUsdAConversionParam,
-      buildAdapter([
-        eurInrMrmEcbIndirectTrueFactorMoreThanOneRate,
-        usdInrMrmEcbIndirectFalseFactorMoreThanOneRate
-      ]),
+      buildAdapter([eurInrMrmEcbIndirectTrueFactorMoreThanOneRate, usdInrMrmEcbIndirectFalseFactorMoreThanOneRate]),
       TENANT_ID
     );
     expect(result).toBeTruthy();
@@ -660,10 +627,7 @@ describe('Non Fixed Rate Currency Conversion -- Reference currency Tests default
   it('Test Reference Currency From Direct To Indirect Factor More Than One.', () => {
     const result = currencyConverter.convertCurrencyWithNonFixedRate(
       eurUsdAConversionParam,
-      buildAdapter([
-        eurInrMrmEcbIndirectFalseFactorMoreThanOneRate,
-        usdInrMrmEcbIndirectTrueFactorMoreThanOneRate
-      ]),
+      buildAdapter([eurInrMrmEcbIndirectFalseFactorMoreThanOneRate, usdInrMrmEcbIndirectTrueFactorMoreThanOneRate]),
       TENANT_ID
     );
     expect(result).toBeTruthy();
@@ -679,10 +643,7 @@ describe('Non Fixed Rate Currency Conversion -- Reference currency Tests default
   it('Test Reference Currency From Direct To Direct Factor More Than One.', () => {
     const result = currencyConverter.convertCurrencyWithNonFixedRate(
       eurUsdAConversionParam,
-      buildAdapter([
-        eurInrMrmEcbIndirectFalseFactorMoreThanOneRate,
-        usdInrMrmEcbIndirectFalseFactorMoreThanOneRate
-      ]),
+      buildAdapter([eurInrMrmEcbIndirectFalseFactorMoreThanOneRate, usdInrMrmEcbIndirectFalseFactorMoreThanOneRate]),
       TENANT_ID
     );
     expect(result).toBeTruthy();

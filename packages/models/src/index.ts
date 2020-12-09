@@ -14,3 +14,4 @@ export * from './single-fixed-rate-conversion-result';
 export * from './single-non-fixed-rate-conversion-result';
 export * from './tenant-settings';
 export * from './helper';
+export * from './constants/conversion-model-error';

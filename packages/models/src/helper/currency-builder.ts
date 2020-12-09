@@ -19,13 +19,7 @@ export function buildCurrency(currencyCode: string): Currency {
   }
   const currency = (codes as any)[currencyCode];
   if (isNullish(currency)) {
-    throw new CurrencyConversionError(
-      ConversionModelError.INVALID_CURRENCY_CODES
-    );
+    throw new CurrencyConversionError(ConversionModelError.INVALID_CURRENCY_CODES);
   }
-  return new Currency(
-    currencyCode,
-    Number.parseInt(currency[defaultFractionDigits], 10),
-    currency[numericCode]
-  );
+  return new Currency(currencyCode, Number.parseInt(currency[defaultFractionDigits], 10), currency[numericCode]);
 }

@@ -259,6 +259,6 @@ module.exports = {
       }
     ],
     'valid-typeof': 'off',
-    'max-len': [2, { code: 80, tabWidth: 4, ignoreUrls: true }]
+    'max-len': [2, { code: 120, tabWidth: 4, ignoreUrls: true }]
   }
 };

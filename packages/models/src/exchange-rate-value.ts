@@ -11,9 +11,7 @@ export class ExchangeRateValue {
     this.valueString = valueString.trim();
     const convertedDecimalValue = new BigNumber(valueString.trim());
     if (convertedDecimalValue < new BigNumber(0)) {
-      throw new CurrencyConversionError(
-        ConversionModelError.ILLEGAL_EXCHANGE_RATE
-      );
+      throw new CurrencyConversionError(ConversionModelError.ILLEGAL_EXCHANGE_RATE);
     }
     this.decimalValue = convertedDecimalValue;
   }

@@ -1,5 +1,5 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
-import { Tenant } from '@sap-cloud-sdk/core/dist/scp-cf/tenant';
+import { Tenant } from '@sap-cloud-sdk/core';
 import {
   buildCurrency,
   Currency,
@@ -654,8 +654,7 @@ function buildAdapter(exchangeRates: ExchangeRate[]): DataAdapter {
     tenantSettings: TenantSettings
   ): ExchangeRate[] => exchangeRates;
 
-  adapter.getDefaultSettingsForTenant = (tenant: Tenant): TenantSettings =>
-    null as any;
+  adapter.getDefaultSettingsForTenant = (tenant: Tenant): TenantSettings => null as any;
   adapter.getExchangeRateTypeDetailsForTenant = (
     tenant: Tenant,
     rateTypeSet: Set<string>
@@ -663,9 +662,7 @@ function buildAdapter(exchangeRates: ExchangeRate[]): DataAdapter {
   return adapter;
 }
 
-function buildAdapterWithNullExchangeRateTypeDetails(
-  exchangeRates: ExchangeRate[]
-): DataAdapter {
+function buildAdapterWithNullExchangeRateTypeDetails(exchangeRates: ExchangeRate[]): DataAdapter {
   const adapter: DataAdapter = {} as DataAdapter;
 
   adapter.getExchangeRatesForTenant = (
@@ -674,8 +671,7 @@ function buildAdapterWithNullExchangeRateTypeDetails(
     tenantSettings: TenantSettings
   ): ExchangeRate[] => exchangeRates;
 
-  adapter.getDefaultSettingsForTenant = (tenant: Tenant): TenantSettings =>
-    null as any;
+  adapter.getDefaultSettingsForTenant = (tenant: Tenant): TenantSettings => null as any;
   adapter.getExchangeRateTypeDetailsForTenant = (
     tenant: Tenant,
     rateTypeSet: Set<string>
@@ -692,8 +688,7 @@ function buildAdapterWithNullExchangeRates(): DataAdapter {
     tenantSettings: TenantSettings
   ): ExchangeRate[] => null as any;
 
-  adapter.getDefaultSettingsForTenant = (tenant: Tenant): TenantSettings =>
-    null as any;
+  adapter.getDefaultSettingsForTenant = (tenant: Tenant): TenantSettings => null as any;
   adapter.getExchangeRateTypeDetailsForTenant = (
     tenant: Tenant,
     rateTypeSet: Set<string>
@@ -710,8 +705,7 @@ function buildAdapterWithEmptyExchangeRates(): DataAdapter {
     tenantSettings: TenantSettings
   ): ExchangeRate[] => [];
 
-  adapter.getDefaultSettingsForTenant = (tenant: Tenant): TenantSettings =>
-    null as any;
+  adapter.getDefaultSettingsForTenant = (tenant: Tenant): TenantSettings => null as any;
   adapter.getExchangeRateTypeDetailsForTenant = (
     tenant: Tenant,
     rateTypeSet: Set<string>
@@ -728,8 +722,7 @@ function buildAdapterWithNullExchangeRatesAndDefaultTenantSettings(): DataAdapte
     tenantSettings: TenantSettings
   ): ExchangeRate[] => null as any;
 
-  adapter.getDefaultSettingsForTenant = (tenant: Tenant): TenantSettings =>
-    null as any;
+  adapter.getDefaultSettingsForTenant = (tenant: Tenant): TenantSettings => null as any;
   adapter.getExchangeRateTypeDetailsForTenant = (
     tenant: Tenant,
     rateTypeSet: Set<string>
@@ -769,12 +762,7 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
     try {
       const result: SingleNonFixedRateConversionResult = currencyConverter.convertCurrencyWithNonFixedRate(
         inrEurMConversionParamPastDate,
-        buildAdapter([
-          inrEurMrmThrMRate,
-          eurInrMrmThrMRate,
-          inrEurMrmEcbMRate,
-          eurInrMrmEcbMRate
-        ]),
+        buildAdapter([inrEurMrmThrMRate, eurInrMrmThrMRate, inrEurMrmEcbMRate, eurInrMrmEcbMRate]),
         TENANT_ID,
         overrideTenantSettings
       );
@@ -782,9 +770,7 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
       errorInput = error;
     }
     expect(errorInput).toBeInstanceOf(CurrencyConversionError);
-    expect(errorInput.message).toBe(
-      ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD
-    );
+    expect(errorInput.message).toBe(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
   });
 
   it('Single Conversion With Null Conversion Parameter', () => {
@@ -838,9 +824,7 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
       overrideTenantSettings
     );
     expect(result.get(inrEurMConversionParam)).toBeTruthy();
-    expect(result.get(inrEurMConversionParam)).toEqual(
-      expectedConversionResult
-    );
+    expect(result.get(inrEurMConversionParam)).toEqual(expectedConversionResult);
   });
 
   it('Bulk Conversion With null Exchange Rate Type Details', () => {
@@ -867,30 +851,20 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
       overrideTenantSettings
     );
     expect(result.get(inrEurMConversionParam)).toBeTruthy();
-    expect(result.get(inrEurMConversionParam)).toEqual(
-      expectedConversionResult
-    );
+    expect(result.get(inrEurMConversionParam)).toEqual(expectedConversionResult);
   });
 
   it('Bulk Conversion With Exchange Rate Record Having Future Date', () => {
     const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
       [inrEurMConversionParamPastDate],
-      buildAdapter([
-        inrEurMrmThrMRate,
-        eurInrMrmThrMRate,
-        inrEurMrmEcbMRate,
-        eurInrMrmEcbMRate
-      ]),
+      buildAdapter([inrEurMrmThrMRate, eurInrMrmThrMRate, inrEurMrmEcbMRate, eurInrMrmEcbMRate]),
       TENANT_ID,
       overrideTenantSettings
     );
-    expect(result.get(inrEurMConversionParamPastDate)).toBeInstanceOf(
-      CurrencyConversionError
+    expect(result.get(inrEurMConversionParamPastDate)).toBeInstanceOf(CurrencyConversionError);
+    expect((result.get(inrEurMConversionParamPastDate) as CurrencyConversionError).message).toBe(
+      ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD
     );
-    expect(
-      (result.get(inrEurMConversionParamPastDate) as CurrencyConversionError)
-        .message
-    ).toBe(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
   });
 
   it('Bulk Conversion With Null Conversion Parameter', () => {
@@ -955,17 +929,12 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
     );
     const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
       [inrEurMConversionParam],
-      buildAdapter([
-        inrEurMrmThrMDirectFactorFiveTenRate,
-        inrEurMrmEcbMDirectFactorFiveTenRate
-      ]),
+      buildAdapter([inrEurMrmThrMDirectFactorFiveTenRate, inrEurMrmEcbMDirectFactorFiveTenRate]),
       TENANT_ID,
       overrideTenantSettings
     );
     expect(result.get(inrEurMConversionParam)).toBeTruthy();
-    expect(result.get(inrEurMConversionParam)).toEqual(
-      expectedConversionResult
-    );
+    expect(result.get(inrEurMConversionParam)).toEqual(expectedConversionResult);
   });
 
   it('Bulk Conversion With Direct Factor More Than One Rate', () => {
@@ -976,17 +945,12 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
     );
     const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
       [inrEurMConversionParam],
-      buildAdapter([
-        inrEurMrmThrMDirectFactorMoreThanOneRate,
-        inrEurMrmEcbMDirectFactorMoreThanOneRate
-      ]),
+      buildAdapter([inrEurMrmThrMDirectFactorMoreThanOneRate, inrEurMrmEcbMDirectFactorMoreThanOneRate]),
       TENANT_ID,
       overrideTenantSettings
     );
     expect(result.get(inrEurMConversionParam)).toBeTruthy();
-    expect(result.get(inrEurMConversionParam)).toEqual(
-      expectedConversionResult
-    );
+    expect(result.get(inrEurMConversionParam)).toEqual(expectedConversionResult);
   });
 
   it('Bulk Conversion With indirect Factor Five Ten Rate', () => {
@@ -997,17 +961,12 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
     );
     const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
       [inrEurMConversionParam],
-      buildAdapter([
-        inrEurMrmThrMIndirectFactorFiveTenRate,
-        inrEurMrmEcbMIndirectFactorFiveTenRate
-      ]),
+      buildAdapter([inrEurMrmThrMIndirectFactorFiveTenRate, inrEurMrmEcbMIndirectFactorFiveTenRate]),
       TENANT_ID,
       overrideTenantSettings
     );
     expect(result.get(inrEurMConversionParam)).toBeTruthy();
-    expect(result.get(inrEurMConversionParam)).toEqual(
-      expectedConversionResult
-    );
+    expect(result.get(inrEurMConversionParam)).toEqual(expectedConversionResult);
   });
 
   it('Bulk Conversion With Inirect Factor More Than One Rate', () => {
@@ -1018,17 +977,12 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
     );
     const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
       [inrEurMConversionParam],
-      buildAdapter([
-        inrEurMrmThrMIndirectFactorMoreThanOneRate,
-        inrEurMrmEcbMIndirectFactorMoreThanOneRate
-      ]),
+      buildAdapter([inrEurMrmThrMIndirectFactorMoreThanOneRate, inrEurMrmEcbMIndirectFactorMoreThanOneRate]),
       TENANT_ID,
       overrideTenantSettings
     );
     expect(result.get(inrEurMConversionParam)).toBeTruthy();
-    expect(result.get(inrEurMConversionParam)).toEqual(
-      expectedConversionResult
-    );
+    expect(result.get(inrEurMConversionParam)).toEqual(expectedConversionResult);
   });
 
   it('Convert bulk non fixed rate currency with maximum conversion parameters', () => {
@@ -1036,7 +990,7 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
     for (let i = 1; i <= 1000; i++) {
       maximumConversionParameterList.push(inrEurMConversionParam);
     }
-    const actualConversionResult: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
+    const actualConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
       maximumConversionParameterList,
       buildAdapter([inrEurMrmThrMRate]),
       TENANT_ID,
@@ -1044,26 +998,20 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
     );
     for (const param of maximumConversionParameterList) {
       expect(
-        (actualConversionResult.get(
-          inrEurMConversionParam
-        ) as SingleNonFixedRateConversionResult).convertedAmount.valueString
-      ).toEqual('10000');
-      expect(
-        (actualConversionResult.get(
-          inrEurMConversionParam
-        ) as SingleNonFixedRateConversionResult).convertedAmount.decimalValue
-      ).toEqual(new BigNumber('10000'));
-      expect(
-        (actualConversionResult.get(
-          inrEurMConversionParam
-        ) as SingleNonFixedRateConversionResult).roundedOffConvertedAmount
+        (actualConversionResult.get(inrEurMConversionParam) as SingleNonFixedRateConversionResult).convertedAmount
           .valueString
       ).toEqual('10000');
       expect(
-        (actualConversionResult.get(
-          inrEurMConversionParam
-        ) as SingleNonFixedRateConversionResult).roundedOffConvertedAmount
+        (actualConversionResult.get(inrEurMConversionParam) as SingleNonFixedRateConversionResult).convertedAmount
           .decimalValue
+      ).toEqual(new BigNumber('10000'));
+      expect(
+        (actualConversionResult.get(inrEurMConversionParam) as SingleNonFixedRateConversionResult)
+          .roundedOffConvertedAmount.valueString
+      ).toEqual('10000');
+      expect(
+        (actualConversionResult.get(inrEurMConversionParam) as SingleNonFixedRateConversionResult)
+          .roundedOffConvertedAmount.decimalValue
       ).toEqual(new BigNumber('10000'));
     }
   });
@@ -1105,12 +1053,7 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
       S_10000
     );
     const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
-      [
-        inrEurMConversionParam,
-        eurUsdAskConversionParam,
-        eurInrAskConversionParam,
-        eurInrMConversionParam
-      ],
+      [inrEurMConversionParam, eurUsdAskConversionParam, eurInrAskConversionParam, eurInrMConversionParam],
       buildAdapter([
         inrEurMrmThrMRate,
         eurUsdMrmThrAskRate,
@@ -1125,23 +1068,15 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
       overrideTenantSettings
     );
     expect(result.get(inrEurMConversionParam)).toBeTruthy();
-    expect(result.get(inrEurMConversionParam)).toEqual(
-      expectedConversionResult1
-    );
+    expect(result.get(inrEurMConversionParam)).toEqual(expectedConversionResult1);
     expect(result.get(eurUsdAskConversionParam)).toBeTruthy();
-    expect(result.get(eurUsdAskConversionParam)).toEqual(
-      expectedConversionResult2
-    );
+    expect(result.get(eurUsdAskConversionParam)).toEqual(expectedConversionResult2);
     expect(result.get(eurInrAskConversionParam)).toBeTruthy();
-    expect(result.get(eurInrAskConversionParam)).toEqual(
-      expectedConversionResult3
+    expect(result.get(eurInrAskConversionParam)).toEqual(expectedConversionResult3);
+    expect(result.get(eurInrMConversionParam)).toBeInstanceOf(CurrencyConversionError);
+    expect((result.get(eurInrMConversionParam) as CurrencyConversionError).message).toBe(
+      ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD
     );
-    expect(result.get(eurInrMConversionParam)).toBeInstanceOf(
-      CurrencyConversionError
-    );
-    expect(
-      (result.get(eurInrMConversionParam) as CurrencyConversionError).message
-    ).toBe(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
   });
 
   it('Bulk Indirect Conversion', () => {
@@ -1164,9 +1099,7 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
       overrideTenantSettings
     );
     expect(result.get(eurInrIndirectConversionParam)).toBeTruthy();
-    expect(result.get(eurInrIndirectConversionParam)).toEqual(
-      expectedConversionResult
-    );
+    expect(result.get(eurInrIndirectConversionParam)).toEqual(expectedConversionResult);
   });
 
   it('Bulk Indirect Conversion Decimal Value', () => {
@@ -1189,9 +1122,7 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
       overrideTenantSettings
     );
     expect(result.get(eurInrDecimalValueConversionParam)).toBeTruthy();
-    expect(result.get(eurInrDecimalValueConversionParam)).toEqual(
-      expectedConversionResult
-    );
+    expect(result.get(eurInrDecimalValueConversionParam)).toEqual(expectedConversionResult);
   });
 
   it('Bulk direct Conversion Decimal Value', () => {
@@ -1214,9 +1145,7 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
       overrideTenantSettings
     );
     expect(result.get(eurInrDecimalValueConversionParam)).toBeTruthy();
-    expect(result.get(eurInrDecimalValueConversionParam)).toEqual(
-      expectedConversionResult
-    );
+    expect(result.get(eurInrDecimalValueConversionParam)).toEqual(expectedConversionResult);
   });
 
   it('Bulk Conversion With Different Tenant Record Found', () => {
@@ -1237,9 +1166,7 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
       overrideTenantSettings
     );
     expect(result.get(inrEurMConversionParam)).toBeTruthy();
-    expect(result.get(inrEurMConversionParam)).toEqual(
-      expectedConversionResult
-    );
+    expect(result.get(inrEurMConversionParam)).toEqual(expectedConversionResult);
   });
 
   it('Bulk Conversion With Old Conversion Time', () => {
@@ -1250,19 +1177,12 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
     );
     const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
       [inrEurMConversionParam],
-      buildAdapter([
-        inrEurMrmThrMRate,
-        eurInrMrmThrMRate,
-        inrEurMrmEcbMRate,
-        eurInrMrmEcbMRate
-      ]),
+      buildAdapter([inrEurMrmThrMRate, eurInrMrmThrMRate, inrEurMrmEcbMRate, eurInrMrmEcbMRate]),
       TENANT_ID,
       overrideTenantSettings
     );
     expect(result.get(inrEurMConversionParam)).toBeTruthy();
-    expect(result.get(inrEurMConversionParam)).toEqual(
-      expectedConversionResult
-    );
+    expect(result.get(inrEurMConversionParam)).toEqual(expectedConversionResult);
   });
 
   it('Bulk Conversion With Same Currency Pair List', () => {
@@ -1278,23 +1198,14 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
     );
     const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
       [inrInrMConversionParam, eurEurMConversionParam],
-      buildAdapter([
-        inrInrMrmThrMRate,
-        eurEurMrmThrMRate,
-        inrInrMrmEcbMRate,
-        eurEurMrmEcbMRate
-      ]),
+      buildAdapter([inrInrMrmThrMRate, eurEurMrmThrMRate, inrInrMrmEcbMRate, eurEurMrmEcbMRate]),
       TENANT_ID,
       overrideTenantSettings
     );
     expect(result.get(inrInrMConversionParam)).toBeTruthy();
-    expect(result.get(inrInrMConversionParam)).toEqual(
-      expectedConversionResult1
-    );
+    expect(result.get(inrInrMConversionParam)).toEqual(expectedConversionResult1);
     expect(result.get(eurEurMConversionParam)).toBeTruthy();
-    expect(result.get(eurEurMConversionParam)).toEqual(
-      expectedConversionResult2
-    );
+    expect(result.get(eurEurMConversionParam)).toEqual(expectedConversionResult2);
   });
 
   it('Non Fixed Rate Conversion Rounded Half Up Last Digit Five', () => {
@@ -1326,9 +1237,7 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
       overrideTenantSettings
     );
     expect(result.get(inrBhdMMoreThanFiveParam)).toBeTruthy();
-    expect(result.get(inrBhdMMoreThanFiveParam)).toEqual(
-      expectedConversionResult
-    );
+    expect(result.get(inrBhdMMoreThanFiveParam)).toEqual(expectedConversionResult);
   });
 
   it('Non Fixed Rate Conversion Rounded Half Up Last Digit Less Than Five', () => {
@@ -1344,9 +1253,7 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
       overrideTenantSettings
     );
     expect(result.get(inrBhdMLessThanFiveParam)).toBeTruthy();
-    expect(result.get(inrBhdMLessThanFiveParam)).toEqual(
-      expectedConversionResult
-    );
+    expect(result.get(inrBhdMLessThanFiveParam)).toEqual(expectedConversionResult);
   });
 
   it('Bulk Conversion With Exchange Rate Record Having Future Date', () => {
@@ -1365,13 +1272,10 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
       TENANT_ID,
       overrideTenantSettings
     );
-    expect(result.get(invalidCurrenecyConversionParam)).toBeInstanceOf(
-      CurrencyConversionError
+    expect(result.get(invalidCurrenecyConversionParam)).toBeInstanceOf(CurrencyConversionError);
+    expect((result.get(invalidCurrenecyConversionParam) as CurrencyConversionError).message).toBe(
+      ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD
     );
-    expect(
-      (result.get(invalidCurrenecyConversionParam) as CurrencyConversionError)
-        .message
-    ).toBe(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
   });
 
   it('Bulk Conversion With Different Tenant No Record', () => {
@@ -1386,72 +1290,49 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
       TENANT_ID2,
       overrideTenantSettings
     );
-    expect(result.get(inrEurMConversionParam)).toBeInstanceOf(
-      CurrencyConversionError
+    expect(result.get(inrEurMConversionParam)).toBeInstanceOf(CurrencyConversionError);
+    expect((result.get(inrEurMConversionParam) as CurrencyConversionError).message).toBe(
+      ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD
     );
-    expect(
-      (result.get(inrEurMConversionParam) as CurrencyConversionError).message
-    ).toBe(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
   });
 
   it('Bulk Conversion With Duplicate Exchange Rate Same TimeStamp', () => {
     const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
       [inrEurMConversionParam],
-      buildAdapter([
-        inrEurMrmThrMDuplicateRate,
-        inrEurMrmThrMRate,
-        inrEurMrmEcbMDuplicateRate,
-        inrEurMrmEcbMRate
-      ]),
+      buildAdapter([inrEurMrmThrMDuplicateRate, inrEurMrmThrMRate, inrEurMrmEcbMDuplicateRate, inrEurMrmEcbMRate]),
       TENANT_ID,
       overrideTenantSettings
     );
-    expect(result.get(inrEurMConversionParam)).toBeInstanceOf(
-      CurrencyConversionError
+    expect(result.get(inrEurMConversionParam)).toBeInstanceOf(CurrencyConversionError);
+    expect((result.get(inrEurMConversionParam) as CurrencyConversionError).message).toBe(
+      ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND
     );
-    expect(
-      (result.get(inrEurMConversionParam) as CurrencyConversionError).message
-    ).toBe(ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND);
   });
 
   it('Bulk Conversion With Duplicate Exchange Rate Record', () => {
     const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
       [inrEurMConversionParam],
-      buildAdapter([
-        inrEurMrmThrMDuplicateRate,
-        inrEurMrmThrMRate,
-        inrEurMrmEcbMDuplicateRate,
-        inrEurMrmEcbMRate
-      ]),
+      buildAdapter([inrEurMrmThrMDuplicateRate, inrEurMrmThrMRate, inrEurMrmEcbMDuplicateRate, inrEurMrmEcbMRate]),
       TENANT_ID,
       overrideTenantSettings
     );
-    expect(result.get(inrEurMConversionParam)).toBeInstanceOf(
-      CurrencyConversionError
+    expect(result.get(inrEurMConversionParam)).toBeInstanceOf(CurrencyConversionError);
+    expect((result.get(inrEurMConversionParam) as CurrencyConversionError).message).toBe(
+      ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND
     );
-    expect(
-      (result.get(inrEurMConversionParam) as CurrencyConversionError).message
-    ).toBe(ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND);
   });
 
   it('Bulk Conversion With No Record Found', () => {
     const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
       [inrEurMConversionParam],
-      buildAdapter([
-        eurInrMrmThrMRate,
-        eurInrMrmThrMDuplicateRate,
-        eurInrMrmEcbMRate,
-        eurInrMrmEcbMDuplicateRate
-      ]),
+      buildAdapter([eurInrMrmThrMRate, eurInrMrmThrMDuplicateRate, eurInrMrmEcbMRate, eurInrMrmEcbMDuplicateRate]),
       TENANT_ID,
       overrideTenantSettings
     );
-    expect(result.get(inrEurMConversionParam)).toBeInstanceOf(
-      CurrencyConversionError
+    expect(result.get(inrEurMConversionParam)).toBeInstanceOf(CurrencyConversionError);
+    expect((result.get(inrEurMConversionParam) as CurrencyConversionError).message).toBe(
+      ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD
     );
-    expect(
-      (result.get(inrEurMConversionParam) as CurrencyConversionError).message
-    ).toBe(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
   });
 
   it('Bulk Conversion With data Adapter Null', () => {

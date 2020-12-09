@@ -1,5 +1,5 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
-import { Tenant } from '@sap-cloud-sdk/core/dist/scp-cf/tenant';
+import { Tenant } from '@sap-cloud-sdk/core';
 import {
   BulkNonFixedRateConversionResult,
   CurrencyAmount,
@@ -16,8 +16,8 @@ import { isNullish } from '@sap-cloud-sdk/util';
 import { BigNumber } from 'bignumber.js';
 import { ConversionError } from '../constants/conversion-error';
 import { ExchangeRateRecordDeterminer } from '../core/exchange-rate-record-determiner';
-import { logger as log } from './logger';
-import { setBigNumberConfig } from './set-big-number-config';
+import { logAndGetError, logger as log } from './logger';
+import { configureBigNumber } from './configure-big-number';
 import { validateCurrencyFactor } from './validate-currency-factor';
 
 const DEFAULT_SCALE = 14;
@@ -35,21 +35,13 @@ export function convertCurrenciesWithNonFixedRateHelper(
   tenant: Tenant,
   overrideTenantSetting?: TenantSettings
 ): BulkNonFixedRateConversionResult {
-  let tenantSettings;
-  if (isNullish(dataAdapter) || isNullish(tenant) || isNullish(tenant.id)) {
+  if (isNullish(dataAdapter) || isNullish(tenant?.id)) {
     throw new CurrencyConversionError(ConversionError.NULL_ADAPTER_TENANT);
   }
-  if (overrideTenantSetting === undefined) {
-    tenantSettings = fetchDefaultTenantSettings(dataAdapter, tenant);
-  } else {
-    tenantSettings = fetchOverrideTenantSettings(overrideTenantSetting);
-  }
-  return convertCurrencies(
-    conversionParameters,
-    dataAdapter,
-    tenant,
-    tenantSettings
-  );
+  const tenantSettings = overrideTenantSetting
+    ? fetchOverrideTenantSettings(overrideTenantSetting)
+    : fetchDefaultTenantSettings(dataAdapter, tenant);
+  return convertCurrencies(conversionParameters, dataAdapter, tenant, tenantSettings);
 }
 
 /*
@@ -61,28 +53,15 @@ function convertCurrencies(
   tenant: Tenant,
   tenantSettings: TenantSettings
 ): BulkNonFixedRateConversionResult {
-  const exchangeRateResultSet = fetchExchangeRate(
-    conversionParameters,
-    dataAdapter,
-    tenant,
-    tenantSettings
-  );
-  const exchangeRateTypeDetailsMap = fetchExchangeRateType(
-    conversionParameters,
-    dataAdapter,
-    tenant
-  );
-  const exchnageRateDeterminer = new ExchangeRateRecordDeterminer(
+  const exchangeRateResultSet = fetchExchangeRate(conversionParameters, dataAdapter, tenant, tenantSettings);
+  const exchangeRateTypeDetailsMap = fetchExchangeRateType(conversionParameters, dataAdapter, tenant);
+  const exchangeRateDeterminer = new ExchangeRateRecordDeterminer(
     tenant,
     tenantSettings,
     exchangeRateResultSet,
     exchangeRateTypeDetailsMap
   );
-  return performBulkNonFixedConversion(
-    exchnageRateDeterminer,
-    conversionParameters,
-    tenant
-  );
+  return performBulkNonFixedConversion(exchangeRateDeterminer, conversionParameters, tenant);
 }
 function fetchExchangeRate(
   conversionParameters: ConversionParametersForNonFixedRate[],
@@ -90,27 +69,20 @@ function fetchExchangeRate(
   tenant: Tenant,
   tenantSettings: TenantSettings
 ): ExchangeRate[] {
-  let exchangeRateResultSet: ExchangeRate[] = new Array();
+  let exchangeRates;
   try {
-    exchangeRateResultSet = dataAdapter.getExchangeRatesForTenant(
-      conversionParameters,
-      tenant,
-      tenantSettings
-    );
+    exchangeRates = dataAdapter.getExchangeRatesForTenant(conversionParameters, tenant, tenantSettings);
   } catch (error) {
-    log?.error(ConversionError.ERR_FETCHING_EXCHANGE_RATES);
-    throw new CurrencyConversionError(
-      ConversionError.ERR_FETCHING_EXCHANGE_RATES
-    );
+    throw logAndGetError(ConversionError.ERROR_FETCHING_EXCHANGE_RATES);
   }
-  if (exchangeRateResultSet === null || exchangeRateResultSet.length === 0) {
-    log?.error(
-      'Data Adpater returned empty list for exchange rates for tenant',
-      JSON.stringify(tenant)
+  if (!exchangeRates?.length) {
+    log.error(
+      `Data Adpater returned empty list for exchange rates for tenant 
+      ${JSON.stringify(tenant)}`
     );
     throw new CurrencyConversionError(ConversionError.EMPTY_EXCHANGE_RATE_LIST);
   }
-  return exchangeRateResultSet;
+  return exchangeRates;
 }
 
 function fetchExchangeRateType(
@@ -118,24 +90,12 @@ function fetchExchangeRateType(
   dataAdapter: DataAdapter,
   tenant: Tenant
 ): Map<string, ExchangeRateTypeDetail> {
-  let exchangeRateTypeDetailMap: Map<
-    string,
-    ExchangeRateTypeDetail
-  > = new Map();
+  let exchangeRateTypeDetailMap;
+  const rateTypes = conversionParameters.map(conversionParameter => conversionParameter.exchangeRateType);
   try {
-    const rateTypeSet: Set<string> = new Set();
-    for (const conversionParameter of conversionParameters) {
-      rateTypeSet.add(conversionParameter.exchangeRateType);
-    }
-    exchangeRateTypeDetailMap = dataAdapter.getExchangeRateTypeDetailsForTenant(
-      tenant,
-      rateTypeSet
-    );
+    exchangeRateTypeDetailMap = dataAdapter.getExchangeRateTypeDetailsForTenant(tenant, new Set(rateTypes));
   } catch (error) {
-    log?.error(ConversionError.ERR_FETCHING_EXCHANGE_RATES);
-    throw new CurrencyConversionError(
-      ConversionError.ERR_FETCHING_EXCHANGE_RATES
-    );
+    throw logAndGetError(ConversionError.ERROR_FETCHING_EXCHANGE_RATES);
   }
   return exchangeRateTypeDetailMap;
 }
@@ -145,32 +105,20 @@ function performBulkNonFixedConversion(
   conversionParameters: ConversionParametersForNonFixedRate[],
   tenant: Tenant
 ): BulkNonFixedRateConversionResult {
-  const resultMap: Map<
-    ConversionParametersForNonFixedRate,
-    SingleNonFixedRateConversionResult | CurrencyConversionError
-  > = new Map();
-  for (const conversionParameter of conversionParameters) {
+  const resultMap = conversionParameters.reduce((results, conversionParameter) => {
     try {
-      const result = performSingleNonFixedConversion(
-        exchangeRateDeterminer,
-        conversionParameter,
-        tenant
+      const result = performSingleNonFixedConversion(exchangeRateDeterminer, conversionParameter, tenant);
+      results.set(conversionParameter, result);
+    } catch (err) {
+      log.error(
+        `${ConversionError.NON_FIXED_CONVERSION_FAILED} 
+          for parameter : ${JSON.stringify(conversionParameter)} 
+          with exception : ${err}`
       );
-      resultMap.set(conversionParameter, result);
-    } catch (error) {
-      log?.error(
-        ConversionError.NON_FIXED_CONVERSION_FAILED,
-        'for parameter : ',
-        JSON.stringify(conversionParameter),
-        'with exception :',
-        error
-      );
-      resultMap.set(
-        conversionParameter,
-        new CurrencyConversionError((error as Error).message)
-      );
+      results.set(conversionParameter, err);
     }
-  }
+    return results;
+  }, new Map());
   return new BulkNonFixedRateConversionResult(resultMap);
 }
 
@@ -180,15 +128,10 @@ function performSingleNonFixedConversion(
   tenant: Tenant
 ): SingleNonFixedRateConversionResult {
   let convertedValue: CurrencyAmount;
-  let exchangeRateUsedForConversion: ExchangeRate;
-  if (
-    conversionParameters.fromCurrency.currencyCode ===
-    conversionParameters.toCurrency.currencyCode
-  ) {
-    convertedValue = new CurrencyAmount(
-      conversionParameters.fromAmount.decimalValue.toFormat(CURR_FORMAT)
-    );
-    exchangeRateUsedForConversion = new ExchangeRate(
+  let exchangeRateUsed: ExchangeRate;
+  if (conversionParameters.fromCurrency.currencyCode === conversionParameters.toCurrency.currencyCode) {
+    convertedValue = new CurrencyAmount(conversionParameters.fromAmount.decimalValue.toFormat(CURR_FORMAT));
+    exchangeRateUsed = new ExchangeRate(
       tenant,
       null as any,
       null as any,
@@ -199,16 +142,11 @@ function performSingleNonFixedConversion(
       conversionParameters.conversionAsOfDateTime
     );
   } else {
-    exchangeRateUsedForConversion = exchangeRateDeterminer.getBestMatchedExchangeRateRecord(
-      conversionParameters
-    );
-    convertedValue = doConversionWithThePickedRateRecord(
-      conversionParameters,
-      exchangeRateUsedForConversion
-    );
+    exchangeRateUsed = exchangeRateDeterminer.getBestMatchedExchangeRateRecord(conversionParameters);
+    convertedValue = doConversionWithThePickedRateRecord(conversionParameters, exchangeRateUsed);
   }
   return new SingleNonFixedRateConversionResult(
-    exchangeRateUsedForConversion,
+    exchangeRateUsed,
     convertedValue,
     getRoundedOffConvertedAmount(convertedValue, conversionParameters)
   );
@@ -220,10 +158,7 @@ function getRoundedOffConvertedAmount(
 ): CurrencyAmount {
   return new CurrencyAmount(
     currAmount.decimalValue
-      .decimalPlaces(
-        conversionParam.toCurrency.defaultFractionDigits,
-        BigNumber.ROUND_HALF_UP
-      )
+      .decimalPlaces(conversionParam.toCurrency.defaultFractionDigits, BigNumber.ROUND_HALF_UP)
       .toFormat(CURR_FORMAT)
   );
 }
@@ -255,36 +190,30 @@ function getEffectiveExchangeRateValue(
   conversionParameters: ConversionParametersForNonFixedRate,
   exchangeRateToBeUsed: ExchangeRate
 ): BigNumber {
-  let effectiveExchangeRateValue: BigNumber;
+  let effectiveExchangeRateVal: BigNumber;
   const isIndirect: boolean = exchangeRateToBeUsed.isIndirect;
-  const exchangeRateValue: BigNumber =
-    exchangeRateToBeUsed.exchangeRateValue.decimalValue;
-  const currencyFactorRatio: BigNumber = getCurrencyFactorRatio(
-    exchangeRateToBeUsed
-  );
+  const exchangeRateValue: BigNumber = exchangeRateToBeUsed.exchangeRateValue.decimalValue;
+  const currencyFactorRatio: BigNumber = getCurrencyFactorRatio(exchangeRateToBeUsed);
 
-  const additionOfScales =
-    conversionParameters.fromAmount.decimalValue.dp() +
-    exchangeRateValue.decimalPlaces();
-  const scaleForDivision: number =
-    additionOfScales > DEFAULT_SCALE ? additionOfScales : DEFAULT_SCALE;
-  const bigNum = setBigNumberConfig(scaleForDivision);
+  const additionOfScales = conversionParameters.fromAmount.decimalValue.dp() + exchangeRateValue.decimalPlaces();
+  const scaleForDivision: number = additionOfScales > DEFAULT_SCALE ? additionOfScales : DEFAULT_SCALE;
+  const bigNum = configureBigNumber(scaleForDivision);
   if (ifFromToCurrencyMatches(conversionParameters, exchangeRateToBeUsed)) {
-    effectiveExchangeRateValue = getEffecttiveRateForDirectOrReferenceCurrencyPair(
+    effectiveExchangeRateVal = getEffectiveRateForDirectOrReferenceCurrencyPair(
       isIndirect,
       exchangeRateValue,
       currencyFactorRatio,
       bigNum
     );
   } else {
-    effectiveExchangeRateValue = getEffecttiveRateForInvertedCurrencyPair(
+    effectiveExchangeRateVal = getEffecttiveRateForInvertedCurrencyPair(
       isIndirect,
       exchangeRateValue,
       currencyFactorRatio,
       bigNum
     );
   }
-  return effectiveExchangeRateValue;
+  return effectiveExchangeRateVal;
 }
 
 function ifFromToCurrencyMatches(
@@ -292,14 +221,12 @@ function ifFromToCurrencyMatches(
   exchangeRateToBeUsed: ExchangeRate
 ): boolean {
   return (
-    conversionParameters.fromCurrency.currencyCode ===
-      exchangeRateToBeUsed.fromCurrency.currencyCode &&
-    conversionParameters.toCurrency.currencyCode ===
-      exchangeRateToBeUsed.toCurrency.currencyCode
+    conversionParameters.fromCurrency.currencyCode === exchangeRateToBeUsed.fromCurrency.currencyCode &&
+    conversionParameters.toCurrency.currencyCode === exchangeRateToBeUsed.toCurrency.currencyCode
   );
 }
 
-function getEffecttiveRateForDirectOrReferenceCurrencyPair(
+function getEffectiveRateForDirectOrReferenceCurrencyPair(
   isIndirect: boolean,
   exchangeRateValue: BigNumber,
   currencyFactorRatio: BigNumber,
@@ -309,13 +236,9 @@ function getEffecttiveRateForDirectOrReferenceCurrencyPair(
   if (isIndirect) {
     effectiveExchangeRateValue = new bigNum(1).dividedBy(exchangeRateValue);
     isRatioNaNOrInfinite(effectiveExchangeRateValue.toNumber());
-    effectiveExchangeRateValue = effectiveExchangeRateValue.multipliedBy(
-      currencyFactorRatio
-    );
+    effectiveExchangeRateValue = effectiveExchangeRateValue.multipliedBy(currencyFactorRatio);
   } else {
-    effectiveExchangeRateValue = exchangeRateValue.multipliedBy(
-      currencyFactorRatio
-    );
+    effectiveExchangeRateValue = exchangeRateValue.multipliedBy(currencyFactorRatio);
   }
   return effectiveExchangeRateValue;
 }
@@ -328,19 +251,11 @@ function getEffecttiveRateForInvertedCurrencyPair(
 ) {
   let effectiveExchangeRateValue: BigNumber;
   if (isIndirect) {
-    const effectiveCurrencyFactorRatio = new bigNum(1).dividedBy(
-      currencyFactorRatio
-    );
-    effectiveExchangeRateValue = exchangeRateValue.multipliedBy(
-      effectiveCurrencyFactorRatio
-    );
+    const effectiveCurrencyFactorRatio = new bigNum(1).dividedBy(currencyFactorRatio);
+    effectiveExchangeRateValue = exchangeRateValue.multipliedBy(effectiveCurrencyFactorRatio);
   } else {
-    const exchangeRateCurrencyFactorValue = exchangeRateValue.multipliedBy(
-      currencyFactorRatio
-    );
-    effectiveExchangeRateValue = new bigNum(1).dividedBy(
-      exchangeRateCurrencyFactorValue
-    );
+    const exchangeRateCurrencyFactorValue = exchangeRateValue.multipliedBy(currencyFactorRatio);
+    effectiveExchangeRateValue = new bigNum(1).dividedBy(exchangeRateCurrencyFactorValue);
   }
   return effectiveExchangeRateValue;
 }
@@ -359,8 +274,7 @@ function getEffecttiveRateForInvertedCurrencyPair(
 function getCurrencyFactorRatio(exchangeRate: ExchangeRate): BigNumber {
   validateCurrencyFactor(exchangeRate.toCurrencyfactor);
   validateCurrencyFactor(exchangeRate.fromCurrencyfactor);
-  const currencyFactorRatio: number =
-    exchangeRate.toCurrencyfactor / exchangeRate.fromCurrencyfactor;
+  const currencyFactorRatio: number = exchangeRate.toCurrencyfactor / exchangeRate.fromCurrencyfactor;
   isRatioNaNOrInfinite(currencyFactorRatio);
   return new BigNumber(currencyFactorRatio);
 }
@@ -369,56 +283,41 @@ function isRatioNaNOrInfinite(currencyFactorRatio: number): void {
   /* Adding the exception explicitly since 0.0/0.0 does not throw an exception
    * and the conversion will fail eventually with null error message in it.
    */
-  if (
-    !Number.isFinite(currencyFactorRatio) ||
-    Number.isNaN(currencyFactorRatio)
-  ) {
-    log?.error(
-      "The currency factor in the exchange rate resulted in an exception. Either 'from' or 'to' currency factor is zero"
-    );
-    throw new CurrencyConversionError(ConversionError.ZERO_CURRENCY_FACTOR);
+  if (!Number.isFinite(currencyFactorRatio) || Number.isNaN(currencyFactorRatio)) {
+    throw logAndGetError(ConversionError.ZERO_CURRENCY_FACTOR);
   }
 }
 
-function fetchDefaultTenantSettings(
-  dataAdapter: DataAdapter,
-  tenant: Tenant
-): TenantSettings {
+function fetchDefaultTenantSettings(dataAdapter: DataAdapter, tenant: Tenant): TenantSettings {
   try {
-    const tenantSettingsToBeUsed = dataAdapter.getDefaultSettingsForTenant(
-      tenant
-    );
-    log?.debug(
-      'Default Tenant settings returned from data adapter is : ',
-      isNullish(tenantSettingsToBeUsed)
-        ? null
-        : JSON.stringify(tenantSettingsToBeUsed.ratesDataProviderCode),
-      isNullish(tenantSettingsToBeUsed)
-        ? null
-        : JSON.stringify(tenantSettingsToBeUsed.ratesDataSource)
+    const tenantSettingsToBeUsed = dataAdapter.getDefaultSettingsForTenant(tenant);
+    log.debug(
+      'Default Tenant settings returned from data adapter are :',
+      ...(isNullish(tenantSettingsToBeUsed)
+        ? [null, null]
+        : [tenantSettingsToBeUsed.ratesDataProviderCode, tenantSettingsToBeUsed.ratesDataSource])
     );
     return tenantSettingsToBeUsed;
   } catch (ex) {
-    log?.error('Error in fetching default tenant settings for tenant ', tenant);
-    throw new CurrencyConversionError(
-      ConversionError.ERROR_FETCHING_DEFAULT_SETTINGS
-    );
+    log.error(`Error in fetching default tenant settings for tenant ${tenant}`);
+    throw new CurrencyConversionError(ConversionError.ERROR_FETCHING_DEFAULT_SETTINGS);
   }
 }
 
-function fetchOverrideTenantSettings(
-  overrideSetting: TenantSettings
-): TenantSettings {
-  isOverrideTenantSettingIncomplete(overrideSetting);
+function fetchOverrideTenantSettings(overrideSetting: TenantSettings): TenantSettings {
+  if (isOverrideTenantSettingIncomplete(overrideSetting)) {
+    log.error('Override Tenant Setting can not be null');
+    throw new CurrencyConversionError(ConversionError.EMPTY_OVERRIDE_TENANT_SETTING);
+  }
   // create a TenantSettings object from overrideSetting
   const tenantSettingsToBeUsed: TenantSettings = new TenantSettings(
     overrideSetting.ratesDataProviderCode,
     overrideSetting.ratesDataSource
   );
-  log?.debug(
-    'Override settings is used for conversion : ',
-    JSON.stringify(overrideSetting.ratesDataProviderCode),
-    JSON.stringify(overrideSetting.ratesDataSource)
+  log.debug(
+    `Override settings is used for conversion : 
+    ${overrideSetting.ratesDataProviderCode}, 
+    ${overrideSetting.ratesDataSource}`
   );
   return tenantSettingsToBeUsed;
 }
@@ -433,17 +332,6 @@ function fetchOverrideTenantSettings(
  * null or both data source & data provider code are provided in the
  * overrideSetting.
  */
-function isOverrideTenantSettingIncomplete(
-  overrideSetting: TenantSettings
-): void {
-  if (
-    isNullish(overrideSetting) ||
-    isNullish(overrideSetting.ratesDataProviderCode) ||
-    isNullish(overrideSetting.ratesDataSource)
-  ) {
-    log?.error('Override Tenant Setting can not be null');
-    throw new CurrencyConversionError(
-      ConversionError.EMPTY_OVERRIDE_TENANT_SETTING
-    );
-  }
+function isOverrideTenantSettingIncomplete(overrideSetting: TenantSettings): boolean {
+  return isNullish(overrideSetting?.ratesDataProviderCode) || isNullish(overrideSetting?.ratesDataSource);
 }

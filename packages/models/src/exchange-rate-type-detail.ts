@@ -2,8 +2,5 @@
 import { Currency } from './currency';
 
 export class ExchangeRateTypeDetail {
-  constructor(
-    readonly referenceCurrency: Currency,
-    readonly isInversionAllowed = false
-  ) {}
+  constructor(readonly referenceCurrency: Currency, readonly isInversionAllowed = false) {}
 }

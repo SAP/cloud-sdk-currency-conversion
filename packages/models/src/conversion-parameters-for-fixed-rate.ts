@@ -5,12 +5,7 @@ import { ConversionParameters } from './conversion-parameters';
 export class ConversionParametersForFixedRate extends ConversionParameters {
   readonly fixedRateValue: ExchangeRateValue;
 
-  constructor(
-    fromCurrency: string,
-    toCurrency: string,
-    fromAmount: string,
-    fixedRate: string
-  ) {
+  constructor(fromCurrency: string, toCurrency: string, fromAmount: string, fixedRate: string) {
     super(fromCurrency, toCurrency, fromAmount);
     this.fixedRateValue = new ExchangeRateValue(fixedRate);
   }

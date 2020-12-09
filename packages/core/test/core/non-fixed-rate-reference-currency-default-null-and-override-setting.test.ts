@@ -1,5 +1,5 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
-import { Tenant } from '@sap-cloud-sdk/core/dist/scp-cf/tenant';
+import { Tenant } from '@sap-cloud-sdk/core';
 import {
   buildCurrency,
   Currency,
@@ -619,34 +619,26 @@ function buildAdapter(exchangeRates: ExchangeRate[]): DataAdapter {
     tenantSettings: TenantSettings
   ): ExchangeRate[] => exchangeRates;
 
-  adapter.getDefaultSettingsForTenant = (tenant: Tenant): TenantSettings =>
-    null as any;
+  adapter.getDefaultSettingsForTenant = (tenant: Tenant): TenantSettings => null as any;
   adapter.getExchangeRateTypeDetailsForTenant = (
     tenant: Tenant,
     rateTypeSet: Set<string>
   ): Map<string, ExchangeRateTypeDetail> => {
     const exchangeRate: Map<string, ExchangeRateTypeDetail> = new Map();
     exchangeRate.set(A, new ExchangeRateTypeDetail(buildCurrency('INR'), true));
-    exchangeRate.set(
-      LAST,
-      new ExchangeRateTypeDetail(buildCurrency('AFN'), true)
-    );
+    exchangeRate.set(LAST, new ExchangeRateTypeDetail(buildCurrency('AFN'), true));
     exchangeRate.set(ASK, new ExchangeRateTypeDetail(null as any, false));
     return exchangeRate;
   };
   return adapter;
 }
 
+// eslint-disable-next-line max-len
 describe('Non Fixed Rate Currency Conversion -- Reference currency Tests default null and override tenant settings.', () => {
   it('Test Single Conversion With Reference Currency.', () => {
     const result: SingleNonFixedRateConversionResult = currencyConverter.convertCurrencyWithNonFixedRate(
       eurUsdAConversionParam,
-      buildAdapter([
-        eurInrMrmThrARate,
-        usdInrMrmThrARate,
-        eurInrMrmEcbARate,
-        usdInrMrmEcbARate
-      ]),
+      buildAdapter([eurInrMrmThrARate, usdInrMrmThrARate, eurInrMrmEcbARate, usdInrMrmEcbARate]),
       TENANT_ID,
       overrideTenantSettings
     );
@@ -661,12 +653,7 @@ describe('Non Fixed Rate Currency Conversion -- Reference currency Tests default
     const result: SingleNonFixedRateConversionResult = currencyConverter
       .convertCurrenciesWithNonFixedRate(
         Array.of(eurUsdAConversionParam),
-        buildAdapter([
-          eurInrMrmThrARate,
-          usdInrMrmThrARate,
-          eurInrMrmEcbARate,
-          usdInrMrmEcbARate
-        ]),
+        buildAdapter([eurInrMrmThrARate, usdInrMrmThrARate, eurInrMrmEcbARate, usdInrMrmEcbARate]),
         TENANT_ID,
         overrideTenantSettings
       )
@@ -682,12 +669,7 @@ describe('Non Fixed Rate Currency Conversion -- Reference currency Tests default
     expect(() =>
       currencyConverter.convertCurrencyWithNonFixedRate(
         eurUsdAskConversionParam,
-        buildAdapter([
-          eurInrMrmThrAskRate,
-          usdInrMrmThrAskRate,
-          eurInrMrmEcbAskRate,
-          usdInrMrmEcbAskRate
-        ]),
+        buildAdapter([eurInrMrmThrAskRate, usdInrMrmThrAskRate, eurInrMrmEcbAskRate, usdInrMrmEcbAskRate]),
         TENANT_ID,
         overrideTenantSettings
       )
@@ -698,12 +680,7 @@ describe('Non Fixed Rate Currency Conversion -- Reference currency Tests default
     expect(() =>
       currencyConverter.convertCurrencyWithNonFixedRate(
         eurUsdAConversionParamPastDate,
-        buildAdapter([
-          usdInrMrmThrARate,
-          eurInrMrmThrARate,
-          usdInrMrmEcbARate,
-          eurInrMrmEcbARate
-        ]),
+        buildAdapter([usdInrMrmThrARate, eurInrMrmThrARate, usdInrMrmEcbARate, eurInrMrmEcbARate]),
         TENANT_ID,
         overrideTenantSettings
       )
@@ -714,12 +691,7 @@ describe('Non Fixed Rate Currency Conversion -- Reference currency Tests default
     expect(() =>
       currencyConverter.convertCurrencyWithNonFixedRate(
         eurUsdLastConversionParam,
-        buildAdapter([
-          usdInrMrmThrLastRate,
-          eurInrMrmThrLastRate,
-          usdInrMrmEcbLastRate,
-          eurInrMrmEcbLastRate
-        ]),
+        buildAdapter([usdInrMrmThrLastRate, eurInrMrmThrLastRate, usdInrMrmEcbLastRate, eurInrMrmEcbLastRate]),
         TENANT_ID,
         overrideTenantSettings
       )
@@ -730,12 +702,7 @@ describe('Non Fixed Rate Currency Conversion -- Reference currency Tests default
     expect(() =>
       currencyConverter.convertCurrencyWithNonFixedRate(
         eurUsdNewConversionParam,
-        buildAdapter([
-          usdInrMrmEcbLastRate,
-          eurInrMrmEcbLastRate,
-          usdInrMrmThrLastRate,
-          eurInrMrmThrLastRate
-        ]),
+        buildAdapter([usdInrMrmEcbLastRate, eurInrMrmEcbLastRate, usdInrMrmThrLastRate, eurInrMrmThrLastRate]),
         TENANT_ID,
         overrideTenantSettings
       )

@@ -3,8 +3,5 @@
 import { CurrencyAmount } from './currency-amount';
 
 export class SingleFixedRateConversionResult {
-  constructor(
-    readonly convertedAmount: CurrencyAmount,
-    readonly roundedOffConvertedAmount: CurrencyAmount
-  ) {}
+  constructor(readonly convertedAmount: CurrencyAmount, readonly roundedOffConvertedAmount: CurrencyAmount) {}
 }

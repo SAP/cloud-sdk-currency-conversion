@@ -1,5 +1,5 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
-import { Tenant } from '@sap-cloud-sdk/core/dist/scp-cf/tenant';
+import { Tenant } from '@sap-cloud-sdk/core';
 import {
   buildCurrency,
   Currency,
@@ -248,28 +248,17 @@ function buildAdapter(exchangeRates: ExchangeRate[]): DataAdapter {
 
   adapter.getExchangeRatesForTenant = (): ExchangeRate[] => exchangeRates;
 
-  adapter.getDefaultSettingsForTenant = (): TenantSettings =>
-    defaultTenantSettings;
-  adapter.getExchangeRateTypeDetailsForTenant = (): Map<
-    string,
-    ExchangeRateTypeDetail
-  > => new Map();
+  adapter.getDefaultSettingsForTenant = (): TenantSettings => defaultTenantSettings;
+  adapter.getExchangeRateTypeDetailsForTenant = (): Map<string, ExchangeRateTypeDetail> => new Map();
   return adapter;
 }
-function buildAdapterWithDataSource(
-  exchangeRates: ExchangeRate[],
-  dataSource: string
-): DataAdapter {
+function buildAdapterWithDataSource(exchangeRates: ExchangeRate[], dataSource: string): DataAdapter {
   const adapter: DataAdapter = {} as DataAdapter;
 
   adapter.getExchangeRatesForTenant = (): ExchangeRate[] => exchangeRates;
 
-  adapter.getDefaultSettingsForTenant = (): TenantSettings =>
-    new TenantSettings(MRM, dataSource);
-  adapter.getExchangeRateTypeDetailsForTenant = (): Map<
-    string,
-    ExchangeRateTypeDetail
-  > => new Map();
+  adapter.getDefaultSettingsForTenant = (): TenantSettings => new TenantSettings(MRM, dataSource);
+  adapter.getExchangeRateTypeDetailsForTenant = (): Map<string, ExchangeRateTypeDetail> => new Map();
   return adapter;
 }
 
@@ -297,9 +286,7 @@ describe('Non Fixed Rate -- zero rate or zero factor tests default tenant settin
     expect(result).toBeTruthy();
     expect(result.convertedAmount.decimalValue.toNumber()).toBe(0);
     expect(result.roundedOffConvertedAmount.decimalValue.toString()).toBe('0');
-    expect(result.exchangeRate).toMatchObject(
-      inrEurMrmEcbDirectZeroToFactorZeroRate
-    );
+    expect(result.exchangeRate).toMatchObject(inrEurMrmEcbDirectZeroToFactorZeroRate);
   });
 
   it('Test Indirect Zero To Factor Rate.', () => {
@@ -313,9 +300,7 @@ describe('Non Fixed Rate -- zero rate or zero factor tests default tenant settin
     expect(result).toBeTruthy();
     expect(result.convertedAmount.decimalValue.toNumber()).toBe(0);
     expect(result.roundedOffConvertedAmount.decimalValue.toString()).toBe('0');
-    expect(result.exchangeRate).toMatchObject(
-      inrEurMrmEcbIndirectZeroToFactorRate
-    );
+    expect(result.exchangeRate).toMatchObject(inrEurMrmEcbIndirectZeroToFactorRate);
   });
 
   it('Test Direct Zero To Factor Rate.', () => {
@@ -329,9 +314,7 @@ describe('Non Fixed Rate -- zero rate or zero factor tests default tenant settin
     expect(result).toBeTruthy();
     expect(result.convertedAmount.decimalValue.toNumber()).toBe(0);
     expect(result.roundedOffConvertedAmount.decimalValue.toString()).toBe('0');
-    expect(result.exchangeRate).toMatchObject(
-      inrEurMrmEcbDirectZeroToFactorRate
-    );
+    expect(result.exchangeRate).toMatchObject(inrEurMrmEcbDirectZeroToFactorRate);
   });
 
   it('Test Indirect Zero Rate', () => {
@@ -350,10 +333,7 @@ describe('Non Fixed Rate -- zero rate or zero factor tests default tenant settin
     const result = currencyConverter
       .convertCurrenciesWithNonFixedRate(
         Array.of(inrEurMConversionParam),
-        buildAdapterWithDataSource(
-          [inrEurMrmEcbIndirectZeroFactorsZeroRate],
-          ECB
-        ),
+        buildAdapterWithDataSource([inrEurMrmEcbIndirectZeroFactorsZeroRate], ECB),
         TENANT_ID
       )
       .get(inrEurMConversionParam) as CurrencyConversionError;
@@ -366,10 +346,7 @@ describe('Non Fixed Rate -- zero rate or zero factor tests default tenant settin
     const result = currencyConverter
       .convertCurrenciesWithNonFixedRate(
         Array.of(inrEurMConversionParam),
-        buildAdapterWithDataSource(
-          [inrEurMrmEcbIndirectZeroToFactorZeroRate],
-          ECB
-        ),
+        buildAdapterWithDataSource([inrEurMrmEcbIndirectZeroToFactorZeroRate], ECB),
         TENANT_ID
       )
       .get(inrEurMConversionParam) as CurrencyConversionError;
@@ -382,10 +359,7 @@ describe('Non Fixed Rate -- zero rate or zero factor tests default tenant settin
     const result = currencyConverter
       .convertCurrenciesWithNonFixedRate(
         Array.of(inrEurMConversionParam),
-        buildAdapterWithDataSource(
-          [inrEurMrmEcbIndirectZeroFromFactZeroRate],
-          ECB
-        ),
+        buildAdapterWithDataSource([inrEurMrmEcbIndirectZeroFromFactZeroRate], ECB),
         TENANT_ID
       )
       .get(inrEurMConversionParam) as CurrencyConversionError;
@@ -398,10 +372,7 @@ describe('Non Fixed Rate -- zero rate or zero factor tests default tenant settin
     const result = currencyConverter
       .convertCurrenciesWithNonFixedRate(
         Array.of(inrEurMConversionParam),
-        buildAdapterWithDataSource(
-          [inrEurMrmEcbDirectZeroFactorsZeroRate],
-          ECB
-        ),
+        buildAdapterWithDataSource([inrEurMrmEcbDirectZeroFactorsZeroRate], ECB),
         TENANT_ID
       )
       .get(inrEurMConversionParam) as CurrencyConversionError;
@@ -414,10 +385,7 @@ describe('Non Fixed Rate -- zero rate or zero factor tests default tenant settin
     const result = currencyConverter
       .convertCurrenciesWithNonFixedRate(
         Array.of(inrEurMConversionParam),
-        buildAdapterWithDataSource(
-          [inrEurMrmEcbDirectZeroFromFactZeroRate],
-          ECB
-        ),
+        buildAdapterWithDataSource([inrEurMrmEcbDirectZeroFromFactZeroRate], ECB),
         TENANT_ID
       )
       .get(inrEurMConversionParam) as CurrencyConversionError;
@@ -443,10 +411,7 @@ describe('Non Fixed Rate -- zero rate or zero factor tests default tenant settin
     const result = currencyConverter
       .convertCurrenciesWithNonFixedRate(
         Array.of(inrEurMConversionParam),
-        buildAdapterWithDataSource(
-          [inrEurMrmEcbIndirectZeroFromFactorRate],
-          ECB
-        ),
+        buildAdapterWithDataSource([inrEurMrmEcbIndirectZeroFromFactorRate], ECB),
         TENANT_ID
       )
       .get(inrEurMConversionParam) as CurrencyConversionError;

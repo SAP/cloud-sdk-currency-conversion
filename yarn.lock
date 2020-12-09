@@ -1391,41 +1391,39 @@
   dependencies:
     "@types/node" ">= 8"
 
-"@sap-cloud-sdk/analytics@^1.30.0":
-  version "1.30.0"
-  resolved "https://registry.yarnpkg.com/@sap-cloud-sdk/analytics/-/analytics-1.30.0.tgz#847920a58ec3c2a63b9080b1f833eb3aa3611e9c"
-  integrity sha512-veXlbVRzndDDHE3OwfmqBnsGwHTjE1uAdRGbkSNraYOx6aYn/XyS3OQ9GbyAKRopW0UaG/C6AUnHLbAR+0Xg7w==
+"@sap-cloud-sdk/analytics@^1.32.1":
+  version "1.32.1"
+  resolved "https://registry.yarnpkg.com/@sap-cloud-sdk/analytics/-/analytics-1.32.1.tgz#eaa4ad5cbf58c154054a5089b076b6af6e806c8a"
+  integrity sha512-DVckPmA25yT6g8NkV1jvBrTTbZInLgQ0SaM9ps7a9gV6PWn4TiUyd22gP2qtrRA7GFyUHgvuBZJJJuZueNwaUg==
   dependencies:
-    "@sap-cloud-sdk/util" "^1.30.0"
-    axios "^0.19.2"
+    "@sap-cloud-sdk/util" "^1.32.1"
+    axios "^0.21.0"
 
-"@sap-cloud-sdk/core@^1.28.1":
-  version "1.30.0"
-  resolved "https://registry.yarnpkg.com/@sap-cloud-sdk/core/-/core-1.30.0.tgz#61e02776f6edddcb4666da873c5289b07f4c6bc4"
-  integrity sha512-IkY0gW3Ai/Becq0UFGcpjiddgb8q0vuPLVHakSOw6paujjd244LMCXUhYIyhQft66wwwEtptNzts0c7B3sFBQg==
+"@sap-cloud-sdk/core@^1.32.1":
+  version "1.32.1"
+  resolved "https://registry.yarnpkg.com/@sap-cloud-sdk/core/-/core-1.32.1.tgz#e55ff82629f4ac3083ef1fed09e81ea5af1c012b"
+  integrity sha512-fwoHvWcBL2XZ24ZSz/uMt9cwgZVepF8dfyzhT8tMfYNfLFqNhHD8UcqRnPXkGBnwvo19HNCrbPFHXbPOFwJiuw==
   dependencies:
-    "@sap-cloud-sdk/analytics" "^1.30.0"
-    "@sap-cloud-sdk/util" "^1.30.0"
+    "@sap-cloud-sdk/analytics" "^1.32.1"
+    "@sap-cloud-sdk/util" "^1.32.1"
     "@sap/xsenv" "^3.0.0"
-    axios "^0.19.2"
+    axios "^0.21.0"
     bignumber.js "^9.0.0"
     http-proxy-agent "^4.0.1"
     https-proxy-agent "^5.0.0"
     jsonwebtoken "^8.5.1"
-    moment "~2.29.0"
+    moment "^2.29.0"
     opossum "^5.0.0"
-    rambda "^6.1.0"
     uuid "^8.2.0"
     voca "^1.4.0"
 
-"@sap-cloud-sdk/util@^1.28.1", "@sap-cloud-sdk/util@^1.30.0":
-  version "1.30.0"
-  resolved "https://registry.yarnpkg.com/@sap-cloud-sdk/util/-/util-1.30.0.tgz#eae13b5f70f559c4891577d8782ffa59874daffd"
-  integrity sha512-+92+xiR4O1Quk36veBbGeGeSY2qk7wn/mcgS7Lstungy2mLR3DqJzixc80oGy3ylAMNVoDu7ki6KR8notLlYIw==
+"@sap-cloud-sdk/util@^1.32.1":
+  version "1.32.1"
+  resolved "https://registry.yarnpkg.com/@sap-cloud-sdk/util/-/util-1.32.1.tgz#100f2c187ab1a796c17ae871d11aef8fa9bab975"
+  integrity sha512-VVm66NWvYlHhSE94O6zutO1J8mDtkgI/DvitjA0P41Jr9WAtPdzvYsFmX5sWrYXIaDZMWML6SeKTlhynlzNtgw==
   dependencies:
     chalk "^4.1.0"
     logform "^2.2.0"
-    rambda "~6.2.0"
     winston "^3.3.3"
 
 "@sap/xsenv@^3.0.0":
@@ -2040,12 +2038,12 @@ aws4@^1.8.0:
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.10.1.tgz#e1e82e4f3e999e2cfd61b161280d16a111f86428"
   integrity sha512-zg7Hz2k5lI8kb7U32998pRRFin7zJlkfezGJjUc2heaD4Pw2wObakCDVzkKztTm/Ln7eiVvYsjqak0Ed4LkMDA==
 
-axios@^0.19.2:
-  version "0.19.2"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.19.2.tgz#3ea36c5d8818d0d5f8a8a97a6d36b86cdc00cb27"
-  integrity sha512-fjgm5MvRHLhx+osE2xoekY70AhARk3a6hkN+3Io1jc00jtquGvxYlKlsFUhmUET0V5te6CcZI7lcv2Ym61mjHA==
+axios@^0.21.0:
+  version "0.21.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.21.0.tgz#26df088803a2350dff2c27f96fef99fe49442aca"
+  integrity sha512-fmkJBknJKoZwem3/IKSSLpkdNXZeBu5Q7GA/aRsr2btgrptmSCxi2oFjZHqGdK9DoTil9PIHlPIZw2EcRJXRvw==
   dependencies:
-    follow-redirects "1.5.10"
+    follow-redirects "^1.10.0"
 
 babel-jest@^26.6.1:
   version "26.6.1"
@@ -2919,7 +2917,7 @@ de-indent@^1.0.2:
   resolved "https://registry.yarnpkg.com/de-indent/-/de-indent-1.0.2.tgz#b2038e846dc33baa5796128d0804b455b8c1e21d"
   integrity sha1-sgOOhG3DO6pXlhKNCAS0VbjB4h0=
 
-debug@3.1.0, debug@=3.1.0:
+debug@3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/debug/-/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"
   integrity sha512-OX8XqP7/1a9cqkxYw2yXss15f26NKWBpDXQd0/uK/KPqdQhxbPa994hnzjcE2VqQpDslf55723cKPUOGSmMY3g==
@@ -3870,12 +3868,10 @@ fn.name@1.x.x:
   resolved "https://registry.yarnpkg.com/fn.name/-/fn.name-1.1.0.tgz#26cad8017967aea8731bc42961d04a3d5988accc"
   integrity sha512-GRnmB5gPyJpAhTQdSZTSp9uaPSvl09KoYcMQtsB9rQoOmzs9dH6ffeccH+Z+cv6P68Hu5bC6JjRh4Ah/mHSNRw==
 
-follow-redirects@1.5.10:
-  version "1.5.10"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.5.10.tgz#7b7a9f9aea2fdff36786a94ff643ed07f4ff5e2a"
-  integrity sha512-0V5l4Cizzvqt5D44aTXbFZz+FtyXV1vrDN6qrelxtfYQKW0KO0W2T/hkE8xvGa/540LkZlkaUjO4ailYTFtHVQ==
-  dependencies:
-    debug "=3.1.0"
+follow-redirects@^1.10.0:
+  version "1.13.0"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.13.0.tgz#b42e8d93a2a7eea5ed88633676d6597bc8e384db"
+  integrity sha512-aq6gF1BEKje4a9i9+5jimNFIpq4Q1WiwBToeRK5NvZBd/TRsmW8BsJfOEGkr76TbOyPVD3OVDN910EcUNtRYEA==
 
 for-in@^1.0.2:
   version "1.0.2"
@@ -6037,7 +6033,7 @@ modify-values@^1.0.0:
   resolved "https://registry.yarnpkg.com/modify-values/-/modify-values-1.0.1.tgz#b3939fa605546474e3e3e3c63d64bd43b4ee6022"
   integrity sha512-xV2bxeN6F7oYjZWTe/YPAy6MN2M+sL4u/Rlm2AHCIVGfo2p1yGmBHQ6vHehl4bRTZBdHu3TSkWdYgkwpYzAGSw==
 
-moment@~2.29.0:
+moment@^2.29.0:
   version "2.29.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
   integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
@@ -6984,16 +6980,6 @@ quick-lru@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-4.0.1.tgz#5b8878f113a58217848c6482026c73e1ba57727f"
   integrity sha512-ARhCpm70fzdcvNQfPoy49IaanKkTlRWF2JMzqhcJbhSFRZv7nPTvZJdcY7301IPmvW+/p0RgIWnQDLJxifsQ7g==
-
-rambda@^6.1.0:
-  version "6.3.1"
-  resolved "https://registry.yarnpkg.com/rambda/-/rambda-6.3.1.tgz#15bffd4b1f26a30e9f6af78674eba842b1954ef8"
-  integrity sha512-/iUE52vD8cfRcV/4gqcTZFvooLExJavzO9dcNI+vGLIzNU0e/OOi0jztE2OFFF/AvAKLCChgNfbJAFYnj5Lj2Q==
-
-rambda@~6.2.0:
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/rambda/-/rambda-6.2.0.tgz#4afb776b198b054341bdf53f40edc300bea9a969"
-  integrity sha512-2fIT02e45V2orajVC/TlmNtSyqbaWi/0hB6hfzNigV7qfrllS+mQeST1OQaveKWeVCNVKlXus0F2CAO8lDQNvw==
 
 rc@^1.2.8:
   version "1.2.8"

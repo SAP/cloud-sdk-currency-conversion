@@ -1,5 +1,5 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
-import { Tenant } from '@sap-cloud-sdk/core/dist/scp-cf/tenant';
+import { Tenant } from '@sap-cloud-sdk/core';
 import { ConversionParametersForNonFixedRate } from './conversion-parameters-for-non-fixed-rate';
 import { ExchangeRate } from './exchange-rate';
 import { ExchangeRateTypeDetail } from './exchange-rate-type-detail';
@@ -70,8 +70,5 @@ export interface DataAdapter {
    *         {@link RateType} as the key.
    *
    */
-  getExchangeRateTypeDetailsForTenant(
-    tenant: Tenant,
-    rateTypeSet: Set<string>
-  ): Map<string, ExchangeRateTypeDetail>;
+  getExchangeRateTypeDetailsForTenant(tenant: Tenant, rateTypeSet: Set<string>): Map<string, ExchangeRateTypeDetail>;
 }

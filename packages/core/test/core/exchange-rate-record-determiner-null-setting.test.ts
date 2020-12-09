@@ -1,5 +1,5 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
-import { Tenant } from '@sap-cloud-sdk/core/dist/scp-cf/tenant';
+import { Tenant } from '@sap-cloud-sdk/core';
 import {
   buildCurrency,
   ExchangeRate,
@@ -48,9 +48,7 @@ const S_21_00000001: ExchangeRateValue = new ExchangeRateValue('21.00000001');
 const S_200: ExchangeRateValue = new ExchangeRateValue('200');
 const S_7_0: ExchangeRateValue = new ExchangeRateValue('7.0');
 const S_21_0: ExchangeRateValue = new ExchangeRateValue('21.0');
-const S_0_33333333333333: ExchangeRateValue = new ExchangeRateValue(
-  '0.33333333333333'
-);
+const S_0_33333333333333: ExchangeRateValue = new ExchangeRateValue('0.33333333333333');
 
 const S_2020_01_01T02_30_00Z: Date = new Date('2020-01-01T02:30:00Z');
 const S_2020_02_01T02_30_00Z: Date = new Date('2020-02-01T02:30:00Z');
@@ -73,7 +71,7 @@ const eurInrMConversionParam: ConversionParametersForNonFixedRate = new Conversi
   M,
   S_2020_01_01T02_30_00Z
 );
-const eurInrInvalidCurrPairConversionParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const eurInrInvalidCurrPairConversionParam = new ConversionParametersForNonFixedRate(
   'AUD',
   'BSD',
   '100',
@@ -759,9 +757,7 @@ const eurUsdMrmThrIndirectFalseInvertedTrueRate: ExchangeRate = new ExchangeRate
 
 /* Exchange Rate ends*/
 
-function instantiateExchangeRateRecordDeterminer(
-  exchangeRateResultSet: ExchangeRate[]
-): ExchangeRateRecordDeterminer {
+function instantiateExchangeRateRecordDeterminer(exchangeRateResultSet: ExchangeRate[]): ExchangeRateRecordDeterminer {
   return new ExchangeRateRecordDeterminer(
     TENANT_ID,
     null as any,
@@ -770,33 +766,17 @@ function instantiateExchangeRateRecordDeterminer(
   );
 }
 
-function getExchangeRateTypeDetailsForTenant(): Map<
-  string,
-  ExchangeRateTypeDetail
-> {
-  const exchangeRateTypeDetailMap: Map<
-    string,
-    ExchangeRateTypeDetail
-  > = new Map();
+function getExchangeRateTypeDetailsForTenant(): Map<string, ExchangeRateTypeDetail> {
+  const exchangeRateTypeDetailMap: Map<string, ExchangeRateTypeDetail> = new Map();
   exchangeRateTypeDetailMap.set(A, new ExchangeRateTypeDetail(INR, true));
-  exchangeRateTypeDetailMap.set(
-    M,
-    new ExchangeRateTypeDetail(null as any, true)
-  );
-  exchangeRateTypeDetailMap.set(
-    ASK,
-    new ExchangeRateTypeDetail(null as any, true)
-  );
+  exchangeRateTypeDetailMap.set(M, new ExchangeRateTypeDetail(null as any, true));
+  exchangeRateTypeDetailMap.set(ASK, new ExchangeRateTypeDetail(null as any, true));
   return exchangeRateTypeDetailMap;
 }
 
 describe('Exchange Rate Record Determiner Null Tenant Setting', () => {
   it('Get best matched exchange rate record', () => {
-    const exchangeRateResultSet: ExchangeRate[] = [
-      inrEurMrmEcbMRate,
-      eurInrMrmEcbMRate,
-      eurInrMrmEcbARate
-    ];
+    const exchangeRateResultSet: ExchangeRate[] = [inrEurMrmEcbMRate, eurInrMrmEcbMRate, eurInrMrmEcbARate];
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
@@ -826,18 +806,12 @@ describe('Exchange Rate Record Determiner Null Tenant Setting', () => {
     } catch (error) {
       errInput = error;
     }
-    expect(errInput.message).toBe(
-      ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD
-    );
+    expect(errInput.message).toBe(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
   });
 
   it('exchange rate record with different data providers', () => {
     let errInput = new Error();
-    const exchangeRateResultSet: ExchangeRate[] = [
-      inrEurMrmEcbMRate,
-      eurInrMrmThrMRate,
-      eurInrMrmEcbMDuplicateRate
-    ];
+    const exchangeRateResultSet: ExchangeRate[] = [inrEurMrmEcbMRate, eurInrMrmThrMRate, eurInrMrmEcbMDuplicateRate];
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
@@ -848,9 +822,7 @@ describe('Exchange Rate Record Determiner Null Tenant Setting', () => {
     } catch (error) {
       errInput = error;
     }
-    expect(errInput.message).toBe(
-      ConversionError.MULTIPLE_CONVERSION_RECORD_FOUND
-    );
+    expect(errInput.message).toBe(ConversionError.MULTIPLE_CONVERSION_RECORD_FOUND);
   });
 
   it('Duplicate exchange rate record', () => {
@@ -871,9 +843,7 @@ describe('Exchange Rate Record Determiner Null Tenant Setting', () => {
     } catch (error) {
       errInput = error;
     }
-    expect(errInput.message).toBe(
-      ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND
-    );
+    expect(errInput.message).toBe(ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND);
   });
 
   it('No exchange rate record for currency pair AUD-BSD', () => {
@@ -896,9 +866,7 @@ describe('Exchange Rate Record Determiner Null Tenant Setting', () => {
     } catch (error) {
       errInput = error;
     }
-    expect(errInput.message).toBe(
-      ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD
-    );
+    expect(errInput.message).toBe(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
   });
 
   it('No exchange rate record for different tenant', () => {
@@ -924,9 +892,7 @@ describe('Exchange Rate Record Determiner Null Tenant Setting', () => {
     } catch (error) {
       errInput = error;
     }
-    expect(errInput.message).toBe(
-      ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD
-    );
+    expect(errInput.message).toBe(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
   });
 
   it('Single exchange rate record for different tenant', () => {
@@ -971,9 +937,7 @@ describe('Exchange Rate Record Determiner Null Tenant Setting', () => {
     } catch (error) {
       errInput = error;
     }
-    expect(errInput.message).toBe(
-      ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND
-    );
+    expect(errInput.message).toBe(ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND);
   });
 
   it('Inverted conversion with different data source', () => {
@@ -992,9 +956,7 @@ describe('Exchange Rate Record Determiner Null Tenant Setting', () => {
     } catch (error) {
       errInput = error;
     }
-    expect(errInput.message).toBe(
-      ConversionError.MULTIPLE_CONVERSION_RECORD_FOUND
-    );
+    expect(errInput.message).toBe(ConversionError.MULTIPLE_CONVERSION_RECORD_FOUND);
   });
 
   it('Inverted conversion with different data provider', () => {
@@ -1013,24 +975,18 @@ describe('Exchange Rate Record Determiner Null Tenant Setting', () => {
     } catch (error) {
       errInput = error;
     }
-    expect(errInput.message).toBe(
-      ConversionError.MULTIPLE_CONVERSION_RECORD_FOUND
-    );
+    expect(errInput.message).toBe(ConversionError.MULTIPLE_CONVERSION_RECORD_FOUND);
   });
 
   it('Inverted Single conversion with inverted currency pair', () => {
-    const exchangeRateResultSet: ExchangeRate[] = [
-      eurUsdMrmEcbIndirectFalseInvertedTrueRate
-    ];
+    const exchangeRateResultSet: ExchangeRate[] = [eurUsdMrmEcbIndirectFalseInvertedTrueRate];
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
     const actualExchangeRateRecord: ExchangeRate = exchangeRateRecordDeterminer.getBestMatchedExchangeRateRecord(
       usdEurMConversionParam
     );
-    expect(eurUsdMrmEcbIndirectFalseInvertedTrueRate).toEqual(
-      actualExchangeRateRecord
-    );
+    expect(eurUsdMrmEcbIndirectFalseInvertedTrueRate).toEqual(actualExchangeRateRecord);
   });
 
   it('Inverted Single conversion with direct currency pair', () => {
@@ -1044,9 +1000,7 @@ describe('Exchange Rate Record Determiner Null Tenant Setting', () => {
     const actualExchangeRateRecord: ExchangeRate = exchangeRateRecordDeterminer.getBestMatchedExchangeRateRecord(
       usdEurMConversionParam
     );
-    expect(usdEurMrmEcbIndirectFalseInvertedTrueRate).toEqual(
-      actualExchangeRateRecord
-    );
+    expect(usdEurMrmEcbIndirectFalseInvertedTrueRate).toEqual(actualExchangeRateRecord);
   });
 
   it('Inverted conversion exchange rate record with exchange rate type detail null', () => {
@@ -1069,9 +1023,7 @@ describe('Exchange Rate Record Determiner Null Tenant Setting', () => {
     } catch (error) {
       errInput = error;
     }
-    expect(errInput.message).toBe(
-      ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD
-    );
+    expect(errInput.message).toBe(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
   });
 
   /* INVERTED RATE TEST CASE ENDS */
@@ -1079,10 +1031,7 @@ describe('Exchange Rate Record Determiner Null Tenant Setting', () => {
   /* REFERENCE CURRENCY STARTS */
 
   it('Reference Currency as INR', () => {
-    const exchangeRateResultSet: ExchangeRate[] = [
-      eurInrMrmEcbARate,
-      usdInrMrmEcbARate
-    ];
+    const exchangeRateResultSet: ExchangeRate[] = [eurInrMrmEcbARate, usdInrMrmEcbARate];
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
@@ -1160,10 +1109,7 @@ describe('Exchange Rate Record Determiner Null Tenant Setting', () => {
   });
 
   it('Reference Currency as INR From Reference Currency Pair Valid DateTime', () => {
-    const exchangeRateResultSet: ExchangeRate[] = [
-      eurInrMrmEcbADateBeforeRate,
-      usdInrMrmEcbARate
-    ];
+    const exchangeRateResultSet: ExchangeRate[] = [eurInrMrmEcbADateBeforeRate, usdInrMrmEcbARate];
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
@@ -1188,10 +1134,7 @@ describe('Exchange Rate Record Determiner Null Tenant Setting', () => {
 
   it('Reference Currency with non existing rate type', () => {
     let errInput = new Error();
-    const exchangeRateResultSet: ExchangeRate[] = [
-      usdInrMrmEcbLastRate,
-      eurInrMrmEcbLastRate
-    ];
+    const exchangeRateResultSet: ExchangeRate[] = [usdInrMrmEcbLastRate, eurInrMrmEcbLastRate];
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
@@ -1202,9 +1145,7 @@ describe('Exchange Rate Record Determiner Null Tenant Setting', () => {
     } catch (error) {
       errInput = error;
     }
-    expect(errInput.message).toBe(
-      ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD
-    );
+    expect(errInput.message).toBe(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
   });
 
   it('Reference Currency with Direct Rate No From Reference Pair', () => {
@@ -1239,10 +1180,7 @@ describe('Exchange Rate Record Determiner Null Tenant Setting', () => {
 
   it('Reference Currency with zero rate', () => {
     let errInput = new Error();
-    const exchangeRateResultSet: ExchangeRate[] = [
-      eurInrMrmEcbZeroRate,
-      usdInrMrmEcbZeroRate
-    ];
+    const exchangeRateResultSet: ExchangeRate[] = [eurInrMrmEcbZeroRate, usdInrMrmEcbZeroRate];
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
@@ -1258,10 +1196,7 @@ describe('Exchange Rate Record Determiner Null Tenant Setting', () => {
 
   it('Reference Currency with zero factor', () => {
     let errInput = new Error();
-    const exchangeRateResultSet: ExchangeRate[] = [
-      eurInrMrmEcbZeroFactor,
-      usdInrMrmEcbZeroFactor
-    ];
+    const exchangeRateResultSet: ExchangeRate[] = [eurInrMrmEcbZeroFactor, usdInrMrmEcbZeroFactor];
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
@@ -1277,10 +1212,7 @@ describe('Exchange Rate Record Determiner Null Tenant Setting', () => {
 
   it('Reference Currency with zero factor and zero rate', () => {
     let errInput = new Error();
-    const exchangeRateResultSet: ExchangeRate[] = [
-      eurInrMrmEcbZeroFactorRate,
-      usdInrMrmEcbZeroFactorRate
-    ];
+    const exchangeRateResultSet: ExchangeRate[] = [eurInrMrmEcbZeroFactorRate, usdInrMrmEcbZeroFactorRate];
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
@@ -1295,10 +1227,7 @@ describe('Exchange Rate Record Determiner Null Tenant Setting', () => {
   });
 
   it('Reference Currency with Direct Rate No From and To Reference Pair', () => {
-    const exchangeRateResultSet: ExchangeRate[] = [
-      eurUsdMrmEcbIndirectTrueRate,
-      eurUsdMrmEcbIndirectFalseRate
-    ];
+    const exchangeRateResultSet: ExchangeRate[] = [eurUsdMrmEcbIndirectTrueRate, eurUsdMrmEcbIndirectFalseRate];
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
@@ -1327,9 +1256,7 @@ describe('Exchange Rate Record Determiner Null Tenant Setting', () => {
     } catch (error) {
       errInput = error;
     }
-    expect(errInput.message).toBe(
-      ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND
-    );
+    expect(errInput.message).toBe(ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND);
   });
 
   it('Reference Currency with duplicate to reference pair', () => {
@@ -1351,9 +1278,7 @@ describe('Exchange Rate Record Determiner Null Tenant Setting', () => {
     } catch (error) {
       errInput = error;
     }
-    expect(errInput.message).toBe(
-      ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND
-    );
+    expect(errInput.message).toBe(ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND);
   });
 
   it('Reference Currency with duplicate from and to reference pair', () => {
@@ -1376,18 +1301,13 @@ describe('Exchange Rate Record Determiner Null Tenant Setting', () => {
     } catch (error) {
       errInput = error;
     }
-    expect(errInput.message).toBe(
-      ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND
-    );
+    expect(errInput.message).toBe(ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND);
   });
 
   /* Combination of indirect in 'From' and 'To' Currency */
 
   it('From Reference Rate as Indirect and To Reference Rate as Indirect', () => {
-    const exchangeRateResultSet: ExchangeRate[] = [
-      eurInrMrmIndirectTrueRate,
-      usdInrMrmIndirectTrueRate
-    ];
+    const exchangeRateResultSet: ExchangeRate[] = [eurInrMrmIndirectTrueRate, usdInrMrmIndirectTrueRate];
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
@@ -1411,10 +1331,7 @@ describe('Exchange Rate Record Determiner Null Tenant Setting', () => {
   });
 
   it('From Reference Rate as Indirect and To Reference Rate as direct', () => {
-    const exchangeRateResultSet: ExchangeRate[] = [
-      eurInrMrmIndirectTrueRate,
-      usdInrMrmIndirectFalseRate
-    ];
+    const exchangeRateResultSet: ExchangeRate[] = [eurInrMrmIndirectTrueRate, usdInrMrmIndirectFalseRate];
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
@@ -1438,10 +1355,7 @@ describe('Exchange Rate Record Determiner Null Tenant Setting', () => {
   });
 
   it('From Reference Rate as direct and To Reference Rate as indirect', () => {
-    const exchangeRateResultSet: ExchangeRate[] = [
-      eurInrMrmIndirectFalseRate,
-      usdInrMrmIndirectTrueRate
-    ];
+    const exchangeRateResultSet: ExchangeRate[] = [eurInrMrmIndirectFalseRate, usdInrMrmIndirectTrueRate];
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
@@ -1465,10 +1379,7 @@ describe('Exchange Rate Record Determiner Null Tenant Setting', () => {
   });
 
   it('From Reference Rate as direct and To Reference Rate as direct', () => {
-    const exchangeRateResultSet: ExchangeRate[] = [
-      eurInrMrmIndirectFalseRate,
-      usdInrMrmIndirectFalseRate
-    ];
+    const exchangeRateResultSet: ExchangeRate[] = [eurInrMrmIndirectFalseRate, usdInrMrmIndirectFalseRate];
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );

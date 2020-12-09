@@ -1,24 +1,20 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
-import { Tenant } from '@sap-cloud-sdk/core/dist/scp-cf/tenant';
+import { Tenant } from '@sap-cloud-sdk/core';
 import {
   ConversionParametersForFixedRate,
   SingleFixedRateConversionResult,
   BulkFixedRateConversionResult,
-  CurrencyAmount,
-  CurrencyConversionError,
   ConversionParametersForNonFixedRate,
   DataAdapter,
   SingleNonFixedRateConversionResult,
   BulkNonFixedRateConversionResult,
   TenantSettings
 } from '@sap-cloud-sdk/currency-conversion-models';
-import { BigNumber } from 'bignumber.js';
-import { logger as log } from '../helper/logger';
+import { isNullish } from '@sap-cloud-sdk/util';
+import { logger as log, logAndGetError } from '../helper/logger';
 import { ConversionError } from '../constants/conversion-error';
-import {
-  convertCurrenciesWithNonFixedRateHelper,
-  CURR_FORMAT
-} from '../helper/non-fixed-rate-helper';
+import { convertCurrenciesWithNonFixedRateHelper } from '../helper/non-fixed-rate-helper';
+import { performSingleFixedConversion } from '../helper/fixed-rate-helper';
 
 /**
  * Currency Converter API class which exposes methods to
@@ -57,33 +53,22 @@ export class CurrencyConverter {
   public convertCurrenciesWithFixedRate(
     conversionParameters: ConversionParametersForFixedRate[]
   ): BulkFixedRateConversionResult {
-    if (!this.validateBulkFixedConversionParameters(conversionParameters)) {
-      log?.error(ConversionError.INVALID_PARAMS);
-      throw new CurrencyConversionError(ConversionError.INVALID_PARAMS);
+    if (!this.validateBulkConversionParameters(conversionParameters)) {
+      throw logAndGetError(ConversionError.INVALID_PARAMS);
     }
-    const resultMap: Map<
-      ConversionParametersForFixedRate,
-      SingleFixedRateConversionResult | CurrencyConversionError
-    > = new Map();
-    for (const conversionParameter of conversionParameters) {
+    const resultMap = conversionParameters.reduce((results, conversionParameter) => {
       try {
-        const singleConversionResult: SingleFixedRateConversionResult = this.convertCurrencyWithFixedRate(
-          conversionParameter
+        const singleConversionResult = this.convertCurrencyWithFixedRate(conversionParameter);
+        results.set(conversionParameter, singleConversionResult);
+      } catch (err) {
+        log.error(
+          `Fixed rate conversion for parameter ${conversionParameter} 
+            failed with error: ${err}`
         );
-        resultMap.set(conversionParameter, singleConversionResult);
-      } catch (error) {
-        log?.error(
-          'Fixed Rate Conversion Failed for parameter : ' +
-            conversionParameter +
-            'with Exception :',
-          error
-        );
-        resultMap.set(
-          conversionParameter,
-          new CurrencyConversionError((error as Error).message)
-        );
+        results.set(conversionParameter, err);
       }
-    }
+      return results;
+    }, new Map());
     return new BulkFixedRateConversionResult(resultMap);
   }
 
@@ -113,14 +98,10 @@ export class CurrencyConverter {
   public convertCurrencyWithFixedRate(
     conversionParameter: ConversionParametersForFixedRate
   ): SingleFixedRateConversionResult {
-    if (!this.validateSingleFixedConversionParameter(conversionParameter)) {
-      log?.error(ConversionError.INVALID_PARAMS);
-      throw new CurrencyConversionError(ConversionError.INVALID_PARAMS);
+    if (!this.validateSingleConversionParameter(conversionParameter)) {
+      throw logAndGetError(ConversionError.INVALID_PARAMS);
     }
-    const singleConversionResult: SingleFixedRateConversionResult = this.performSingleFixedConversion(
-      conversionParameter
-    );
-    return singleConversionResult;
+    return performSingleFixedConversion(conversionParameter);
   }
 
   /**
@@ -169,21 +150,18 @@ export class CurrencyConverter {
     tenant: Tenant,
     overrideTenantSetting?: TenantSettings
   ): SingleNonFixedRateConversionResult {
-    if (!this.validateSingleNonFixedConversionParameter(conversionParameter)) {
-      log?.error(ConversionError.INVALID_PARAMS);
-      throw new CurrencyConversionError(ConversionError.INVALID_PARAMS);
+    if (!this.validateSingleConversionParameter(conversionParameter)) {
+      throw logAndGetError(ConversionError.INVALID_PARAMS);
     }
-    const bulkConversionResult: BulkNonFixedRateConversionResult = convertCurrenciesWithNonFixedRateHelper(
+    const bulkConversionResult = convertCurrenciesWithNonFixedRateHelper(
       Array.of(conversionParameter),
       adapter,
       tenant,
       overrideTenantSetting
     );
-    const singleConversionResult = bulkConversionResult.get(
-      conversionParameter
-    );
+    const singleConversionResult = bulkConversionResult.get(conversionParameter);
     if (singleConversionResult instanceof Error) {
-      throw new CurrencyConversionError(singleConversionResult.message);
+      throw singleConversionResult;
     }
     return singleConversionResult;
   }
@@ -235,122 +213,31 @@ export class CurrencyConverter {
     tenant: Tenant,
     overrideTenantSetting?: TenantSettings
   ): BulkNonFixedRateConversionResult {
-    if (!this.validateBulkNonFixedConversionParameters(conversionParameter)) {
-      log?.error(ConversionError.INVALID_PARAMS);
-      throw new CurrencyConversionError(ConversionError.INVALID_PARAMS);
+    if (!this.validateBulkConversionParameters(conversionParameter)) {
+      throw logAndGetError(ConversionError.INVALID_PARAMS);
     }
-    const bulkConversionResult: BulkNonFixedRateConversionResult = convertCurrenciesWithNonFixedRateHelper(
-      conversionParameter,
-      adapter,
-      tenant,
-      overrideTenantSetting
-    );
-    return bulkConversionResult;
+    return convertCurrenciesWithNonFixedRateHelper(conversionParameter, adapter, tenant, overrideTenantSetting);
   }
 
-  private validateSingleNonFixedConversionParameter(
-    conversionParameter: ConversionParametersForNonFixedRate
-  ): boolean {
-    if (conversionParameter === null || conversionParameter === undefined) {
-      log?.error(
-        'The conversion parameter for non fixed conversion is null or undefined'
-      );
+  private validateSingleConversionParameter(conversionParameter: any): boolean {
+    if (isNullish(conversionParameter)) {
+      log.error('The conversion parameter used for conversion is null or undefined');
       return false;
     }
     return true;
   }
 
-  private validateSingleFixedConversionParameter(
-    conversionParameter: ConversionParametersForFixedRate
-  ): boolean {
-    if (conversionParameter === null || conversionParameter === undefined) {
-      log?.error(
-        'The conversion parameter for fixed conversion is null or undefined'
+  private validateBulkConversionParameters(conversionParams: any): boolean {
+    if (isNullish(conversionParams)) {
+      log.error('The conversion parameter list used for conversion is null or empty');
+      return false;
+    }
+    if (!conversionParams.length || conversionParams.length > CurrencyConverter.MAXIMUM_CONVERSION_PARAMETER_ALLOWED) {
+      log.error(
+        'The conversion parameter list for conversion is empty or the number of parameters exceeded the allowed limit.'
       );
       return false;
     }
     return true;
-  }
-
-  private validateBulkFixedConversionParameters(
-    conversionParams: ConversionParametersForFixedRate[]
-  ): boolean {
-    if (conversionParams === null || conversionParams === undefined) {
-      log?.error(
-        'The conversion parameter list for non fixed conversion is null or empty'
-      );
-      return false;
-    }
-    if (
-      conversionParams.length === 0 ||
-      conversionParams.length >
-        CurrencyConverter.MAXIMUM_CONVERSION_PARAMETER_ALLOWED
-    ) {
-      log?.error(
-        'The conversion parameter list for fixed conversion is empty or the number of parameters for fixed conversion exceeded the allowed limit.'
-      );
-      return false;
-    }
-    return true;
-  }
-
-  private validateBulkNonFixedConversionParameters(
-    conversionParams: ConversionParametersForNonFixedRate[]
-  ): boolean {
-    if (conversionParams === null || conversionParams === undefined) {
-      log?.error(
-        'The conversion parameter list for non fixed conversion is null or empty'
-      );
-      return false;
-    }
-    if (
-      conversionParams.length === 0 ||
-      conversionParams.length >
-        CurrencyConverter.MAXIMUM_CONVERSION_PARAMETER_ALLOWED
-    ) {
-      log?.error(
-        'The conversion parameter list for fixed conversion is empty or the number of parameters for fixed conversion exceeded the allowed limit.'
-      );
-      return false;
-    }
-    return true;
-  }
-  private performSingleFixedConversion(
-    conversionParams: ConversionParametersForFixedRate
-  ): SingleFixedRateConversionResult {
-    let convertedAmount: CurrencyAmount;
-    if (
-      conversionParams.fromCurrency.currencyCode ===
-      conversionParams.toCurrency.currencyCode
-    ) {
-      convertedAmount = new CurrencyAmount(
-        conversionParams.fromAmount.decimalValue.toFormat(CURR_FORMAT)
-      );
-    } else {
-      convertedAmount = this.calculateConvertedAmtForFixedRate(
-        conversionParams
-      );
-    }
-    const numOfDefaultFractionDigs =
-      conversionParams.toCurrency.defaultFractionDigits;
-    const roundedValString = convertedAmount.decimalValue.toFormat(
-      numOfDefaultFractionDigs,
-      BigNumber.ROUND_HALF_UP,
-      CURR_FORMAT
-    );
-    const roundedOffAmount = new CurrencyAmount(roundedValString);
-    return new SingleFixedRateConversionResult(
-      convertedAmount,
-      roundedOffAmount
-    );
-  }
-
-  private calculateConvertedAmtForFixedRate(
-    conversionParams: ConversionParametersForFixedRate
-  ): CurrencyAmount {
-    const result = conversionParams.fromAmount.decimalValue.multipliedBy(
-      conversionParams.fixedRateValue.decimalValue
-    );
-    return new CurrencyAmount(result.toFormat(CURR_FORMAT));
   }
 }

@@ -1,5 +1,5 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
-import { Tenant } from '@sap-cloud-sdk/core/dist/scp-cf/tenant';
+import { Tenant } from '@sap-cloud-sdk/core';
 import {
   buildCurrency,
   Currency,
@@ -440,25 +440,16 @@ function buildAdapter(exchangeRates: ExchangeRate[]): DataAdapter {
   adapter.getExchangeRatesForTenant = (): ExchangeRate[] => exchangeRates;
 
   adapter.getDefaultSettingsForTenant = (): TenantSettings => null as any;
-  adapter.getExchangeRateTypeDetailsForTenant = (): Map<
-    string,
-    ExchangeRateTypeDetail
-  > => new Map();
+  adapter.getExchangeRateTypeDetailsForTenant = (): Map<string, ExchangeRateTypeDetail> => new Map();
   return adapter;
 }
-function buildAdapterWithDataSource(
-  exchangeRates: ExchangeRate[],
-  dataSource: string
-): DataAdapter {
+function buildAdapterWithDataSource(exchangeRates: ExchangeRate[], dataSource: string): DataAdapter {
   const adapter: DataAdapter = {} as DataAdapter;
 
   adapter.getExchangeRatesForTenant = (): ExchangeRate[] => exchangeRates;
 
   adapter.getDefaultSettingsForTenant = (): TenantSettings => null as any;
-  adapter.getExchangeRateTypeDetailsForTenant = (): Map<
-    string,
-    ExchangeRateTypeDetail
-  > => new Map();
+  adapter.getExchangeRateTypeDetailsForTenant = (): Map<string, ExchangeRateTypeDetail> => new Map();
   return adapter;
 }
 
@@ -481,35 +472,21 @@ describe('Non Fixed Rate -- zero rate or zero factor tests default null and over
   it('Test Direct Zero to Factor Zero.', () => {
     const result: SingleNonFixedRateConversionResult = currencyConverter.convertCurrencyWithNonFixedRate(
       inrEurMConversionParam,
-      buildAdapterWithDataSource(
-        [
-          inrEurMrmThrDirectZeroToFactorZeroRate,
-          inrEurMrmEcbDirectZeroToFactorZeroRate
-        ],
-        ECB
-      ),
+      buildAdapterWithDataSource([inrEurMrmThrDirectZeroToFactorZeroRate, inrEurMrmEcbDirectZeroToFactorZeroRate], ECB),
       TENANT_ID,
       overrideTenantSettings
     );
     expect(result).toBeTruthy();
     expect(result.convertedAmount.decimalValue.toNumber()).toBe(0);
     expect(result.roundedOffConvertedAmount.decimalValue.toString()).toBe('0');
-    expect(result.exchangeRate).toMatchObject(
-      inrEurMrmThrDirectZeroToFactorZeroRate
-    );
+    expect(result.exchangeRate).toMatchObject(inrEurMrmThrDirectZeroToFactorZeroRate);
   });
 
   it('Test Indirect Zero To Factor Rate.', () => {
     const result = currencyConverter
       .convertCurrenciesWithNonFixedRate(
         Array.of(inrEurMConversionParam),
-        buildAdapterWithDataSource(
-          [
-            inrEurMrmThrIndirectZeroToFactorRate,
-            inrEurMrmEcbIndirectZeroToFactorRate
-          ],
-          ECB
-        ),
+        buildAdapterWithDataSource([inrEurMrmThrIndirectZeroToFactorRate, inrEurMrmEcbIndirectZeroToFactorRate], ECB),
         TENANT_ID,
         overrideTenantSettings
       )
@@ -517,22 +494,14 @@ describe('Non Fixed Rate -- zero rate or zero factor tests default null and over
     expect(result).toBeTruthy();
     expect(result.convertedAmount.decimalValue.toNumber()).toBe(0);
     expect(result.roundedOffConvertedAmount.decimalValue.toString()).toBe('0');
-    expect(result.exchangeRate).toMatchObject(
-      inrEurMrmThrIndirectZeroToFactorRate
-    );
+    expect(result.exchangeRate).toMatchObject(inrEurMrmThrIndirectZeroToFactorRate);
   });
 
   it('Test Direct Zero To Factor Rate.', () => {
     const result = currencyConverter
       .convertCurrenciesWithNonFixedRate(
         Array.of(inrEurMConversionParam),
-        buildAdapterWithDataSource(
-          [
-            inrEurMrmThrDirectZeroToFactorRate,
-            inrEurMrmEcbDirectZeroToFactorRate
-          ],
-          ECB
-        ),
+        buildAdapterWithDataSource([inrEurMrmThrDirectZeroToFactorRate, inrEurMrmEcbDirectZeroToFactorRate], ECB),
         TENANT_ID,
         overrideTenantSettings
       )
@@ -540,19 +509,14 @@ describe('Non Fixed Rate -- zero rate or zero factor tests default null and over
     expect(result).toBeTruthy();
     expect(result.convertedAmount.decimalValue.toNumber()).toBe(0);
     expect(result.roundedOffConvertedAmount.decimalValue.toString()).toBe('0');
-    expect(result.exchangeRate).toMatchObject(
-      inrEurMrmThrDirectZeroToFactorRate
-    );
+    expect(result.exchangeRate).toMatchObject(inrEurMrmThrDirectZeroToFactorRate);
   });
 
   it('Test Indirect Zero Rate', () => {
     const result = currencyConverter
       .convertCurrenciesWithNonFixedRate(
         Array.of(inrEurMConversionParam),
-        buildAdapterWithDataSource(
-          [inrEurMrmThrIndirectZeroRate, inrEurMrmEcbIndirectZeroRate],
-          ECB
-        ),
+        buildAdapterWithDataSource([inrEurMrmThrIndirectZeroRate, inrEurMrmEcbIndirectZeroRate], ECB),
         TENANT_ID,
         overrideTenantSettings
       )
@@ -566,10 +530,7 @@ describe('Non Fixed Rate -- zero rate or zero factor tests default null and over
       .convertCurrenciesWithNonFixedRate(
         Array.of(inrEurMConversionParam),
         buildAdapterWithDataSource(
-          [
-            inrEurMrmThrIndirectZeroFactorsZeroRate,
-            inrEurMrmEcbIndirectZeroFactorsZeroRate
-          ],
+          [inrEurMrmThrIndirectZeroFactorsZeroRate, inrEurMrmEcbIndirectZeroFactorsZeroRate],
           ECB
         ),
         TENANT_ID,
@@ -586,10 +547,7 @@ describe('Non Fixed Rate -- zero rate or zero factor tests default null and over
       .convertCurrenciesWithNonFixedRate(
         Array.of(inrEurMConversionParam),
         buildAdapterWithDataSource(
-          [
-            inrEurMrmThrIndirectZeroToFactorZeroRate,
-            inrEurMrmEcbIndirectZeroToFactorZeroRate
-          ],
+          [inrEurMrmThrIndirectZeroToFactorZeroRate, inrEurMrmEcbIndirectZeroToFactorZeroRate],
           ECB
         ),
         TENANT_ID,
@@ -605,10 +563,7 @@ describe('Non Fixed Rate -- zero rate or zero factor tests default null and over
       .convertCurrenciesWithNonFixedRate(
         Array.of(inrEurMConversionParam),
         buildAdapterWithDataSource(
-          [
-            inrEurMrmThrIndirectZeroFromFactZeroRate,
-            inrEurMrmEcbIndirectZeroFromFactZeroRate
-          ],
+          [inrEurMrmThrIndirectZeroFromFactZeroRate, inrEurMrmEcbIndirectZeroFromFactZeroRate],
           ECB
         ),
         TENANT_ID,
@@ -624,13 +579,7 @@ describe('Non Fixed Rate -- zero rate or zero factor tests default null and over
     const result = currencyConverter
       .convertCurrenciesWithNonFixedRate(
         Array.of(inrEurMConversionParam),
-        buildAdapterWithDataSource(
-          [
-            inrEurMrmThrDirectZeroFactorsZeroRate,
-            inrEurMrmEcbDirectZeroFactorsZeroRate
-          ],
-          ECB
-        ),
+        buildAdapterWithDataSource([inrEurMrmThrDirectZeroFactorsZeroRate, inrEurMrmEcbDirectZeroFactorsZeroRate], ECB),
         TENANT_ID,
         overrideTenantSettings
       )
@@ -645,10 +594,7 @@ describe('Non Fixed Rate -- zero rate or zero factor tests default null and over
       .convertCurrenciesWithNonFixedRate(
         Array.of(inrEurMConversionParam),
         buildAdapterWithDataSource(
-          [
-            inrEurMrmThrDirectZeroFromFactZeroRate,
-            inrEurMrmEcbDirectZeroFromFactZeroRate
-          ],
+          [inrEurMrmThrDirectZeroFromFactZeroRate, inrEurMrmEcbDirectZeroFromFactZeroRate],
           ECB
         ),
         TENANT_ID,
@@ -664,13 +610,7 @@ describe('Non Fixed Rate -- zero rate or zero factor tests default null and over
     const result = currencyConverter
       .convertCurrenciesWithNonFixedRate(
         Array.of(inrEurMConversionParam),
-        buildAdapterWithDataSource(
-          [
-            inrEurMrmThrIndirectZeroFactorsRate,
-            inrEurMrmEcbIndirectZeroFactorsRate
-          ],
-          ECB
-        ),
+        buildAdapterWithDataSource([inrEurMrmThrIndirectZeroFactorsRate, inrEurMrmEcbIndirectZeroFactorsRate], ECB),
         TENANT_ID,
         overrideTenantSettings
       )
@@ -685,10 +625,7 @@ describe('Non Fixed Rate -- zero rate or zero factor tests default null and over
       .convertCurrenciesWithNonFixedRate(
         Array.of(inrEurMConversionParam),
         buildAdapterWithDataSource(
-          [
-            inrEurMrmThrIndirectZeroFromFactorRate,
-            inrEurMrmEcbIndirectZeroFromFactorRate
-          ],
+          [inrEurMrmThrIndirectZeroFromFactorRate, inrEurMrmEcbIndirectZeroFromFactorRate],
           ECB
         ),
         TENANT_ID,
@@ -704,13 +641,7 @@ describe('Non Fixed Rate -- zero rate or zero factor tests default null and over
     const result = currencyConverter
       .convertCurrenciesWithNonFixedRate(
         Array.of(inrEurMConversionParam),
-        buildAdapterWithDataSource(
-          [
-            inrEurMrmThrDirectZeroFactorsRate,
-            inrEurMrmEcbDirectZeroFactorsRate
-          ],
-          ECB
-        ),
+        buildAdapterWithDataSource([inrEurMrmThrDirectZeroFactorsRate, inrEurMrmEcbDirectZeroFactorsRate], ECB),
         TENANT_ID,
         overrideTenantSettings
       )
@@ -724,13 +655,7 @@ describe('Non Fixed Rate -- zero rate or zero factor tests default null and over
     const result = currencyConverter
       .convertCurrenciesWithNonFixedRate(
         Array.of(inrEurMConversionParam),
-        buildAdapterWithDataSource(
-          [
-            inrEurMrmThrDirectZeroFromFactorRate,
-            inrEurMrmEcbDirectZeroFromFactorRate
-          ],
-          ECB
-        ),
+        buildAdapterWithDataSource([inrEurMrmThrDirectZeroFromFactorRate, inrEurMrmEcbDirectZeroFromFactorRate], ECB),
         TENANT_ID,
         overrideTenantSettings
       )
