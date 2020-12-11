@@ -76,10 +76,7 @@ function fetchExchangeRate(
     throw logAndGetError(ConversionError.ERROR_FETCHING_EXCHANGE_RATES);
   }
   if (!exchangeRates?.length) {
-    log.error(
-      `Data Adpater returned empty list for exchange rates for tenant 
-      ${JSON.stringify(tenant)}`
-    );
+    log.error(`Data Adpater returned empty list for exchange rates for tenant ${JSON.stringify(tenant)}`);
     throw new CurrencyConversionError(ConversionError.EMPTY_EXCHANGE_RATE_LIST);
   }
   return exchangeRates;
@@ -111,9 +108,9 @@ function performBulkNonFixedConversion(
       results.set(conversionParameter, result);
     } catch (err) {
       log.error(
-        `${ConversionError.NON_FIXED_CONVERSION_FAILED} 
-          for parameter : ${JSON.stringify(conversionParameter)} 
-          with exception : ${err}`
+        `${ConversionError.NON_FIXED_CONVERSION_FAILED} for parameter : ${JSON.stringify(
+          conversionParameter
+        )} with exception : ${err}`
       );
       results.set(conversionParameter, err);
     }
@@ -316,8 +313,7 @@ function fetchOverrideTenantSettings(overrideSetting: TenantSettings): TenantSet
   );
   log.debug(
     `Override settings is used for conversion : 
-    ${overrideSetting.ratesDataProviderCode}, 
-    ${overrideSetting.ratesDataSource}`
+    ${overrideSetting.ratesDataProviderCode}, ${overrideSetting.ratesDataSource}`
   );
   return tenantSettingsToBeUsed;
 }

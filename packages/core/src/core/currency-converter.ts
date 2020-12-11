@@ -61,10 +61,7 @@ export class CurrencyConverter {
         const singleConversionResult = this.convertCurrencyWithFixedRate(conversionParameter);
         results.set(conversionParameter, singleConversionResult);
       } catch (err) {
-        log.error(
-          `Fixed rate conversion for parameter ${conversionParameter} 
-            failed with error: ${err}`
-        );
+        log.error(`Fixed rate conversion for parameter ${conversionParameter} failed with error: ${err}`);
         results.set(conversionParameter, err);
       }
       return results;

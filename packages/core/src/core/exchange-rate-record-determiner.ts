@@ -43,18 +43,13 @@ export class ExchangeRateRecordDeterminer {
     const filterdExchangeRateList = this.getSortedFilteredExchangeRates(conversionParameter);
     const firstItemFromList: ExchangeRate = this.getFirstEntryFromList(filterdExchangeRateList);
     log.debug(
-      `For conversionRequest 
-      ${JSON.stringify(conversionParameter.fromCurrency)} 
-      - 
-      ${JSON.stringify(conversionParameter.toCurrency)} 
-      - 
-      ${conversionParameter.conversionAsOfDateTime}  
-      exchange rate information to be used is valid date 
-      ${firstItemFromList.validFromDateTime} 
-      - rate value as 
-      ${JSON.stringify(firstItemFromList.exchangeRateValue)} 
-      - inverted entry as 
-      ${firstItemFromList.isIndirect}`
+      `For conversionRequest ${JSON.stringify(conversionParameter.fromCurrency)} - ${JSON.stringify(
+        conversionParameter.toCurrency
+      )} - ${conversionParameter.conversionAsOfDateTime} exchange rate information to be used is valid date ${
+        firstItemFromList.validFromDateTime
+      } - rate value as ${JSON.stringify(firstItemFromList.exchangeRateValue)} - inverted entry as ${
+        firstItemFromList.isIndirect
+      }`
     );
     return firstItemFromList;
   }
@@ -67,8 +62,7 @@ export class ExchangeRateRecordDeterminer {
        * records including it.
        */
       log.debug(
-        `Reference currency is defined for the exchange rate type - 
-        ${JSON.stringify(
+        `Reference currency is defined for the exchange rate type - ${JSON.stringify(
           this._exchangeRateTypeDetailMap?.get(conversionParameter.exchangeRateType)?.referenceCurrency
         )}`
       );
@@ -81,8 +75,7 @@ export class ExchangeRateRecordDeterminer {
       // get the result set having all the combination of 'To/From' currency.
       const directAndInvertedPairRates = this.getRatesWithBothDirectAndInvertedPair(conversionParameter);
       log.debug(
-        `No. of exchange rates with all combinations of 'To/From' currency is - 
-        ${directAndInvertedPairRates.length}`
+        `No. of exchange rates with all combinations of 'To/From' currency is - ${directAndInvertedPairRates.length}`
       );
       /* check if there is a record with direct currency pair as the conversion
        * parameter, else take the record with inverted currency pair.
@@ -105,8 +98,7 @@ export class ExchangeRateRecordDeterminer {
 
     log.debug(
       `Number of exchange rate records with 'From' Currency as 'From' or 'To' Currency of conversionParameter or 
-      'To' Currency as Reference Currency or direct rate is - ",
-      ${fromOrToOrDirectRefCurrency.length}`
+      'To' Currency as Reference Currency or direct rate is - ${fromOrToOrDirectRefCurrency.length}`
     );
 
     /* Get all exchange rates with 'From' Currency as 'From' Currency of
@@ -154,8 +146,7 @@ export class ExchangeRateRecordDeterminer {
       );
     } else {
       log.debug(
-        `Conversion is done based on reference currency 
-        ${JSON.stringify(
+        `Conversion is done based on reference currency ${JSON.stringify(
           this._exchangeRateTypeDetailMap?.get(conversionParameter.exchangeRateType)?.referenceCurrency
         )}`
       );
@@ -190,17 +181,13 @@ export class ExchangeRateRecordDeterminer {
         : toReferenceCurrencyPair.validFromDateTime
     );
     log.debug(
-      `The derived exchange rate based on reference currency has : 
-      rates data provider as 
-      ${derivedExchangeRate.ratesDataProviderCode} 
-      data source as 
-      ${derivedExchangeRate.ratesDataSource} 
-      rate type as  
-      ${derivedExchangeRate.exchangeRateType} 
-      exchange rate value as 
-      ${JSON.stringify(derivedExchangeRate.exchangeRateValue.decimalValue)} 
-      valid from date time as 
-      ${derivedExchangeRate.validFromDateTime}`
+      `The derived exchange rate based on reference currency has : rates data provider as ${
+        derivedExchangeRate.ratesDataProviderCode
+      } data source as ${derivedExchangeRate.ratesDataSource} rate type as ${
+        derivedExchangeRate.exchangeRateType
+      } exchange rate value as ${JSON.stringify(
+        derivedExchangeRate.exchangeRateValue.decimalValue
+      )} valid from date time as ${derivedExchangeRate.validFromDateTime}`
     );
     derivedExchangeRateList.push(derivedExchangeRate);
     return derivedExchangeRateList;
@@ -246,14 +233,11 @@ export class ExchangeRateRecordDeterminer {
     );
 
     log.debug(
-      `FromReferenceCurrencyPair has isIndirect set to 
-      ${isFromReferenecPairIndirect} 
-      exchange rate value as 
-      ${JSON.stringify(fromExchangeRateValue)}. 
-      ToReferenceCurrencyPair has isIndirect set to 
-      ${isToReferenecPairIndirect}, 
-      exchange rate value as 
-      ${JSON.stringify(toExchangeRateValue)}`
+      `FromReferenceCurrencyPair has isIndirect set to ${isFromReferenecPairIndirect}, 
+      exchange rate value as ${JSON.stringify(
+        fromExchangeRateValue
+      )}. ToReferenceCurrencyPair has isIndirect set to ${isToReferenecPairIndirect}, 
+      exchange rate value as ${JSON.stringify(toExchangeRateValue)}`
     );
 
     let effectiveExchangeRateValue: BigNumber;
@@ -492,10 +476,7 @@ export class ExchangeRateRecordDeterminer {
       this.ifFromToCurrencyMatchesForDirectConversion(exchangeRate, conversionParameter)
     );
     this.duplicateRateExists(exchangeRates);
-    log.debug(
-      `Number of exchange rate record with direct currency pair is - 
-      ${exchangeRates.length}`
-    );
+    log.debug(`Number of exchange rate record with direct currency pair is - ${exchangeRates.length}`);
     return exchangeRates;
   }
 
@@ -505,19 +486,13 @@ export class ExchangeRateRecordDeterminer {
   ): ExchangeRate[] {
     let exchangeRates: ExchangeRate[] = [];
     if (this.isInversionAllowed(conversionParameter.exchangeRateType)) {
-      log.debug(
-        `Inversion is allowed for the exchange rate type - 
-        ${conversionParameter.exchangeRateType}`
-      );
+      log.debug(`Inversion is allowed for the exchange rate type - ${conversionParameter.exchangeRateType}`);
       exchangeRates = exchangeRateWithBothDirectAndInvertedCurrencyList.filter(exchangeRate =>
         this.ifFromToCurrencyMatchesForInvertedConversion(exchangeRate, conversionParameter)
       );
     }
     this.duplicateRateExists(exchangeRates);
-    log.debug(
-      `Number of exchange rate record with inverted currency pair is - 
-      ${exchangeRates.length}`
-    );
+    log.debug(`Number of exchange rate record with inverted currency pair is - ${exchangeRates.length}`);
     return exchangeRates;
   }
 
