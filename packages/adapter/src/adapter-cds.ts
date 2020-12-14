@@ -10,9 +10,9 @@ import {
   ExchangeRateValue
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { isNullish } from '@sap-cloud-sdk/util';
+import cds = require('@sap/cds');
 import { logger as log, logAndGetError } from './helper/logger';
 import { AdapterError } from './constants/adapter-error';
-const cds = require('@sap/cds');
 const { SELECT } = cds.ql;
 
 /**
