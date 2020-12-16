@@ -4,7 +4,7 @@ import {
   buildCurrency,
   Currency,
   CurrencyConversionError,
-  ConversionParametersForNonFixedRate,
+  ConversionParameterForNonFixedRate,
   DataAdapter,
   ExchangeRate,
   ExchangeRateTypeDetail,
@@ -31,9 +31,12 @@ const S_10: ExchangeRateValue = new ExchangeRateValue('10');
 
 const S_2019_09_16T02_30_00Z: Date = new Date('2019-09-16T02:30:00Z');
 
-const overrideTenantSettings: TenantSettings = new TenantSettings(MRM, THR);
+const overrideTenantSettings: TenantSettings = {
+  ratesDataProviderCode: MRM,
+  ratesDataSource: THR
+};
 
-const inrEurMConversionParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const inrEurMConversionParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'INR',
   'EUR',
   '100',

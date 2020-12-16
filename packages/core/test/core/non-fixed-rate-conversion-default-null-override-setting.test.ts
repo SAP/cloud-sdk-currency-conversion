@@ -3,7 +3,7 @@ import { Tenant } from '@sap-cloud-sdk/core';
 import {
   buildCurrency,
   Currency,
-  ConversionParametersForNonFixedRate,
+  ConversionParameterForNonFixedRate,
   DataAdapter,
   ExchangeRate,
   ExchangeRateTypeDetail,
@@ -12,7 +12,7 @@ import {
   SingleNonFixedRateConversionResult,
   ExchangeRateValue,
   CurrencyConversionError,
-  BulkNonFixedRateConversionResult
+  BulkConversionResult
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { BigNumber } from 'bignumber.js';
 import { ConversionError } from '../../src/constants/conversion-error';
@@ -52,95 +52,98 @@ const S_2020_01_16T02_30_00Z: Date = new Date('2020-01-16T02:30:00Z');
 const S_2019_09_16T02_30_00Z: Date = new Date('2019-09-16T02:30:00Z');
 const S_1990_03_01T02_30_00Z: Date = new Date('1990-03-01T02:30:00Z');
 
-const overrideTenantSettings: TenantSettings = new TenantSettings(MRM, THR);
+const overrideTenantSettings: TenantSettings = {
+  ratesDataProviderCode: MRM,
+  ratesDataSource: THR
+};
 
 /* Conversion Parameter starts*/
 
-const inrEurMConversionParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const inrEurMConversionParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'INR',
   'EUR',
   '100',
   M,
   S_2019_09_16T02_30_00Z
 );
-const eurInrMConversionParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const eurInrMConversionParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'EUR',
   'INR',
   '10',
   M,
   S_2020_01_01T02_30_00Z
 );
-const eurInrAskConversionParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const eurInrAskConversionParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'EUR',
   'INR',
   '100',
   ASK,
   S_2020_01_01T02_30_00Z
 );
-const eurUsdAskConversionParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const eurUsdAskConversionParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'EUR',
   'USD',
   '100',
   ASK,
   S_2020_01_01T02_30_00Z
 );
-const eurInrIndirectConversionParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const eurInrIndirectConversionParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'EUR',
   'INR',
   '100',
   B,
   S_2020_01_01T02_30_00Z
 );
-const eurInrDecimalValueConversionParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const eurInrDecimalValueConversionParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'EUR',
   'INR',
   '120.4576776757575757567',
   B,
   S_2020_01_01T02_30_00Z
 );
-const eurEurMConversionParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const eurEurMConversionParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'EUR',
   'EUR',
   '120',
   B,
   S_2020_01_01T02_30_00Z
 );
-const inrInrMConversionParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const inrInrMConversionParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'INR',
   'INR',
   '120',
   B,
   S_2020_01_01T02_30_00Z
 );
-const invalidCurrenecyConversionParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const invalidCurrenecyConversionParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'AUD',
   'BSD',
   '120',
   B,
   S_2020_01_01T02_30_00Z
 );
-const inrEurMConversionParamPastDate: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const inrEurMConversionParamPastDate: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'INR',
   'EUR',
   '100',
   M,
   S_1990_03_01T02_30_00Z
 );
-const inrBhdMFiveParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const inrBhdMFiveParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'INR',
   'BHD',
   '20.1',
   M,
   S_2020_01_01T02_30_00Z
 );
-const inrBhdMMoreThanFiveParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const inrBhdMMoreThanFiveParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'INR',
   'BHD',
   '8499999.99990',
   M,
   S_2020_01_01T02_30_00Z
 );
-const inrBhdMLessThanFiveParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const inrBhdMLessThanFiveParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'INR',
   'BHD',
   '200.102',
@@ -649,7 +652,7 @@ function buildAdapter(exchangeRates: ExchangeRate[]): DataAdapter {
   const adapter: DataAdapter = {} as DataAdapter;
 
   adapter.getExchangeRatesForTenant = (
-    params: ConversionParametersForNonFixedRate[],
+    params: ConversionParameterForNonFixedRate[],
     tenant: Tenant,
     tenantSettings: TenantSettings
   ): ExchangeRate[] => exchangeRates;
@@ -666,7 +669,7 @@ function buildAdapterWithNullExchangeRateTypeDetails(exchangeRates: ExchangeRate
   const adapter: DataAdapter = {} as DataAdapter;
 
   adapter.getExchangeRatesForTenant = (
-    params: ConversionParametersForNonFixedRate[],
+    params: ConversionParameterForNonFixedRate[],
     tenant: Tenant,
     tenantSettings: TenantSettings
   ): ExchangeRate[] => exchangeRates;
@@ -683,7 +686,7 @@ function buildAdapterWithNullExchangeRates(): DataAdapter {
   const adapter: DataAdapter = {} as DataAdapter;
 
   adapter.getExchangeRatesForTenant = (
-    params: ConversionParametersForNonFixedRate[],
+    params: ConversionParameterForNonFixedRate[],
     tenant: Tenant,
     tenantSettings: TenantSettings
   ): ExchangeRate[] => null as any;
@@ -700,7 +703,7 @@ function buildAdapterWithEmptyExchangeRates(): DataAdapter {
   const adapter: DataAdapter = {} as DataAdapter;
 
   adapter.getExchangeRatesForTenant = (
-    params: ConversionParametersForNonFixedRate[],
+    params: ConversionParameterForNonFixedRate[],
     tenant: Tenant,
     tenantSettings: TenantSettings
   ): ExchangeRate[] => [];
@@ -717,7 +720,7 @@ function buildAdapterWithNullExchangeRatesAndDefaultTenantSettings(): DataAdapte
   const adapter: DataAdapter = {} as DataAdapter;
 
   adapter.getExchangeRatesForTenant = (
-    params: ConversionParametersForNonFixedRate[],
+    params: ConversionParameterForNonFixedRate[],
     tenant: Tenant,
     tenantSettings: TenantSettings
   ): ExchangeRate[] => null as any;
@@ -806,7 +809,10 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
       S_10000,
       S_10000
     );
-    const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
+    const result: BulkConversionResult<
+      ConversionParameterForNonFixedRate,
+      SingleNonFixedRateConversionResult
+    > = currencyConverter.convertCurrenciesWithNonFixedRate(
       [inrEurMConversionParam],
       buildAdapter([
         inrEurMrmEcbMRate,
@@ -833,7 +839,10 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
       S_10000,
       S_10000
     );
-    const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
+    const result: BulkConversionResult<
+      ConversionParameterForNonFixedRate,
+      SingleNonFixedRateConversionResult
+    > = currencyConverter.convertCurrenciesWithNonFixedRate(
       [inrEurMConversionParam],
       buildAdapterWithNullExchangeRateTypeDetails([
         inrEurMrmEcbMRate,
@@ -855,7 +864,10 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
   });
 
   it('Bulk Conversion With Exchange Rate Record Having Future Date', () => {
-    const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
+    const result: BulkConversionResult<
+      ConversionParameterForNonFixedRate,
+      SingleNonFixedRateConversionResult
+    > = currencyConverter.convertCurrenciesWithNonFixedRate(
       [inrEurMConversionParamPastDate],
       buildAdapter([inrEurMrmThrMRate, eurInrMrmThrMRate, inrEurMrmEcbMRate, eurInrMrmEcbMRate]),
       TENANT_ID,
@@ -870,7 +882,10 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
   it('Bulk Conversion With Null Conversion Parameter', () => {
     let errorInput = new Error();
     try {
-      const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
+      const result: BulkConversionResult<
+        ConversionParameterForNonFixedRate,
+        SingleNonFixedRateConversionResult
+      > = currencyConverter.convertCurrenciesWithNonFixedRate(
         null as any,
         buildAdapter([
           inrEurMrmEcbMRate,
@@ -897,7 +912,10 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
   it('Bulk Conversion With empty Conversion Parameter list', () => {
     let errorInput = new Error();
     try {
-      const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
+      const result: BulkConversionResult<
+        ConversionParameterForNonFixedRate,
+        SingleNonFixedRateConversionResult
+      > = currencyConverter.convertCurrenciesWithNonFixedRate(
         [],
         buildAdapter([
           inrEurMrmEcbMRate,
@@ -927,7 +945,10 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
       S_20000,
       S_20000
     );
-    const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
+    const result: BulkConversionResult<
+      ConversionParameterForNonFixedRate,
+      SingleNonFixedRateConversionResult
+    > = currencyConverter.convertCurrenciesWithNonFixedRate(
       [inrEurMConversionParam],
       buildAdapter([inrEurMrmThrMDirectFactorFiveTenRate, inrEurMrmEcbMDirectFactorFiveTenRate]),
       TENANT_ID,
@@ -943,7 +964,10 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
       S_5000,
       S_5000
     );
-    const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
+    const result: BulkConversionResult<
+      ConversionParameterForNonFixedRate,
+      SingleNonFixedRateConversionResult
+    > = currencyConverter.convertCurrenciesWithNonFixedRate(
       [inrEurMConversionParam],
       buildAdapter([inrEurMrmThrMDirectFactorMoreThanOneRate, inrEurMrmEcbMDirectFactorMoreThanOneRate]),
       TENANT_ID,
@@ -959,7 +983,10 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
       S_2,
       S_2
     );
-    const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
+    const result: BulkConversionResult<
+      ConversionParameterForNonFixedRate,
+      SingleNonFixedRateConversionResult
+    > = currencyConverter.convertCurrenciesWithNonFixedRate(
       [inrEurMConversionParam],
       buildAdapter([inrEurMrmThrMIndirectFactorFiveTenRate, inrEurMrmEcbMIndirectFactorFiveTenRate]),
       TENANT_ID,
@@ -975,7 +1002,10 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
       S_0_5,
       S_0_5
     );
-    const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
+    const result: BulkConversionResult<
+      ConversionParameterForNonFixedRate,
+      SingleNonFixedRateConversionResult
+    > = currencyConverter.convertCurrenciesWithNonFixedRate(
       [inrEurMConversionParam],
       buildAdapter([inrEurMrmThrMIndirectFactorMoreThanOneRate, inrEurMrmEcbMIndirectFactorMoreThanOneRate]),
       TENANT_ID,
@@ -986,7 +1016,7 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
   });
 
   it('Convert bulk non fixed rate currency with maximum conversion parameters', () => {
-    const maximumConversionParameterList: ConversionParametersForNonFixedRate[] = [];
+    const maximumConversionParameterList: ConversionParameterForNonFixedRate[] = [];
     for (let i = 1; i <= 1000; i++) {
       maximumConversionParameterList.push(inrEurMConversionParam);
     }
@@ -1017,7 +1047,7 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
   });
 
   it('Convert bulk non fixed rate currency with more than 1000 conversion parameters', () => {
-    const maximumConversionParameterList: ConversionParametersForNonFixedRate[] = [];
+    const maximumConversionParameterList: ConversionParameterForNonFixedRate[] = [];
     let errInput = new Error();
     for (let i = 0; i <= 1000; i++) {
       maximumConversionParameterList.push(inrEurMConversionParam);
@@ -1052,7 +1082,10 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
       S_10000,
       S_10000
     );
-    const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
+    const result: BulkConversionResult<
+      ConversionParameterForNonFixedRate,
+      SingleNonFixedRateConversionResult
+    > = currencyConverter.convertCurrenciesWithNonFixedRate(
       [inrEurMConversionParam, eurUsdAskConversionParam, eurInrAskConversionParam, eurInrMConversionParam],
       buildAdapter([
         inrEurMrmThrMRate,
@@ -1085,7 +1118,10 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
       new CurrencyAmount('1'),
       new CurrencyAmount('1')
     );
-    const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
+    const result: BulkConversionResult<
+      ConversionParameterForNonFixedRate,
+      SingleNonFixedRateConversionResult
+    > = currencyConverter.convertCurrenciesWithNonFixedRate(
       [eurInrIndirectConversionParam],
       buildAdapter([
         eurInrMrmThrIndirectConversionRate,
@@ -1108,7 +1144,10 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
       new CurrencyAmount('0.97835236045058661466079243313883250280145'),
       new CurrencyAmount('0.98')
     );
-    const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
+    const result: BulkConversionResult<
+      ConversionParameterForNonFixedRate,
+      SingleNonFixedRateConversionResult
+    > = currencyConverter.convertCurrenciesWithNonFixedRate(
       [eurInrDecimalValueConversionParam],
       buildAdapter([
         eurInrMrmThrIndirectConversionDecimalRate,
@@ -1131,7 +1170,10 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
       new CurrencyAmount('14831.1106484722999998921741'),
       new CurrencyAmount('14831.11')
     );
-    const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
+    const result: BulkConversionResult<
+      ConversionParameterForNonFixedRate,
+      SingleNonFixedRateConversionResult
+    > = currencyConverter.convertCurrenciesWithNonFixedRate(
       [eurInrDecimalValueConversionParam],
       buildAdapter([
         eurInrMrmThrDirectConversionDecimal,
@@ -1154,7 +1196,10 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
       S_10000,
       S_10000
     );
-    const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
+    const result: BulkConversionResult<
+      ConversionParameterForNonFixedRate,
+      SingleNonFixedRateConversionResult
+    > = currencyConverter.convertCurrenciesWithNonFixedRate(
       [inrEurMConversionParam],
       buildAdapter([
         inrEurMrmThrMRate,
@@ -1175,7 +1220,10 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
       S_10000,
       S_10000
     );
-    const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
+    const result: BulkConversionResult<
+      ConversionParameterForNonFixedRate,
+      SingleNonFixedRateConversionResult
+    > = currencyConverter.convertCurrenciesWithNonFixedRate(
       [inrEurMConversionParam],
       buildAdapter([inrEurMrmThrMRate, eurInrMrmThrMRate, inrEurMrmEcbMRate, eurInrMrmEcbMRate]),
       TENANT_ID,
@@ -1196,7 +1244,10 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
       S_120,
       S_120
     );
-    const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
+    const result: BulkConversionResult<
+      ConversionParameterForNonFixedRate,
+      SingleNonFixedRateConversionResult
+    > = currencyConverter.convertCurrenciesWithNonFixedRate(
       [inrInrMConversionParam, eurEurMConversionParam],
       buildAdapter([inrInrMrmThrMRate, eurEurMrmThrMRate, inrInrMrmEcbMRate, eurEurMrmEcbMRate]),
       TENANT_ID,
@@ -1214,7 +1265,10 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
       new CurrencyAmount('6.0425223'),
       new CurrencyAmount('6.043')
     );
-    const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
+    const result: BulkConversionResult<
+      ConversionParameterForNonFixedRate,
+      SingleNonFixedRateConversionResult
+    > = currencyConverter.convertCurrenciesWithNonFixedRate(
       [inrBhdMFiveParam],
       buildAdapter([inrBhdMrmEcbMRate, inrBhdMrmThrMRate]),
       TENANT_ID,
@@ -1230,7 +1284,10 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
       new CurrencyAmount('2555295.4999699377'),
       new CurrencyAmount('2555295.5')
     );
-    const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
+    const result: BulkConversionResult<
+      ConversionParameterForNonFixedRate,
+      SingleNonFixedRateConversionResult
+    > = currencyConverter.convertCurrenciesWithNonFixedRate(
       [inrBhdMMoreThanFiveParam],
       buildAdapter([inrBhdMrmEcbMRate, inrBhdMrmThrMRate]),
       TENANT_ID,
@@ -1246,7 +1303,10 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
       new CurrencyAmount('60.155263546'),
       new CurrencyAmount('60.155')
     );
-    const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
+    const result: BulkConversionResult<
+      ConversionParameterForNonFixedRate,
+      SingleNonFixedRateConversionResult
+    > = currencyConverter.convertCurrenciesWithNonFixedRate(
       [inrBhdMLessThanFiveParam],
       buildAdapter([inrBhdMrmEcbMRate, inrBhdMrmThrMRate]),
       TENANT_ID,
@@ -1257,7 +1317,10 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
   });
 
   it('Bulk Conversion With Exchange Rate Record Having Future Date', () => {
-    const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
+    const result: BulkConversionResult<
+      ConversionParameterForNonFixedRate,
+      SingleNonFixedRateConversionResult
+    > = currencyConverter.convertCurrenciesWithNonFixedRate(
       [invalidCurrenecyConversionParam],
       buildAdapter([
         inrEurMrmThrMRate,
@@ -1279,7 +1342,10 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
   });
 
   it('Bulk Conversion With Different Tenant No Record', () => {
-    const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
+    const result: BulkConversionResult<
+      ConversionParameterForNonFixedRate,
+      SingleNonFixedRateConversionResult
+    > = currencyConverter.convertCurrenciesWithNonFixedRate(
       [inrEurMConversionParam],
       buildAdapter([
         inrEurMrmThrMRate,
@@ -1297,7 +1363,10 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
   });
 
   it('Bulk Conversion With Duplicate Exchange Rate Same TimeStamp', () => {
-    const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
+    const result: BulkConversionResult<
+      ConversionParameterForNonFixedRate,
+      SingleNonFixedRateConversionResult
+    > = currencyConverter.convertCurrenciesWithNonFixedRate(
       [inrEurMConversionParam],
       buildAdapter([inrEurMrmThrMDuplicateRate, inrEurMrmThrMRate, inrEurMrmEcbMDuplicateRate, inrEurMrmEcbMRate]),
       TENANT_ID,
@@ -1310,7 +1379,10 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
   });
 
   it('Bulk Conversion With Duplicate Exchange Rate Record', () => {
-    const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
+    const result: BulkConversionResult<
+      ConversionParameterForNonFixedRate,
+      SingleNonFixedRateConversionResult
+    > = currencyConverter.convertCurrenciesWithNonFixedRate(
       [inrEurMConversionParam],
       buildAdapter([inrEurMrmThrMDuplicateRate, inrEurMrmThrMRate, inrEurMrmEcbMDuplicateRate, inrEurMrmEcbMRate]),
       TENANT_ID,
@@ -1323,7 +1395,10 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
   });
 
   it('Bulk Conversion With No Record Found', () => {
-    const result: BulkNonFixedRateConversionResult = currencyConverter.convertCurrenciesWithNonFixedRate(
+    const result: BulkConversionResult<
+      ConversionParameterForNonFixedRate,
+      SingleNonFixedRateConversionResult
+    > = currencyConverter.convertCurrenciesWithNonFixedRate(
       [inrEurMConversionParam],
       buildAdapter([eurInrMrmThrMRate, eurInrMrmThrMDuplicateRate, eurInrMrmEcbMRate, eurInrMrmEcbMDuplicateRate]),
       TENANT_ID,
@@ -1337,7 +1412,7 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
 
   it('Bulk Conversion With data Adapter Null', () => {
     let errorInput: Error = new Error();
-    let result: BulkNonFixedRateConversionResult;
+    let result: BulkConversionResult<ConversionParameterForNonFixedRate, SingleNonFixedRateConversionResult>;
     try {
       result = currencyConverter.convertCurrenciesWithNonFixedRate(
         [inrEurMConversionParam],
@@ -1354,7 +1429,7 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
 
   it('Bulk Conversion With Exchange Rates Null', () => {
     let errorInput: Error = new Error();
-    let result: BulkNonFixedRateConversionResult;
+    let result: BulkConversionResult<ConversionParameterForNonFixedRate, SingleNonFixedRateConversionResult>;
     try {
       result = currencyConverter.convertCurrenciesWithNonFixedRate(
         [inrEurMConversionParam],
@@ -1371,7 +1446,7 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
 
   it('Bulk Conversion With both Exchange Rates and default tenant settings Null', () => {
     let errorInput: Error = new Error();
-    let result: BulkNonFixedRateConversionResult;
+    let result: BulkConversionResult<ConversionParameterForNonFixedRate, SingleNonFixedRateConversionResult>;
     try {
       result = currencyConverter.convertCurrenciesWithNonFixedRate(
         [inrEurMConversionParam],
@@ -1388,7 +1463,7 @@ describe('Non Fixed Rate Conversion with default settings null and override tena
 
   it('Bulk Conversion With Exchange Rates Empty', () => {
     let errorInput: Error = new Error();
-    let result: BulkNonFixedRateConversionResult;
+    let result: BulkConversionResult<ConversionParameterForNonFixedRate, SingleNonFixedRateConversionResult>;
     try {
       result = currencyConverter.convertCurrenciesWithNonFixedRate(
         [inrEurMConversionParam],

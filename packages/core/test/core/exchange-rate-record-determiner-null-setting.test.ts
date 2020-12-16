@@ -6,7 +6,7 @@ import {
   ExchangeRateValue,
   Currency,
   ExchangeRateTypeDetail,
-  ConversionParametersForNonFixedRate
+  ConversionParameterForNonFixedRate
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { ExchangeRateRecordDeterminer } from '../../src/core/exchange-rate-record-determiner';
 import { ConversionError } from '../../src/constants/conversion-error';
@@ -57,49 +57,49 @@ const S_2019_09_16T02_30_00Z: Date = new Date('2019-09-16T02:30:00Z');
 const S_2020_03_01T02_30_00Z: Date = new Date('2020-03-01T02:30:00Z');
 const S_1990_03_01T02_30_00Z: Date = new Date('1990-03-01T02:30:00Z');
 
-const inrEurMConversionParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const inrEurMConversionParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'INR',
   'EUR',
   '100',
   M,
   S_2019_09_16T02_30_00Z
 );
-const eurInrMConversionParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const eurInrMConversionParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'EUR',
   'INR',
   '10',
   M,
   S_2020_01_01T02_30_00Z
 );
-const eurInrInvalidCurrPairConversionParam = new ConversionParametersForNonFixedRate(
+const eurInrInvalidCurrPairConversionParam = new ConversionParameterForNonFixedRate(
   'AUD',
   'BSD',
   '100',
   M,
   S_2020_01_01T02_30_00Z
 );
-const inrEurAskConversionParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const inrEurAskConversionParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'INR',
   'EUR',
   '100',
   ASK,
   S_2020_01_01T02_30_00Z
 );
-const eurUsdAConversionParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const eurUsdAConversionParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'EUR',
   'USD',
   '100',
   A,
   S_2020_03_01T02_30_00Z
 );
-const inrEurMConversionParamPastDate: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const inrEurMConversionParamPastDate: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'INR',
   'EUR',
   '100',
   M,
   S_1990_03_01T02_30_00Z
 );
-const usdEurMConversionParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const usdEurMConversionParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'USD',
   'EUR',
   '100',

@@ -2,17 +2,13 @@
 import { BigNumber } from 'bignumber.js';
 import { CurrencyConversionError } from './currency-conversion-error';
 import { ConversionModelError } from './constants/conversion-model-error';
+import { StringDecimalValue } from './string-decimal-value';
 
-export class ExchangeRateValue {
-  readonly valueString: string;
-  readonly decimalValue: BigNumber;
-
+export class ExchangeRateValue extends StringDecimalValue {
   constructor(valueString: string) {
-    this.valueString = valueString.trim();
-    const convertedDecimalValue = new BigNumber(valueString.trim());
-    if (convertedDecimalValue < new BigNumber(0)) {
+    super(valueString);
+    if (this.decimalValue < new BigNumber(0)) {
       throw new CurrencyConversionError(ConversionModelError.ILLEGAL_EXCHANGE_RATE);
     }
-    this.decimalValue = convertedDecimalValue;
   }
 }

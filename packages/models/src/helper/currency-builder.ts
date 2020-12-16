@@ -14,7 +14,7 @@ import codes from './currency-codes.json';
 export function buildCurrency(currencyCode: string): Currency {
   const defaultFractionDigits = 'CcyMnrUnts';
   const numericCode = 'CcyNbr';
-  if (!currencyCode?.length) {
+  if (!currencyCode) {
     throw new CurrencyConversionError(ConversionModelError.NULL_CURRENCY_CODES);
   }
   const currency = (codes as any)[currencyCode];

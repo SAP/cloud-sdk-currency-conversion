@@ -1,19 +1,19 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
 import { Tenant } from '@sap-cloud-sdk/core';
 import {
-  ConversionParametersForFixedRate,
+  ConversionParameterForFixedRate,
   SingleFixedRateConversionResult,
-  BulkFixedRateConversionResult,
-  ConversionParametersForNonFixedRate,
+  BulkConversionResult,
+  ConversionParameterForNonFixedRate,
   DataAdapter,
   SingleNonFixedRateConversionResult,
-  BulkNonFixedRateConversionResult,
   TenantSettings
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { isNullish } from '@sap-cloud-sdk/util';
+import { ConversionParameter } from '@sap-cloud-sdk/currency-conversion-models/src/conversion-parameter';
 import { logger as log, logAndGetError } from '../helper/logger';
 import { ConversionError } from '../constants/conversion-error';
-import { convertCurrenciesWithNonFixedRateHelper } from '../helper/non-fixed-rate-helper';
+import { performNonFixedConversion } from '../helper/non-fixed-rate-helper';
 import { performSingleFixedConversion } from '../helper/fixed-rate-helper';
 
 /**
@@ -41,18 +41,18 @@ export class CurrencyConverter {
    * is not used in the conversion.
    * </p>
    *
-   * @param {ConversionParametersForFixedRate} conversionParameters:
+   * @param {ConversionParameterForFixedRate} conversionParameters:
    * A list of conversion parameters for a fixed rate. This acts as the input
    * for the conversion and the same object is provided in the resultant
    * {@link SingleFixedRateConversionResult} for correlation. The maximum
    * number of conversion parameters supported in a single call is 1000.
    *
-   * @returns {BulkFixedRateConversionResult}: The conversion result for a
+   * @returns {BulkConversionResult}: The conversion result for a
    * fixed rate.
    */
   public convertCurrenciesWithFixedRate(
-    conversionParameters: ConversionParametersForFixedRate[]
-  ): BulkFixedRateConversionResult {
+    conversionParameters: ConversionParameterForFixedRate[]
+  ): BulkConversionResult<ConversionParameterForFixedRate, SingleFixedRateConversionResult> {
     if (!this.validateBulkConversionParameters(conversionParameters)) {
       throw logAndGetError(ConversionError.INVALID_PARAMS);
     }
@@ -66,7 +66,7 @@ export class CurrencyConverter {
       }
       return results;
     }, new Map());
-    return new BulkFixedRateConversionResult(resultMap);
+    return new BulkConversionResult(resultMap);
   }
 
   /**
@@ -82,7 +82,7 @@ export class CurrencyConverter {
    * is not used in the conversion.
    * </p>
    *
-   * @param {ConversionParametersForFixedRate} conversionParameter A list of
+   * @param {ConversionParameterForFixedRate} conversionParameter A list of
    * conversion parameters for a fixed rate. This acts as the input for the
    * conversion and the same object is provided in the resultant
    * {@link SingleFixedRateConversionResult} for correlation. The maximum
@@ -93,7 +93,7 @@ export class CurrencyConverter {
    * result for a fixed rate.
    */
   public convertCurrencyWithFixedRate(
-    conversionParameter: ConversionParametersForFixedRate
+    conversionParameter: ConversionParameterForFixedRate
   ): SingleFixedRateConversionResult {
     if (!this.validateSingleConversionParameter(conversionParameter)) {
       throw logAndGetError(ConversionError.INVALID_PARAMS);
@@ -117,7 +117,7 @@ export class CurrencyConverter {
    * provided with default values, with the exchange rate value as 1.
    * </p>
    *
-   * @param {ConversionParametersForNonFixedRate} conversionParameter:
+   * @param {ConversionParameterForNonFixedRate} conversionParameter:
    * A conversion parameter for a non-fixed rate. This acts as the input for
    * the conversion and the same object is provided in the resultant
    * {@link SingleNonFixedRateConversionResult} for correlation.
@@ -142,7 +142,7 @@ export class CurrencyConverter {
    * The single conversion result for a non-fixed rate.
    */
   public convertCurrencyWithNonFixedRate(
-    conversionParameter: ConversionParametersForNonFixedRate,
+    conversionParameter: ConversionParameterForNonFixedRate,
     adapter: DataAdapter,
     tenant: Tenant,
     overrideTenantSetting?: TenantSettings
@@ -150,7 +150,7 @@ export class CurrencyConverter {
     if (!this.validateSingleConversionParameter(conversionParameter)) {
       throw logAndGetError(ConversionError.INVALID_PARAMS);
     }
-    const bulkConversionResult = convertCurrenciesWithNonFixedRateHelper(
+    const bulkConversionResult = performNonFixedConversion(
       Array.of(conversionParameter),
       adapter,
       tenant,
@@ -178,7 +178,7 @@ export class CurrencyConverter {
    * provided with default values, with the exchange rate value as 1.
    * </p>
    *
-   * @param {ConversionParametersForNonFixedRate} conversionParameter: A list of
+   * @param {ConversionParameterForNonFixedRate} conversionParameters: A list of
    * conversion parameters for a non-fixed rate. This acts as the input for the
    * conversion and the same object is provided in the result
    * {@link SingleNonFixedRateConversionResult} for correlation.
@@ -205,36 +205,42 @@ export class CurrencyConverter {
    * The conversion result for a non-fixed rate.
    */
   public convertCurrenciesWithNonFixedRate(
-    conversionParameter: ConversionParametersForNonFixedRate[],
+    conversionParameters: ConversionParameterForNonFixedRate[],
     adapter: DataAdapter,
     tenant: Tenant,
     overrideTenantSetting?: TenantSettings
-  ): BulkNonFixedRateConversionResult {
-    if (!this.validateBulkConversionParameters(conversionParameter)) {
+  ): BulkConversionResult<ConversionParameterForNonFixedRate, SingleNonFixedRateConversionResult> {
+    if (!this.validateBulkConversionParameters(conversionParameters)) {
       throw logAndGetError(ConversionError.INVALID_PARAMS);
     }
-    return convertCurrenciesWithNonFixedRateHelper(conversionParameter, adapter, tenant, overrideTenantSetting);
+    return performNonFixedConversion(conversionParameters, adapter, tenant, overrideTenantSetting);
   }
 
-  private validateSingleConversionParameter(conversionParameter: any): boolean {
+  private validateSingleConversionParameter(conversionParameter: ConversionParameter): boolean {
     if (isNullish(conversionParameter)) {
-      log.error('The conversion parameter used for conversion is null or undefined');
+      log.error('The conversion parameter used for conversion is null or undefined.');
       return false;
     }
     return true;
   }
 
-  private validateBulkConversionParameters(conversionParams: any): boolean {
+  private validateBulkConversionParameters(conversionParams: ConversionParameter[]): boolean {
     if (isNullish(conversionParams)) {
-      log.error('The conversion parameter list used for conversion is null or empty');
+      log.error('The conversion parameter list used for conversion is null or undefined.');
       return false;
     }
-    if (!conversionParams.length || conversionParams.length > CurrencyConverter.MAXIMUM_CONVERSION_PARAMETER_ALLOWED) {
+    if (!conversionParams.length) {
+      log.error('The conversion parameter list for conversion is empty.');
+      return false;
+    }
+    if (conversionParams.length > CurrencyConverter.MAXIMUM_CONVERSION_PARAMETER_ALLOWED) {
       log.error(
-        'The conversion parameter list for conversion is empty or the number of parameters exceeded the allowed limit.'
+        // eslint-disable-next-line max-len
+        `The number of conversion parameters for conversion exceeded the allowed limit of ${CurrencyConverter.MAXIMUM_CONVERSION_PARAMETER_ALLOWED}.`
       );
       return false;
     }
+
     return true;
   }
 }

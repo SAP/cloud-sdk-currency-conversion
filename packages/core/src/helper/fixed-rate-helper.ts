@@ -1,6 +1,6 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
 import {
-  ConversionParametersForFixedRate,
+  ConversionParameterForFixedRate,
   CurrencyAmount,
   SingleFixedRateConversionResult
 } from '@sap-cloud-sdk/currency-conversion-models';
@@ -8,7 +8,7 @@ import { BigNumber } from 'bignumber.js';
 import { CURR_FORMAT } from './non-fixed-rate-helper';
 
 export function performSingleFixedConversion(
-  conversionParams: ConversionParametersForFixedRate
+  conversionParams: ConversionParameterForFixedRate
 ): SingleFixedRateConversionResult {
   const convertedAmount =
     conversionParams.fromCurrency.currencyCode === conversionParams.toCurrency.currencyCode
@@ -24,7 +24,7 @@ export function performSingleFixedConversion(
   return new SingleFixedRateConversionResult(convertedAmount, roundedOffAmount);
 }
 
-function calculateConvertedAmtForFixedRate(conversionParams: ConversionParametersForFixedRate): CurrencyAmount {
+function calculateConvertedAmtForFixedRate(conversionParams: ConversionParameterForFixedRate): CurrencyAmount {
   const result = conversionParams.fromAmount.decimalValue.multipliedBy(conversionParams.fixedRateValue.decimalValue);
   return new CurrencyAmount(result.toFormat(CURR_FORMAT));
 }

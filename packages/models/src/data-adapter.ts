@@ -1,6 +1,6 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
 import { Tenant } from '@sap-cloud-sdk/core';
-import { ConversionParametersForNonFixedRate } from './conversion-parameters-for-non-fixed-rate';
+import { ConversionParameterForNonFixedRate } from './conversion-parameter-for-non-fixed-rate';
 import { ExchangeRate } from './exchange-rate';
 import { ExchangeRateTypeDetail } from './exchange-rate-type-detail';
 import { TenantSettings } from './tenant-settings';
@@ -34,7 +34,7 @@ export interface DataAdapter {
    * @return The list of {@link ExchangeRate}.
    */
   getExchangeRatesForTenant(
-    conversionParameters: ConversionParametersForNonFixedRate[],
+    conversionParameters: ConversionParameterForNonFixedRate[],
     tenant: Tenant,
     tenantSettings: TenantSettings
   ): ExchangeRate[];
