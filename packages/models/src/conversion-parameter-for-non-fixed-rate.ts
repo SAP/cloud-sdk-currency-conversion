@@ -1,6 +1,6 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
 
-import { ConversionParameter } from '@sap-cloud-sdk/currency-conversion-models/src/conversion-parameter';
+import { ConversionParameter } from './conversion-parameter';
 
 export class ConversionParameterForNonFixedRate extends ConversionParameter {
   constructor(
