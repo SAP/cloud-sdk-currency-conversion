@@ -3,7 +3,7 @@ import { Tenant } from '@sap-cloud-sdk/core';
 import { isNullish } from '@sap-cloud-sdk/util';
 import {
   CurrencyConversionError,
-  ConversionParametersForNonFixedRate,
+  ConversionParameterForNonFixedRate,
   ExchangeRate,
   ExchangeRateValue,
   ExchangeRateTypeDetail,
@@ -39,7 +39,7 @@ export class ExchangeRateRecordDeterminer {
     log.debug(`Tenant setting is: ${JSON.stringify(tenantSettings)}`);
   }
 
-  public getBestMatchedExchangeRateRecord(conversionParameter: ConversionParametersForNonFixedRate): ExchangeRate {
+  public getBestMatchedExchangeRateRecord(conversionParameter: ConversionParameterForNonFixedRate): ExchangeRate {
     const filterdExchangeRateList = this.getSortedFilteredExchangeRates(conversionParameter);
     const firstItemFromList: ExchangeRate = this.getFirstEntryFromList(filterdExchangeRateList);
     log.debug(
@@ -54,7 +54,7 @@ export class ExchangeRateRecordDeterminer {
     return firstItemFromList;
   }
 
-  private getSortedFilteredExchangeRates(conversionParameter: ConversionParametersForNonFixedRate): ExchangeRate[] {
+  private getSortedFilteredExchangeRates(conversionParameter: ConversionParameterForNonFixedRate): ExchangeRate[] {
     let ratesforConversion: ExchangeRate[];
     this.validateString(conversionParameter.exchangeRateType, ConversionModelError.NULL_RATE_TYPE);
     if (this.referenceCurrencyExists(conversionParameter.exchangeRateType)) {
@@ -88,7 +88,7 @@ export class ExchangeRateRecordDeterminer {
     return ratesforConversion;
   }
 
-  private getRatesWithReferenceCurrency(conversionParameter: ConversionParametersForNonFixedRate): ExchangeRate[] {
+  private getRatesWithReferenceCurrency(conversionParameter: ConversionParameterForNonFixedRate): ExchangeRate[] {
     /* Get all exchange rates with 'From' Currency as 'From' or 'To' Currency of
      * conversionParameter or 'To' Currency as Reference Currency or direct rate
      * i.e. matched 'From' and 'To' Currency in exchange rate and conversion
@@ -129,7 +129,7 @@ export class ExchangeRateRecordDeterminer {
     fromOrToOrDirectReferenceCurrencyPair: ExchangeRate[],
     fromReferenceCurrencyPair: ExchangeRate[],
     toReferenceCurrencyPair: ExchangeRate[],
-    conversionParameter: ConversionParametersForNonFixedRate
+    conversionParameter: ConversionParameterForNonFixedRate
   ): ExchangeRate[] {
     let exchangeRateList: ExchangeRate[];
     if (!fromReferenceCurrencyPair.length || !toReferenceCurrencyPair.length) {
@@ -170,8 +170,8 @@ export class ExchangeRateRecordDeterminer {
     const derivedExchangeRateList: ExchangeRate[] = [];
     const derivedExchangeRate: ExchangeRate = new ExchangeRate(
       this._tenant,
-      this._isTenantSettingNull ? (null as any) : fromReferenceCurrencyPair.ratesDataProviderCode,
-      this._isTenantSettingNull ? (null as any) : fromReferenceCurrencyPair.ratesDataSource,
+      this._isTenantSettingNull ? null : fromReferenceCurrencyPair.ratesDataProviderCode,
+      this._isTenantSettingNull ? null : fromReferenceCurrencyPair.ratesDataSource,
       fromReferenceCurrencyPair.exchangeRateType,
       new ExchangeRateValue(derivedExchangeRateValue),
       fromReferenceCurrencyPair.fromCurrency,
@@ -294,7 +294,7 @@ export class ExchangeRateRecordDeterminer {
   }
 
   private getRatesWithBothDirectAndInvertedPair(
-    conversionParameter: ConversionParametersForNonFixedRate
+    conversionParameter: ConversionParameterForNonFixedRate
   ): ExchangeRate[] {
     let exchangeRates: ExchangeRate[];
     exchangeRates = this._exchangeRateResultSet.filter(
@@ -333,7 +333,7 @@ export class ExchangeRateRecordDeterminer {
 
   private getRatesWithEitherDirectOrInvertedCurrency(
     exchangeRateWithBothDirectAndInvertedCurrencyList: ExchangeRate[],
-    conversionParameter: ConversionParametersForNonFixedRate
+    conversionParameter: ConversionParameterForNonFixedRate
   ): ExchangeRate[] {
     let ratesForCurrencyPair = this.getExchangeRateWithDirectConversionRate(
       exchangeRateWithBothDirectAndInvertedCurrencyList,
@@ -355,7 +355,7 @@ export class ExchangeRateRecordDeterminer {
     return ratesForCurrencyPair;
   }
 
-  private getFilteredRatesWithRefCurrency(conversionParameter: ConversionParametersForNonFixedRate): ExchangeRate[] {
+  private getFilteredRatesWithRefCurrency(conversionParameter: ConversionParameterForNonFixedRate): ExchangeRate[] {
     let ratesWithReferenceCurrency: ExchangeRate[];
     /* filtering based on date, exchange rate type, tenant and reference
      * currency as 'To' currency.
@@ -409,7 +409,7 @@ export class ExchangeRateRecordDeterminer {
    * conversionParameter & 'To' Currency as Reference Currency.
    */
   private getFilterdRatesFromReferenceCurrency(
-    conversionParameter: ConversionParametersForNonFixedRate,
+    conversionParameter: ConversionParameterForNonFixedRate,
     exchangeRatesWithReferenceCurrency: ExchangeRate[]
   ): ExchangeRate[] {
     const exchangeRateList: ExchangeRate[] = exchangeRatesWithReferenceCurrency
@@ -440,7 +440,7 @@ export class ExchangeRateRecordDeterminer {
    * conversionParameter & 'To' Currency as Reference Currency.
    */
   private getFilterdRatesToReferenceCurrency(
-    conversionParameter: ConversionParametersForNonFixedRate,
+    conversionParameter: ConversionParameterForNonFixedRate,
     exchangeRatesWithReferenceCurrency: ExchangeRate[]
   ): ExchangeRate[] {
     const exchangeRates: ExchangeRate[] = exchangeRatesWithReferenceCurrency
@@ -470,7 +470,7 @@ export class ExchangeRateRecordDeterminer {
 
   private getExchangeRateWithDirectConversionRate(
     exchangeRatesWithBothDirectAndInvertedCurrency: ExchangeRate[],
-    conversionParameter: ConversionParametersForNonFixedRate
+    conversionParameter: ConversionParameterForNonFixedRate
   ): ExchangeRate[] {
     const exchangeRates = exchangeRatesWithBothDirectAndInvertedCurrency.filter(exchangeRate =>
       this.ifFromToCurrencyMatchesForDirectConversion(exchangeRate, conversionParameter)
@@ -482,7 +482,7 @@ export class ExchangeRateRecordDeterminer {
 
   private getExchangeRateWithInvertedConversionRate(
     exchangeRateWithBothDirectAndInvertedCurrencyList: ExchangeRate[],
-    conversionParameter: ConversionParametersForNonFixedRate
+    conversionParameter: ConversionParameterForNonFixedRate
   ): ExchangeRate[] {
     let exchangeRates: ExchangeRate[] = [];
     if (this.isInversionAllowed(conversionParameter.exchangeRateType)) {
@@ -580,7 +580,7 @@ export class ExchangeRateRecordDeterminer {
 
   private ifCommonFiltersMatch(
     exchangeRate: ExchangeRate,
-    conversionParameter: ConversionParametersForNonFixedRate
+    conversionParameter: ConversionParameterForNonFixedRate
   ): boolean {
     return (
       // filter the rates based on tenant id, currency pair & rate type.
@@ -597,7 +597,7 @@ export class ExchangeRateRecordDeterminer {
 
   private isDateOnOrBeforeConversion(
     exchangeRate: ExchangeRate,
-    conversionParameter: ConversionParametersForNonFixedRate
+    conversionParameter: ConversionParameterForNonFixedRate
   ): boolean {
     return (
       exchangeRate.validFromDateTime.getTime() < conversionParameter.conversionAsOfDateTime.getTime() ||
@@ -607,7 +607,7 @@ export class ExchangeRateRecordDeterminer {
 
   private ifExchangeRateTypeMatches(
     exchangeRate: ExchangeRate,
-    conversionParameter: ConversionParametersForNonFixedRate
+    conversionParameter: ConversionParameterForNonFixedRate
   ): boolean {
     this.validateString(exchangeRate.exchangeRateType, ConversionModelError.NULL_RATE_TYPE);
     return exchangeRate.exchangeRateType === conversionParameter.exchangeRateType;
@@ -615,35 +615,35 @@ export class ExchangeRateRecordDeterminer {
 
   private ifRateFromCurrencyMatchesParamFromCurrency(
     exchangeRate: ExchangeRate,
-    conversionParameter: ConversionParametersForNonFixedRate
+    conversionParameter: ConversionParameterForNonFixedRate
   ): boolean {
     return JSON.stringify(exchangeRate.fromCurrency) === JSON.stringify(conversionParameter.fromCurrency);
   }
 
   private ifRateToCurrencyMatchesParamToCurrency(
     exchangeRate: ExchangeRate,
-    conversionParameter: ConversionParametersForNonFixedRate
+    conversionParameter: ConversionParameterForNonFixedRate
   ): boolean {
     return JSON.stringify(exchangeRate.toCurrency) === JSON.stringify(conversionParameter.toCurrency);
   }
 
   private ifRateFromCurrencyMatchesParamToCurrency(
     exchangeRate: ExchangeRate,
-    conversionParameter: ConversionParametersForNonFixedRate
+    conversionParameter: ConversionParameterForNonFixedRate
   ): boolean {
     return JSON.stringify(exchangeRate.fromCurrency) === JSON.stringify(conversionParameter.toCurrency);
   }
 
   private ifRateToCurrencyMatchesParamFromCurrency(
     exchangeRate: ExchangeRate,
-    conversionParameter: ConversionParametersForNonFixedRate
+    conversionParameter: ConversionParameterForNonFixedRate
   ): boolean {
     return JSON.stringify(exchangeRate.toCurrency) === JSON.stringify(conversionParameter.fromCurrency);
   }
 
   private ifRateFromOrToCurrencyMatchesParamFromCurrency(
     exchangeRate: ExchangeRate,
-    conversionParameter: ConversionParametersForNonFixedRate
+    conversionParameter: ConversionParameterForNonFixedRate
   ): boolean {
     return (
       this.ifRateFromCurrencyMatchesParamFromCurrency(exchangeRate, conversionParameter) ||
@@ -653,7 +653,7 @@ export class ExchangeRateRecordDeterminer {
 
   private ifRateFromOrToCurrencyMatchesParamToCurrency(
     exchangeRate: ExchangeRate,
-    conversionParameter: ConversionParametersForNonFixedRate
+    conversionParameter: ConversionParameterForNonFixedRate
   ): boolean {
     return (
       this.ifRateToCurrencyMatchesParamToCurrency(exchangeRate, conversionParameter) ||
@@ -663,7 +663,7 @@ export class ExchangeRateRecordDeterminer {
 
   private ifFromToCurrencyMatchesForDirectConversion(
     exchangeRate: ExchangeRate,
-    conversionParameter: ConversionParametersForNonFixedRate
+    conversionParameter: ConversionParameterForNonFixedRate
   ): boolean {
     return (
       this.ifRateFromCurrencyMatchesParamFromCurrency(exchangeRate, conversionParameter) &&
@@ -673,7 +673,7 @@ export class ExchangeRateRecordDeterminer {
 
   private ifFromToCurrencyMatchesForInvertedConversion(
     exchangeRate: ExchangeRate,
-    conversionParameter: ConversionParametersForNonFixedRate
+    conversionParameter: ConversionParameterForNonFixedRate
   ): boolean {
     return (
       this.ifRateFromCurrencyMatchesParamToCurrency(exchangeRate, conversionParameter) &&
@@ -688,7 +688,7 @@ export class ExchangeRateRecordDeterminer {
    */
   private ifRateHasDirectOrToAsReferenceCurrency(
     exchangeRate: ExchangeRate,
-    conversionParameter: ConversionParametersForNonFixedRate
+    conversionParameter: ConversionParameterForNonFixedRate
   ): boolean {
     return (
       this.ifFromToCurrencyMatchesForDirectConversion(exchangeRate, conversionParameter) ||
@@ -699,7 +699,7 @@ export class ExchangeRateRecordDeterminer {
 
   private ifRateFromCurrencyMatchesParamFromOrToCurrency(
     exchangeRate: ExchangeRate,
-    conversionParameter: ConversionParametersForNonFixedRate
+    conversionParameter: ConversionParameterForNonFixedRate
   ): boolean {
     return (
       this.ifRateFromCurrencyMatchesParamFromCurrency(exchangeRate, conversionParameter) ||
@@ -709,7 +709,7 @@ export class ExchangeRateRecordDeterminer {
 
   private ifRateToCurrencyMatchesReferenceCurrency(
     exchangeRate: ExchangeRate,
-    conversionParameter: ConversionParametersForNonFixedRate
+    conversionParameter: ConversionParameterForNonFixedRate
   ): boolean {
     return (
       JSON.stringify(exchangeRate.toCurrency) ===
@@ -718,7 +718,9 @@ export class ExchangeRateRecordDeterminer {
   }
 
   private ifRatesDataProviderCodeMatches(exchangeRate: ExchangeRate, ratesDataProviderCode: string): boolean {
-    this.validateString(exchangeRate.ratesDataProviderCode, ConversionModelError.NULL_RATES_DATA_PROVIDER_CODE);
+    if (!isNullish(exchangeRate.ratesDataProviderCode)) {
+      this.validateString(exchangeRate.ratesDataProviderCode, ConversionModelError.NULL_RATES_DATA_PROVIDER_CODE);
+    }
     return (
       !isNullish(exchangeRate.ratesDataProviderCode) &&
       !isNullish(ratesDataProviderCode) &&
@@ -727,7 +729,9 @@ export class ExchangeRateRecordDeterminer {
   }
 
   private ifRatesDataSourceMatches(exchangeRate: ExchangeRate, ratesDataSource: string): boolean {
-    this.validateString(exchangeRate.ratesDataSource, ConversionModelError.NULL_RATES_DATA_SOURCE);
+    if (!isNullish(exchangeRate.ratesDataSource)) {
+      this.validateString(exchangeRate.ratesDataSource, ConversionModelError.NULL_RATES_DATA_SOURCE);
+    }
     return (
       !isNullish(exchangeRate.ratesDataSource) &&
       !isNullish(ratesDataSource) &&
@@ -735,7 +739,10 @@ export class ExchangeRateRecordDeterminer {
     );
   }
 
-  private ifRatesDataProviderMatchesOrHasNullValue(exchangeRate: ExchangeRate, ratesDataProviderCode: string): boolean {
+  private ifRatesDataProviderMatchesOrHasNullValue(
+    exchangeRate: ExchangeRate,
+    ratesDataProviderCode: string | null
+  ): boolean {
     return (
       isNullish(exchangeRate.ratesDataProviderCode) ||
       isNullish(ratesDataProviderCode) ||
@@ -743,7 +750,7 @@ export class ExchangeRateRecordDeterminer {
     );
   }
 
-  private ifRatesDataSourceMatchesOrHasNullValue(exchangeRate: ExchangeRate, ratesDataSource: string): boolean {
+  private ifRatesDataSourceMatchesOrHasNullValue(exchangeRate: ExchangeRate, ratesDataSource: string | null): boolean {
     return (
       isNullish(exchangeRate.ratesDataSource) ||
       isNullish(ratesDataSource) ||
@@ -768,8 +775,12 @@ export class ExchangeRateRecordDeterminer {
   }
 
   private multipleDataProviderOrSourceExists(exchangeRate: ExchangeRate, firstItemFromList: ExchangeRate): boolean {
-    this.validateString(firstItemFromList.ratesDataProviderCode, ConversionModelError.NULL_RATES_DATA_PROVIDER_CODE);
-    this.validateString(firstItemFromList.ratesDataSource, ConversionModelError.NULL_RATES_DATA_SOURCE);
+    if (!isNullish(firstItemFromList.ratesDataProviderCode)) {
+      this.validateString(firstItemFromList.ratesDataProviderCode, ConversionModelError.NULL_RATES_DATA_PROVIDER_CODE);
+    }
+    if (!isNullish(firstItemFromList.ratesDataSource)) {
+      this.validateString(firstItemFromList.ratesDataSource, ConversionModelError.NULL_RATES_DATA_SOURCE);
+    }
     return (
       !this.ifRatesDataProviderMatchesOrHasNullValue(exchangeRate, firstItemFromList.ratesDataProviderCode) ||
       !this.ifRatesDataSourceMatchesOrHasNullValue(exchangeRate, firstItemFromList.ratesDataSource)

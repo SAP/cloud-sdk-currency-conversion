@@ -1,12 +1,14 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
+/* eslint-disable max-len */
 import {
-  ConversionParametersForNonFixedRate,
+  ConversionParameterForNonFixedRate,
   ExchangeRateTypeDetail,
-  TenantSettings,
   Currency
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { SimpleIntegrationObjectsAdapter } from '../../src/adapter-cds';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const cds = require('@sap/cds/lib');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { expect, before } = require('.');
 const { INSERT } = cds.ql;
 
@@ -496,37 +498,22 @@ describe('cds.ql → cqn', () => {
     ]);
 
     const conversionParameters = new Array(
-      new ConversionParametersForNonFixedRate(
-        'EUR',
-        'USD',
-        '50',
-        'LAST',
-        new Date('2020-07-19T00:20:30.000Z')
-      ),
-      new ConversionParametersForNonFixedRate(
-        'EUR',
-        'JPY',
-        '50',
-        'LAST',
-        new Date('2020-07-19T00:20:30.000Z')
-      )
+      new ConversionParameterForNonFixedRate('EUR', 'USD', '50', 'LAST', new Date('2020-07-19T00:20:30.000Z')),
+      new ConversionParameterForNonFixedRate('EUR', 'JPY', '50', 'LAST', new Date('2020-07-19T00:20:30.000Z'))
     );
     const TENANT_ID = { id: '5d4abe96-aecb-4b47-b7ed-ae4be76f9dfb' };
-    const tenantSettings = new TenantSettings('MRM', 'ECB');
+    const tenantSettings = {
+      ratesDataProviderCode: 'MRM',
+      ratesDataSource: 'ECB'
+    };
 
     const rateTypeSet: Set<string> = new Set();
     conversionParameters.map((param: any) => {
       rateTypeSet.add(param.exchangeRateType);
     });
 
-    const exchangeRateTypeDetailMap: Map<
-      string,
-      ExchangeRateTypeDetail
-    > = new Map();
-    exchangeRateTypeDetailMap.set(
-      'LAST',
-      new ExchangeRateTypeDetail(new Currency('INR', 2, '356'), true)
-    );
+    const exchangeRateTypeDetailMap: Map<string, ExchangeRateTypeDetail> = new Map();
+    exchangeRateTypeDetailMap.set('LAST', new ExchangeRateTypeDetail(new Currency('INR', 2, '356'), true));
     it('checking exchange rates', async () => {
       await cds.deploy(model).to('sqlite::memory:');
 
@@ -540,9 +527,7 @@ describe('cds.ql → cqn', () => {
       expect(cqn).to.eql({
         SELECT: {
           from: {
-            ref: [
-              'com.sap.integrationmodel.currencyconversion.CurrencyExchangeRates'
-            ]
+            ref: ['com.sap.integrationmodel.currencyconversion.CurrencyExchangeRates']
           },
           columns: [
             {

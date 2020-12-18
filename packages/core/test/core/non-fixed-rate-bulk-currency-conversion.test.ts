@@ -10,7 +10,7 @@ import {
   SingleNonFixedRateConversionResult,
   TenantSettings,
   ExchangeRateTypeDetail,
-  ConversionParametersForNonFixedRate
+  ConversionParameterForNonFixedRate
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { CurrencyConverter } from '../../src/core/currency-converter';
 import { ConversionError } from '../../src/constants/conversion-error';
@@ -41,44 +41,47 @@ const S_2020_01_16T02_30_00Z: Date = new Date('2020-01-16T02:30:00Z');
 const S_2019_09_16T02_30_00Z: Date = new Date('2019-09-16T02:30:00Z');
 const S_1990_03_01T02_30_00Z: Date = new Date('1990-03-01T02:30:00Z');
 
-const defaultTenantSettings: TenantSettings = new TenantSettings(MRM, ECB);
+const defaultTenantSettings: TenantSettings = {
+  ratesDataProviderCode: MRM,
+  ratesDataSource: ECB
+};
 
-const inrEurMConversionParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const inrEurMConversionParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'INR',
   'EUR',
   '100',
   M,
   S_2019_09_16T02_30_00Z
 );
-const eurInrDecimalValueConversionParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const eurInrDecimalValueConversionParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'EUR',
   'INR',
   '120.4576776757575757567',
   B,
   S_2020_01_01T02_30_00Z
 );
-const usdBhdMConversionParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const usdBhdMConversionParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'USD',
   'BHD',
   '100.12122',
   M,
   S_2020_01_01T02_30_00Z
 );
-const usdClfMConversionParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const usdClfMConversionParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'USD',
   'CLF',
   '100.111231',
   M,
   S_2020_01_01T02_30_00Z
 );
-const inrBhdMFiveParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const inrBhdMFiveParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'INR',
   'BHD',
   '20.1',
   M,
   S_2020_01_01T02_30_00Z
 );
-const inrBhdMMoreThanFiveParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const inrBhdMMoreThanFiveParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'INR',
   'BHD',
   '8499999.99990',
@@ -86,7 +89,7 @@ const inrBhdMMoreThanFiveParam: ConversionParametersForNonFixedRate = new Conver
   S_2020_01_01T02_30_00Z
 );
 
-const inrEurMConversionParamPastDate: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const inrEurMConversionParamPastDate: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'INR',
   'EUR',
   '100',
@@ -289,7 +292,7 @@ function buildAdapter(exchangeRates: ExchangeRate[]): DataAdapter {
   const adapter: DataAdapter = {} as DataAdapter;
 
   adapter.getExchangeRatesForTenant = (
-    params: ConversionParametersForNonFixedRate[],
+    params: ConversionParameterForNonFixedRate[],
     tenant: Tenant,
     tenantSettings: TenantSettings
   ): Promise<ExchangeRate[]> => Promise.resolve(exchangeRates);
@@ -308,7 +311,7 @@ function buildAdapterThrowsExcpetion(exchangeRates: ExchangeRate[]): DataAdapter
   const adapter: DataAdapter = {} as DataAdapter;
 
   adapter.getExchangeRatesForTenant = (
-    params: ConversionParametersForNonFixedRate[],
+    params: ConversionParameterForNonFixedRate[],
     tenant: Tenant,
     tenantSettings: TenantSettings
   ): Promise<ExchangeRate[]> => {
@@ -330,7 +333,7 @@ function buildAdapterWithNullExchangeRates(): DataAdapter {
   const adapter: DataAdapter = {} as DataAdapter;
 
   adapter.getExchangeRatesForTenant = (
-    params: ConversionParametersForNonFixedRate[],
+    params: ConversionParameterForNonFixedRate[],
     tenant: Tenant,
     tenantSettings: TenantSettings
   ): Promise<ExchangeRate[]> => Promise.resolve(null as any);
@@ -349,7 +352,7 @@ function buildAdapterWithNullExchangeRatesAndDefaultTenantSettings(): DataAdapte
   const adapter: DataAdapter = {} as DataAdapter;
 
   adapter.getExchangeRatesForTenant = (
-    params: ConversionParametersForNonFixedRate[],
+    params: ConversionParameterForNonFixedRate[],
     tenant: Tenant,
     tenantSettings: TenantSettings
   ): Promise<ExchangeRate[]> => Promise.resolve(null as any);

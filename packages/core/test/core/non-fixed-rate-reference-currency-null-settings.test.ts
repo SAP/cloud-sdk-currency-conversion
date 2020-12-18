@@ -4,7 +4,7 @@ import {
   buildCurrency,
   Currency,
   CurrencyConversionError,
-  ConversionParametersForNonFixedRate,
+  ConversionParameterForNonFixedRate,
   DataAdapter,
   ExchangeRate,
   ExchangeRateTypeDetail,
@@ -36,7 +36,7 @@ const S_2020_02_01T02_30_00Z: Date = new Date('2020-02-01T02:30:00Z');
 const S_2020_03_01T02_30_00Z: Date = new Date('2020-03-01T02:30:00Z');
 const S_1990_03_01T02_30_00Z: Date = new Date('1990-03-01T02:30:00Z');
 
-const eurUsdAConversionParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const eurUsdAConversionParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'EUR',
   'USD',
   '100',
@@ -44,7 +44,7 @@ const eurUsdAConversionParam: ConversionParametersForNonFixedRate = new Conversi
   S_2020_03_01T02_30_00Z
 );
 
-const eurUsdAskConversionParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const eurUsdAskConversionParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'EUR',
   'USD',
   '100',
@@ -52,7 +52,7 @@ const eurUsdAskConversionParam: ConversionParametersForNonFixedRate = new Conver
   S_1990_03_01T02_30_00Z
 );
 
-const eurUsdAConversionParamPastDate: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const eurUsdAConversionParamPastDate: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'EUR',
   'USD',
   '100',
@@ -60,7 +60,7 @@ const eurUsdAConversionParamPastDate: ConversionParametersForNonFixedRate = new 
   S_1990_03_01T02_30_00Z
 );
 
-const eurUsdLastConversionParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const eurUsdLastConversionParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'EUR',
   'USD',
   '100',
@@ -68,7 +68,7 @@ const eurUsdLastConversionParam: ConversionParametersForNonFixedRate = new Conve
   S_1990_03_01T02_30_00Z
 );
 
-const eurUsdNewConversionParam: ConversionParametersForNonFixedRate = new ConversionParametersForNonFixedRate(
+const eurUsdNewConversionParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'EUR',
   'USD',
   '100',

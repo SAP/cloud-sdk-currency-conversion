@@ -1,10 +1,10 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
 
-import { buildCurrency } from './helper/currency-builder';
-import { CurrencyAmount } from './currency-amount';
-import { Currency } from './currency';
+import { buildCurrency } from '@sap-cloud-sdk/currency-conversion-models/src/helper/currency-builder';
+import { CurrencyAmount } from '@sap-cloud-sdk/currency-conversion-models/src/currency-amount';
+import { Currency } from '@sap-cloud-sdk/currency-conversion-models/src/currency';
 
-export class ConversionParameters {
+export class ConversionParameter {
   readonly fromCurrency: Currency;
   readonly toCurrency: Currency;
   readonly fromAmount: CurrencyAmount;

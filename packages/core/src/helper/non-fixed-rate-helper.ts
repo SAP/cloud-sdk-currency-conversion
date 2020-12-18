@@ -1,10 +1,10 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
 import { Tenant } from '@sap-cloud-sdk/core';
 import {
-  BulkNonFixedRateConversionResult,
+  BulkConversionResult,
   CurrencyAmount,
   CurrencyConversionError,
-  ConversionParametersForNonFixedRate,
+  ConversionParameterForNonFixedRate,
   DataAdapter,
   ExchangeRate,
   ExchangeRateTypeDetail,
@@ -28,30 +28,22 @@ export const CURR_FORMAT = {
   fractionGroupSeparator: '',
   fractionGroupSize: 0
 };
-export async function convertCurrenciesWithNonFixedRateHelper(
-  conversionParameters: ConversionParametersForNonFixedRate[],
+
+/*
+ * Conversion logic for all the APIs for Non Fixed Rate.
+ */
+export async function performNonFixedConversion(
+  conversionParameters: ConversionParameterForNonFixedRate[],
   dataAdapter: DataAdapter,
   tenant: Tenant,
   overrideTenantSetting?: TenantSettings
-): Promise<BulkNonFixedRateConversionResult> {
+): Promise<BulkConversionResult<ConversionParameterForNonFixedRate, SingleNonFixedRateConversionResult>> {
   if (isNullish(dataAdapter) || isNullish(tenant?.id)) {
     throw new CurrencyConversionError(ConversionError.NULL_ADAPTER_TENANT);
   }
   const tenantSettings = overrideTenantSetting
     ? fetchOverrideTenantSettings(overrideTenantSetting)
     : await fetchDefaultTenantSettings(dataAdapter, tenant);
-  return convertCurrencies(conversionParameters, dataAdapter, tenant, tenantSettings);
-}
-
-/*
- * Conversion logic for all the APIs for Non Fixed Rate.
- */
-async function convertCurrencies(
-  conversionParameters: ConversionParametersForNonFixedRate[],
-  dataAdapter: DataAdapter,
-  tenant: Tenant,
-  tenantSettings: TenantSettings
-): Promise<BulkNonFixedRateConversionResult> {
   const exchangeRateResultSet = await fetchExchangeRate(conversionParameters, dataAdapter, tenant, tenantSettings);
   const exchangeRateTypeDetailsMap = await fetchExchangeRateType(conversionParameters, dataAdapter, tenant);
   const exchangeRateDeterminer = new ExchangeRateRecordDeterminer(
@@ -63,7 +55,7 @@ async function convertCurrencies(
   return performBulkNonFixedConversion(exchangeRateDeterminer, conversionParameters, tenant);
 }
 async function fetchExchangeRate(
-  conversionParameters: ConversionParametersForNonFixedRate[],
+  conversionParameters: ConversionParameterForNonFixedRate[],
   dataAdapter: DataAdapter,
   tenant: Tenant,
   tenantSettings: TenantSettings
@@ -82,7 +74,7 @@ async function fetchExchangeRate(
 }
 
 async function fetchExchangeRateType(
-  conversionParameters: ConversionParametersForNonFixedRate[],
+  conversionParameters: ConversionParameterForNonFixedRate[],
   dataAdapter: DataAdapter,
   tenant: Tenant
 ): Promise<Map<string, ExchangeRateTypeDetail>> {
@@ -98,9 +90,9 @@ async function fetchExchangeRateType(
 
 function performBulkNonFixedConversion(
   exchangeRateDeterminer: ExchangeRateRecordDeterminer,
-  conversionParameters: ConversionParametersForNonFixedRate[],
+  conversionParameters: ConversionParameterForNonFixedRate[],
   tenant: Tenant
-): BulkNonFixedRateConversionResult {
+): BulkConversionResult<ConversionParameterForNonFixedRate, SingleNonFixedRateConversionResult> {
   const resultMap = conversionParameters.reduce((results, conversionParameter) => {
     try {
       const result = performSingleNonFixedConversion(exchangeRateDeterminer, conversionParameter, tenant);
@@ -115,12 +107,12 @@ function performBulkNonFixedConversion(
     }
     return results;
   }, new Map());
-  return new BulkNonFixedRateConversionResult(resultMap);
+  return new BulkConversionResult(resultMap);
 }
 
 function performSingleNonFixedConversion(
   exchangeRateDeterminer: ExchangeRateRecordDeterminer,
-  conversionParameters: ConversionParametersForNonFixedRate,
+  conversionParameters: ConversionParameterForNonFixedRate,
   tenant: Tenant
 ): SingleNonFixedRateConversionResult {
   let convertedValue: CurrencyAmount;
@@ -129,8 +121,8 @@ function performSingleNonFixedConversion(
     convertedValue = new CurrencyAmount(conversionParameters.fromAmount.decimalValue.toFormat(CURR_FORMAT));
     exchangeRateUsed = new ExchangeRate(
       tenant,
-      null as any,
-      null as any,
+      null,
+      null,
       conversionParameters.exchangeRateType,
       new ExchangeRateValue('1'),
       conversionParameters.fromCurrency,
@@ -150,7 +142,7 @@ function performSingleNonFixedConversion(
 
 function getRoundedOffConvertedAmount(
   currAmount: CurrencyAmount,
-  conversionParam: ConversionParametersForNonFixedRate
+  conversionParam: ConversionParameterForNonFixedRate
 ): CurrencyAmount {
   return new CurrencyAmount(
     currAmount.decimalValue
@@ -172,7 +164,7 @@ function getRoundedOffConvertedAmount(
  * toFormat to plain string is performed on it.
  */
 function doConversionWithThePickedRateRecord(
-  conversionParameters: ConversionParametersForNonFixedRate,
+  conversionParameters: ConversionParameterForNonFixedRate,
   exchangeRateToBeUsed: ExchangeRate
 ): CurrencyAmount {
   const fromAmount: BigNumber = conversionParameters.fromAmount.decimalValue;
@@ -183,7 +175,7 @@ function doConversionWithThePickedRateRecord(
 }
 
 function getEffectiveExchangeRateValue(
-  conversionParameters: ConversionParametersForNonFixedRate,
+  conversionParameters: ConversionParameterForNonFixedRate,
   exchangeRateToBeUsed: ExchangeRate
 ): BigNumber {
   let effectiveExchangeRateVal: BigNumber;
@@ -213,7 +205,7 @@ function getEffectiveExchangeRateValue(
 }
 
 function ifFromToCurrencyMatches(
-  conversionParameters: ConversionParametersForNonFixedRate,
+  conversionParameters: ConversionParameterForNonFixedRate,
   exchangeRateToBeUsed: ExchangeRate
 ): boolean {
   return (
@@ -305,10 +297,10 @@ function fetchOverrideTenantSettings(overrideSetting: TenantSettings): TenantSet
     throw new CurrencyConversionError(ConversionError.EMPTY_OVERRIDE_TENANT_SETTING);
   }
   // create a TenantSettings object from overrideSetting
-  const tenantSettingsToBeUsed: TenantSettings = new TenantSettings(
-    overrideSetting.ratesDataProviderCode,
-    overrideSetting.ratesDataSource
-  );
+  const tenantSettingsToBeUsed: TenantSettings = {
+    ratesDataProviderCode: overrideSetting.ratesDataProviderCode,
+    ratesDataSource: overrideSetting.ratesDataSource
+  };
   log.debug(
     `Override settings is used for conversion : 
     ${overrideSetting.ratesDataProviderCode}, ${overrideSetting.ratesDataSource}`

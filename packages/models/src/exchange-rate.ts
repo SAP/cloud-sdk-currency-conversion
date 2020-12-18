@@ -6,8 +6,8 @@ import { ExchangeRateValue } from './exchange-rate-value';
 export class ExchangeRate {
   constructor(
     readonly tenantIdentifier: Tenant,
-    readonly ratesDataProviderCode: string,
-    readonly ratesDataSource: string,
+    readonly ratesDataProviderCode: string | null,
+    readonly ratesDataSource: string | null,
     readonly exchangeRateType: string,
     readonly exchangeRateValue: ExchangeRateValue,
     readonly fromCurrency: Currency,

@@ -5,13 +5,14 @@ import {
   DataAdapter,
   TenantSettings,
   ExchangeRateTypeDetail,
-  ConversionParametersForNonFixedRate,
+  ConversionParameterForNonFixedRate,
   ExchangeRate,
   ExchangeRateValue
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { isNullish } from '@sap-cloud-sdk/util';
 import { logger as log, logAndGetError } from './helper/logger';
 import { AdapterError } from './constants/adapter-error';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const cds = require('@sap/cds');
 const { SELECT } = cds.ql;
 
@@ -24,11 +25,11 @@ const { SELECT } = cds.ql;
 export class SimpleIntegrationObjectsAdapter implements DataAdapter {
   /**
    * Returns a list of {@link ExchangeRate} to be used for conversion for a given list of
-   * {@link ConversionParametersForNonFixedRate} , {@link TenantSettings} for a specific {@link Tenant}. It performs
+   * {@link ConversionParameterForNonFixedRate} , {@link TenantSettings} for a specific {@link Tenant}. It performs
    * the select query for the exchange rates on CurrencyExchangeRates table.
    *
    * @param conversionParameters
-   *            The {@link ConversionParametersForNonFixedRate} to fetch the relevant exchange rates.
+   *            The {@link ConversionParameterForNonFixedRate} to fetch the relevant exchange rates.
    *
    * @param tenant
    *            The {@link Tenant} for which the conversion is requested.
@@ -42,7 +43,7 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
    *             An exception that occurs when none of the requested conversions could be processed.
    */
   async getExchangeRatesForTenant(
-    conversionParameters: ConversionParametersForNonFixedRate[],
+    conversionParameters: ConversionParameterForNonFixedRate[],
     tenant: Tenant,
     tenantSettings: TenantSettings
   ): Promise<ExchangeRate[]> {
@@ -71,7 +72,7 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
   }
 
   prepareQueryForExchangeRatesForTenant(
-    conversionParameters: ConversionParametersForNonFixedRate[],
+    conversionParameters: ConversionParameterForNonFixedRate[],
     tenant: Tenant,
     tenantSettings: TenantSettings,
     exchangeRateTypeDetailMap: Map<string, ExchangeRateTypeDetail>
@@ -100,7 +101,7 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
   }
 
   addReferenceAndInverseCurrency(
-    conversionParameter: ConversionParametersForNonFixedRate,
+    conversionParameter: ConversionParameterForNonFixedRate,
     exchangeRateTypeDetailMap: Map<string, ExchangeRateTypeDetail>,
     predicate: string
   ): string {
@@ -136,7 +137,7 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
 
   buildPredicateForReferenceCurrency(
     exchangeRateQuery: string,
-    conversionParameter: ConversionParametersForNonFixedRate,
+    conversionParameter: ConversionParameterForNonFixedRate,
     exchangeRateTypeDetailMap: Map<string, ExchangeRateTypeDetail>
   ): string {
     const exchangeRateTypeDetail: ExchangeRateTypeDetail | undefined = exchangeRateTypeDetailMap.get(
@@ -156,7 +157,7 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
 
   buildPredicateForInvertedCurrency(
     exchangeRateQuery: string,
-    conversionParameter: ConversionParametersForNonFixedRate
+    conversionParameter: ConversionParameterForNonFixedRate
   ): string {
     // Build the predicate for inverted currency pair
     exchangeRateQuery += `or ( fromCurrencyThreeLetterISOCode = '${conversionParameter.toCurrency.currencyCode}' 
@@ -215,10 +216,10 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
   fetchDefaultSettingsForTenantFromResultSet(defaultTenantSettingsResult: any): TenantSettings {
     // get the last tenant setting
     const defaultTenantSetting = defaultTenantSettingsResult[defaultTenantSettingsResult.length - 1];
-    const tenantSettings: TenantSettings = new TenantSettings(
-      defaultTenantSetting.defaultDataProviderCode,
-      defaultTenantSetting.defaultDataSource
-    );
+    const tenantSettings: TenantSettings = {
+      ratesDataProviderCode: defaultTenantSetting.defaultDataProviderCode,
+      ratesDataSource: defaultTenantSetting.defaultDataSource
+    };
     log.debug(`Tenant settings returned from query is: ${tenantSettings}`);
     return tenantSettings;
   }
