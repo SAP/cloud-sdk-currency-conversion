@@ -12,8 +12,8 @@ import {
   ExchangeRateTypeDetail,
   ConversionParameterForNonFixedRate
 } from '@sap-cloud-sdk/currency-conversion-models';
-import { CurrencyConverter } from '../../src/core/currency-converter';
 import { ConversionError } from '../../src/constants/conversion-error';
+import { CurrencyConverter } from '../../src/core/currency-converter';
 
 const TENANT_ID: Tenant = { id: 'TenantID' };
 const TENANT_ID1: Tenant = { id: 'tenantId1' };

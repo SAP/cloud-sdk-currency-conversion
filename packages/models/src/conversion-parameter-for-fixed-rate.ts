@@ -1,6 +1,6 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
-import { ExchangeRateValue } from '@sap-cloud-sdk/currency-conversion-models/src/exchange-rate-value';
-import { ConversionParameter } from '@sap-cloud-sdk/currency-conversion-models/src/conversion-parameter';
+import { ExchangeRateValue } from './exchange-rate-value';
+import { ConversionParameter } from './conversion-parameter';
 
 export class ConversionParameterForFixedRate extends ConversionParameter {
   readonly fixedRateValue: ExchangeRateValue;
