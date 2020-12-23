@@ -7,7 +7,12 @@ import {
   ExchangeRate,
   ExchangeRateValue,
   Currency,
-  TenantSettings
+  TenantSettings,
+  buildExchangeRateValue,
+  buildConversionParameterForNonFixedRate,
+  buildExchangeRate,
+  buildExchangeRateTypeDetail,
+  buildTenantSettings
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { ExchangeRateRecordDeterminer } from '../../src/core/exchange-rate-record-determiner';
 import { ConversionError } from '../../src/constants/conversion-error';
@@ -28,24 +33,24 @@ const INR: Currency = buildCurrency('INR');
 const EUR: Currency = buildCurrency('EUR');
 const USD: Currency = buildCurrency('USD');
 
-const S_0: ExchangeRateValue = new ExchangeRateValue('0');
-const S_0_5: ExchangeRateValue = new ExchangeRateValue('0.5');
-const S_1: ExchangeRateValue = new ExchangeRateValue('1');
-const S_2: ExchangeRateValue = new ExchangeRateValue('2');
-const S_3: ExchangeRateValue = new ExchangeRateValue('3');
-const S_50: ExchangeRateValue = new ExchangeRateValue('50');
-const S_5: ExchangeRateValue = new ExchangeRateValue('5');
-const S_8: ExchangeRateValue = new ExchangeRateValue('8');
-const S_10: ExchangeRateValue = new ExchangeRateValue('10');
-const S_0_02: ExchangeRateValue = new ExchangeRateValue('0.02');
-const S_0_08: ExchangeRateValue = new ExchangeRateValue('0.08');
-const S_7_00000001: ExchangeRateValue = new ExchangeRateValue('7.00000001');
-const S_21_00000001: ExchangeRateValue = new ExchangeRateValue('21.00000001');
-const S_100: ExchangeRateValue = new ExchangeRateValue('100');
-const S_200: ExchangeRateValue = new ExchangeRateValue('200');
-const S_7_0: ExchangeRateValue = new ExchangeRateValue('7.0');
-const S_21_0: ExchangeRateValue = new ExchangeRateValue('21.0');
-const S_0_33333333333333: ExchangeRateValue = new ExchangeRateValue('0.33333333333333');
+const S_0: ExchangeRateValue = buildExchangeRateValue('0');
+const S_0_5: ExchangeRateValue = buildExchangeRateValue('0.5');
+const S_1: ExchangeRateValue = buildExchangeRateValue('1');
+const S_2: ExchangeRateValue = buildExchangeRateValue('2');
+const S_3: ExchangeRateValue = buildExchangeRateValue('3');
+const S_50: ExchangeRateValue = buildExchangeRateValue('50');
+const S_5: ExchangeRateValue = buildExchangeRateValue('5');
+const S_8: ExchangeRateValue = buildExchangeRateValue('8');
+const S_10: ExchangeRateValue = buildExchangeRateValue('10');
+const S_0_02: ExchangeRateValue = buildExchangeRateValue('0.02');
+const S_0_08: ExchangeRateValue = buildExchangeRateValue('0.08');
+const S_7_00000001: ExchangeRateValue = buildExchangeRateValue('7.00000001');
+const S_21_00000001: ExchangeRateValue = buildExchangeRateValue('21.00000001');
+const S_100: ExchangeRateValue = buildExchangeRateValue('100');
+const S_200: ExchangeRateValue = buildExchangeRateValue('200');
+const S_7_0: ExchangeRateValue = buildExchangeRateValue('7.0');
+const S_21_0: ExchangeRateValue = buildExchangeRateValue('21.0');
+const S_0_33333333333333: ExchangeRateValue = buildExchangeRateValue('0.33333333333333');
 
 const S_2020_01_01T02_30_00Z: Date = new Date('2020-01-01T02:30:00Z');
 const S_2020_02_01T02_30_00Z: Date = new Date('2020-02-01T02:30:00Z');
@@ -54,54 +59,51 @@ const S_2019_09_16T02_30_00Z: Date = new Date('2019-09-16T02:30:00Z');
 const S_2020_03_01T02_30_00Z: Date = new Date('2020-03-01T02:30:00Z');
 const S_1990_03_01T02_30_00Z: Date = new Date('1990-03-01T02:30:00Z');
 
-const defaultTenantSettings: TenantSettings = {
-  ratesDataProviderCode: MRM,
-  ratesDataSource: ECB
-};
+const defaultTenantSettings: TenantSettings = buildTenantSettings(MRM, ECB);
 
-const inrEurMConversionParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
+const inrEurMConversionParam: ConversionParameterForNonFixedRate = buildConversionParameterForNonFixedRate(
   'INR',
   'EUR',
   '100',
   M,
   S_2019_09_16T02_30_00Z
 );
-const eurInrMConversionParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
+const eurInrMConversionParam: ConversionParameterForNonFixedRate = buildConversionParameterForNonFixedRate(
   'EUR',
   'INR',
   '10',
   M,
   S_2020_01_01T02_30_00Z
 );
-const eurInrInvalidCurrPairConversionParam = new ConversionParameterForNonFixedRate(
+const eurInrInvalidCurrPairConversionParam = buildConversionParameterForNonFixedRate(
   'AUD',
   'BSD',
   '100',
   M,
   S_2020_01_01T02_30_00Z
 );
-const inrEurAskConversionParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
+const inrEurAskConversionParam: ConversionParameterForNonFixedRate = buildConversionParameterForNonFixedRate(
   'INR',
   'EUR',
   '100',
   ASK,
   S_2020_01_01T02_30_00Z
 );
-const eurUsdAConversionParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
+const eurUsdAConversionParam: ConversionParameterForNonFixedRate = buildConversionParameterForNonFixedRate(
   'EUR',
   'USD',
   '100',
   A,
   S_2020_03_01T02_30_00Z
 );
-const inrEurMConversionParamPastDate: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
+const inrEurMConversionParamPastDate: ConversionParameterForNonFixedRate = buildConversionParameterForNonFixedRate(
   'INR',
   'EUR',
   '100',
   M,
   S_1990_03_01T02_30_00Z
 );
-const usdEurMConversionParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
+const usdEurMConversionParam: ConversionParameterForNonFixedRate = buildConversionParameterForNonFixedRate(
   'USD',
   'EUR',
   '100',
@@ -111,7 +113,7 @@ const usdEurMConversionParam: ConversionParameterForNonFixedRate = new Conversio
 
 /* Exchange Rate starts*/
 
-const inrEurMrmEcbMRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbMRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -124,7 +126,7 @@ const inrEurMrmEcbMRate: ExchangeRate = new ExchangeRate(
   1,
   1
 );
-const inrEurMrmEcbMDuplicateRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbMDuplicateRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -138,7 +140,7 @@ const inrEurMrmEcbMDuplicateRate: ExchangeRate = new ExchangeRate(
   1
 );
 
-const eurInrMrmEcbMRate: ExchangeRate = new ExchangeRate(
+const eurInrMrmEcbMRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -151,7 +153,7 @@ const eurInrMrmEcbMRate: ExchangeRate = new ExchangeRate(
   1,
   1
 );
-const eurInrMrmEcbMDuplicateRate: ExchangeRate = new ExchangeRate(
+const eurInrMrmEcbMDuplicateRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -165,7 +167,7 @@ const eurInrMrmEcbMDuplicateRate: ExchangeRate = new ExchangeRate(
   1
 );
 
-const eurInrMrmEcbAskIndirectTrueRate: ExchangeRate = new ExchangeRate(
+const eurInrMrmEcbAskIndirectTrueRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -178,7 +180,7 @@ const eurInrMrmEcbAskIndirectTrueRate: ExchangeRate = new ExchangeRate(
   1,
   1
 );
-const eurInrMrmEcbAskIndirectFalseRate: ExchangeRate = new ExchangeRate(
+const eurInrMrmEcbAskIndirectFalseRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -192,7 +194,7 @@ const eurInrMrmEcbAskIndirectFalseRate: ExchangeRate = new ExchangeRate(
   1
 );
 
-const inrEurMrmEcbMDiffrentTenantRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbMDiffrentTenantRate: ExchangeRate = buildExchangeRate(
   TENANT_ID1,
   MRM,
   ECB,
@@ -206,7 +208,7 @@ const inrEurMrmEcbMDiffrentTenantRate: ExchangeRate = new ExchangeRate(
   1
 );
 
-const eurUsdMrmEcbMRate: ExchangeRate = new ExchangeRate(
+const eurUsdMrmEcbMRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -219,7 +221,7 @@ const eurUsdMrmEcbMRate: ExchangeRate = new ExchangeRate(
   1,
   1
 );
-const usdEurMrmEcbMRate: ExchangeRate = new ExchangeRate(
+const usdEurMrmEcbMRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -232,7 +234,7 @@ const usdEurMrmEcbMRate: ExchangeRate = new ExchangeRate(
   1,
   1
 );
-const usdInrMrmEcbMRate: ExchangeRate = new ExchangeRate(
+const usdInrMrmEcbMRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -246,7 +248,7 @@ const usdInrMrmEcbMRate: ExchangeRate = new ExchangeRate(
   1
 );
 
-const usdInrMrmEcbLastRate: ExchangeRate = new ExchangeRate(
+const usdInrMrmEcbLastRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -259,7 +261,7 @@ const usdInrMrmEcbLastRate: ExchangeRate = new ExchangeRate(
   1,
   1
 );
-const eurInrMrmEcbLastRate: ExchangeRate = new ExchangeRate(
+const eurInrMrmEcbLastRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -273,7 +275,7 @@ const eurInrMrmEcbLastRate: ExchangeRate = new ExchangeRate(
   1
 );
 
-const eurUsdMrmEcbIndirectTrueRate: ExchangeRate = new ExchangeRate(
+const eurUsdMrmEcbIndirectTrueRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -286,7 +288,7 @@ const eurUsdMrmEcbIndirectTrueRate: ExchangeRate = new ExchangeRate(
   1,
   1
 );
-const eurUsdMrmEcbIndirectFalseRate: ExchangeRate = new ExchangeRate(
+const eurUsdMrmEcbIndirectFalseRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -300,7 +302,7 @@ const eurUsdMrmEcbIndirectFalseRate: ExchangeRate = new ExchangeRate(
   1
 );
 
-const eurInrMrmEcbARate: ExchangeRate = new ExchangeRate(
+const eurInrMrmEcbARate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -313,7 +315,7 @@ const eurInrMrmEcbARate: ExchangeRate = new ExchangeRate(
   1,
   1
 );
-const eurInrMrmEcbADateBeforeRate: ExchangeRate = new ExchangeRate(
+const eurInrMrmEcbADateBeforeRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -326,7 +328,7 @@ const eurInrMrmEcbADateBeforeRate: ExchangeRate = new ExchangeRate(
   1,
   1
 );
-const usdInrMrmEcbARate: ExchangeRate = new ExchangeRate(
+const usdInrMrmEcbARate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -339,7 +341,7 @@ const usdInrMrmEcbARate: ExchangeRate = new ExchangeRate(
   1,
   1
 );
-const eurUsdMrmEcbARate: ExchangeRate = new ExchangeRate(
+const eurUsdMrmEcbARate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -353,7 +355,7 @@ const eurUsdMrmEcbARate: ExchangeRate = new ExchangeRate(
   1
 );
 
-const eurInrMrmEcbADuplicateRate: ExchangeRate = new ExchangeRate(
+const eurInrMrmEcbADuplicateRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -366,7 +368,7 @@ const eurInrMrmEcbADuplicateRate: ExchangeRate = new ExchangeRate(
   1,
   1
 );
-const usdInrMrmEcbADuplicateRate: ExchangeRate = new ExchangeRate(
+const usdInrMrmEcbADuplicateRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -380,7 +382,7 @@ const usdInrMrmEcbADuplicateRate: ExchangeRate = new ExchangeRate(
   1
 );
 
-const eurInrMrmIndirectTrueRate: ExchangeRate = new ExchangeRate(
+const eurInrMrmIndirectTrueRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -393,7 +395,7 @@ const eurInrMrmIndirectTrueRate: ExchangeRate = new ExchangeRate(
   1,
   1
 );
-const eurInrMrmIndirectFalseRate: ExchangeRate = new ExchangeRate(
+const eurInrMrmIndirectFalseRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -407,7 +409,7 @@ const eurInrMrmIndirectFalseRate: ExchangeRate = new ExchangeRate(
   1
 );
 
-const eurInrMrmIndirectTrueFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
+const eurInrMrmIndirectTrueFactorMoreThanOneRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -420,7 +422,7 @@ const eurInrMrmIndirectTrueFactorMoreThanOneRate: ExchangeRate = new ExchangeRat
   5,
   10
 );
-const eurInrMrmIndirectFalseFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
+const eurInrMrmIndirectFalseFactorMoreThanOneRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -434,7 +436,7 @@ const eurInrMrmIndirectFalseFactorMoreThanOneRate: ExchangeRate = new ExchangeRa
   10
 );
 
-const usdInrMrmIndirectTrueRate: ExchangeRate = new ExchangeRate(
+const usdInrMrmIndirectTrueRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -447,7 +449,7 @@ const usdInrMrmIndirectTrueRate: ExchangeRate = new ExchangeRate(
   1,
   1
 );
-const usdInrMrmIndirectFalseRate: ExchangeRate = new ExchangeRate(
+const usdInrMrmIndirectFalseRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -461,7 +463,7 @@ const usdInrMrmIndirectFalseRate: ExchangeRate = new ExchangeRate(
   1
 );
 
-const usdInrMrmIndirectTrueFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
+const usdInrMrmIndirectTrueFactorMoreThanOneRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -474,7 +476,7 @@ const usdInrMrmIndirectTrueFactorMoreThanOneRate: ExchangeRate = new ExchangeRat
   10,
   5
 );
-const usdInrMrmIndirectFalseFactorMoreThanOneRate: ExchangeRate = new ExchangeRate(
+const usdInrMrmIndirectFalseFactorMoreThanOneRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -488,7 +490,7 @@ const usdInrMrmIndirectFalseFactorMoreThanOneRate: ExchangeRate = new ExchangeRa
   5
 );
 
-const usdInrMrmEcbDuplicateDateRate: ExchangeRate = new ExchangeRate(
+const usdInrMrmEcbDuplicateDateRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -502,7 +504,7 @@ const usdInrMrmEcbDuplicateDateRate: ExchangeRate = new ExchangeRate(
   1
 );
 
-const eurInrMrmThrMRate: ExchangeRate = new ExchangeRate(
+const eurInrMrmThrMRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   THR,
@@ -515,7 +517,7 @@ const eurInrMrmThrMRate: ExchangeRate = new ExchangeRate(
   1,
   1
 );
-const eurInrMrmThrAskIndirectTrueRate: ExchangeRate = new ExchangeRate(
+const eurInrMrmThrAskIndirectTrueRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   THR,
@@ -529,7 +531,7 @@ const eurInrMrmThrAskIndirectTrueRate: ExchangeRate = new ExchangeRate(
   1
 );
 
-const eurInrMrmIndirectFalseRateInfiniteDecimal: ExchangeRate = new ExchangeRate(
+const eurInrMrmIndirectFalseRateInfiniteDecimal: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -542,7 +544,7 @@ const eurInrMrmIndirectFalseRateInfiniteDecimal: ExchangeRate = new ExchangeRate
   1,
   1
 );
-const usdInrMrmIndirectFalseRateInfiniteDecimal: ExchangeRate = new ExchangeRate(
+const usdInrMrmIndirectFalseRateInfiniteDecimal: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -556,7 +558,7 @@ const usdInrMrmIndirectFalseRateInfiniteDecimal: ExchangeRate = new ExchangeRate
   1
 );
 
-const eurInrMrmEcbZeroRate: ExchangeRate = new ExchangeRate(
+const eurInrMrmEcbZeroRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -569,7 +571,7 @@ const eurInrMrmEcbZeroRate: ExchangeRate = new ExchangeRate(
   1,
   1
 );
-const usdInrMrmEcbZeroRate: ExchangeRate = new ExchangeRate(
+const usdInrMrmEcbZeroRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -583,7 +585,7 @@ const usdInrMrmEcbZeroRate: ExchangeRate = new ExchangeRate(
   1
 );
 
-const eurInrMrmEcbZeroFactor: ExchangeRate = new ExchangeRate(
+const eurInrMrmEcbZeroFactor: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -596,7 +598,7 @@ const eurInrMrmEcbZeroFactor: ExchangeRate = new ExchangeRate(
   0,
   0
 );
-const usdInrMrmEcbZeroFactor: ExchangeRate = new ExchangeRate(
+const usdInrMrmEcbZeroFactor: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -610,7 +612,7 @@ const usdInrMrmEcbZeroFactor: ExchangeRate = new ExchangeRate(
   0
 );
 
-const eurInrMrmEcbZeroFactorRate: ExchangeRate = new ExchangeRate(
+const eurInrMrmEcbZeroFactorRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -623,7 +625,7 @@ const eurInrMrmEcbZeroFactorRate: ExchangeRate = new ExchangeRate(
   0,
   0
 );
-const usdInrMrmEcbZeroFactorRate: ExchangeRate = new ExchangeRate(
+const usdInrMrmEcbZeroFactorRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -637,7 +639,7 @@ const usdInrMrmEcbZeroFactorRate: ExchangeRate = new ExchangeRate(
   0
 );
 
-const eurInrMrmEcbScaleMoreThanDefaultRate: ExchangeRate = new ExchangeRate(
+const eurInrMrmEcbScaleMoreThanDefaultRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -650,7 +652,7 @@ const eurInrMrmEcbScaleMoreThanDefaultRate: ExchangeRate = new ExchangeRate(
   1,
   1
 );
-const usdInrMrmEcbScaleMoreThanDefaultRate: ExchangeRate = new ExchangeRate(
+const usdInrMrmEcbScaleMoreThanDefaultRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -664,7 +666,7 @@ const usdInrMrmEcbScaleMoreThanDefaultRate: ExchangeRate = new ExchangeRate(
   1
 );
 
-const eurInrMrmEcbScaleMoreThanZeroRate: ExchangeRate = new ExchangeRate(
+const eurInrMrmEcbScaleMoreThanZeroRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -677,7 +679,7 @@ const eurInrMrmEcbScaleMoreThanZeroRate: ExchangeRate = new ExchangeRate(
   1,
   1
 );
-const usdInrMrmEcbScaleMoreThanZeroRate: ExchangeRate = new ExchangeRate(
+const usdInrMrmEcbScaleMoreThanZeroRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -691,7 +693,7 @@ const usdInrMrmEcbScaleMoreThanZeroRate: ExchangeRate = new ExchangeRate(
   1
 );
 
-const eurUsdMrmEcbIndirectFalseInvertedTrueRate: ExchangeRate = new ExchangeRate(
+const eurUsdMrmEcbIndirectFalseInvertedTrueRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -704,7 +706,7 @@ const eurUsdMrmEcbIndirectFalseInvertedTrueRate: ExchangeRate = new ExchangeRate
   1,
   1
 );
-const usdEurMrmEcbIndirectFalseInvertedTrueRate: ExchangeRate = new ExchangeRate(
+const usdEurMrmEcbIndirectFalseInvertedTrueRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -731,9 +733,9 @@ function instantiateExchangeRateRecordDeterminer(exchangeRateResultSet: Exchange
 
 function getExchangeRateTypeDetailsForTenant(): Map<string, ExchangeRateTypeDetail> {
   const exchangeRateTypeDetailMap: Map<string, ExchangeRateTypeDetail> = new Map();
-  exchangeRateTypeDetailMap.set(A, new ExchangeRateTypeDetail(INR, true));
-  exchangeRateTypeDetailMap.set(M, new ExchangeRateTypeDetail(null as any, true));
-  exchangeRateTypeDetailMap.set(ASK, new ExchangeRateTypeDetail(null as any, true));
+  exchangeRateTypeDetailMap.set(A, buildExchangeRateTypeDetail(INR, true));
+  exchangeRateTypeDetailMap.set(M, buildExchangeRateTypeDetail(null as any, true));
+  exchangeRateTypeDetailMap.set(ASK, buildExchangeRateTypeDetail(null as any, true));
   return exchangeRateTypeDetailMap;
 }
 
@@ -1015,7 +1017,7 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
-    const expectedExchangeRate: ExchangeRate = new ExchangeRate(
+    const expectedExchangeRate: ExchangeRate = buildExchangeRate(
       TENANT_ID,
       MRM,
       ECB,
@@ -1042,7 +1044,7 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
-    const expectedExchangeRate: ExchangeRate = new ExchangeRate(
+    const expectedExchangeRate: ExchangeRate = buildExchangeRate(
       TENANT_ID,
       MRM,
       ECB,
@@ -1069,12 +1071,12 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
-    const expectedExchangeRate: ExchangeRate = new ExchangeRate(
+    const expectedExchangeRate: ExchangeRate = buildExchangeRate(
       TENANT_ID,
       MRM,
       ECB,
       A,
-      new ExchangeRateValue('0.3333333336507937'),
+      buildExchangeRateValue('0.3333333336507937'),
       EUR,
       USD,
       S_2020_01_01T02_30_00Z,
@@ -1093,7 +1095,7 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
-    const expectedExchangeRate: ExchangeRate = new ExchangeRate(
+    const expectedExchangeRate: ExchangeRate = buildExchangeRate(
       TENANT_ID,
       MRM,
       ECB,
@@ -1291,7 +1293,7 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
-    const expectedExchangeRate: ExchangeRate = new ExchangeRate(
+    const expectedExchangeRate: ExchangeRate = buildExchangeRate(
       TENANT_ID,
       MRM,
       ECB,
@@ -1315,7 +1317,7 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
-    const expectedExchangeRate: ExchangeRate = new ExchangeRate(
+    const expectedExchangeRate: ExchangeRate = buildExchangeRate(
       TENANT_ID,
       MRM,
       ECB,
@@ -1339,7 +1341,7 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
-    const expectedExchangeRate: ExchangeRate = new ExchangeRate(
+    const expectedExchangeRate: ExchangeRate = buildExchangeRate(
       TENANT_ID,
       MRM,
       ECB,
@@ -1363,7 +1365,7 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
-    const expectedExchangeRate: ExchangeRate = new ExchangeRate(
+    const expectedExchangeRate: ExchangeRate = buildExchangeRate(
       TENANT_ID,
       MRM,
       ECB,
@@ -1390,7 +1392,7 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
-    const expectedExchangeRate: ExchangeRate = new ExchangeRate(
+    const expectedExchangeRate: ExchangeRate = buildExchangeRate(
       TENANT_ID,
       MRM,
       ECB,
@@ -1417,7 +1419,7 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
-    const expectedExchangeRate: ExchangeRate = new ExchangeRate(
+    const expectedExchangeRate: ExchangeRate = buildExchangeRate(
       TENANT_ID,
       MRM,
       ECB,
@@ -1444,7 +1446,7 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
-    const expectedExchangeRate: ExchangeRate = new ExchangeRate(
+    const expectedExchangeRate: ExchangeRate = buildExchangeRate(
       TENANT_ID,
       MRM,
       ECB,
@@ -1471,7 +1473,7 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
-    const expectedExchangeRate: ExchangeRate = new ExchangeRate(
+    const expectedExchangeRate: ExchangeRate = buildExchangeRate(
       TENANT_ID,
       MRM,
       ECB,
@@ -1498,7 +1500,7 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
-    const expectedExchangeRate: ExchangeRate = new ExchangeRate(
+    const expectedExchangeRate: ExchangeRate = buildExchangeRate(
       TENANT_ID,
       MRM,
       ECB,

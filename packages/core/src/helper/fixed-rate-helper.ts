@@ -1,5 +1,7 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
 import {
+  buildCurrencyAmount,
+  buildSingleFixedRateConversionResult,
   ConversionParameterForFixedRate,
   CurrencyAmount,
   SingleFixedRateConversionResult
@@ -12,7 +14,7 @@ export function performSingleFixedConversion(
 ): SingleFixedRateConversionResult {
   const convertedAmount =
     conversionParams.fromCurrency.currencyCode === conversionParams.toCurrency.currencyCode
-      ? new CurrencyAmount(conversionParams.fromAmount.decimalValue.toFormat(CURR_FORMAT))
+      ? buildCurrencyAmount(conversionParams.fromAmount.decimalValue.toFormat(CURR_FORMAT))
       : calculateConvertedAmtForFixedRate(conversionParams);
   const numOfDefaultFractionDigs = conversionParams.toCurrency.defaultFractionDigits;
   const roundedValString = convertedAmount.decimalValue.toFormat(
@@ -20,11 +22,11 @@ export function performSingleFixedConversion(
     BigNumber.ROUND_HALF_UP,
     CURR_FORMAT
   );
-  const roundedOffAmount = new CurrencyAmount(roundedValString);
-  return new SingleFixedRateConversionResult(convertedAmount, roundedOffAmount);
+  const roundedOffAmount = buildCurrencyAmount(roundedValString);
+  return buildSingleFixedRateConversionResult(convertedAmount, roundedOffAmount);
 }
 
 function calculateConvertedAmtForFixedRate(conversionParams: ConversionParameterForFixedRate): CurrencyAmount {
   const result = conversionParams.fromAmount.decimalValue.multipliedBy(conversionParams.fixedRateValue.decimalValue);
-  return new CurrencyAmount(result.toFormat(CURR_FORMAT));
+  return buildCurrencyAmount(result.toFormat(CURR_FORMAT));
 }

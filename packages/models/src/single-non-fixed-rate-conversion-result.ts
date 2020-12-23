@@ -4,12 +4,18 @@ import { CurrencyAmount } from './currency-amount';
 import { ExchangeRate } from './exchange-rate';
 import { SingleFixedRateConversionResult } from './single-fixed-rate-conversion-result';
 
-export class SingleNonFixedRateConversionResult extends SingleFixedRateConversionResult {
-  constructor(
-    readonly exchangeRate: ExchangeRate,
-    readonly convertedAmount: CurrencyAmount,
-    readonly roundedOffConvertedAmount: CurrencyAmount
-  ) {
-    super(convertedAmount, roundedOffConvertedAmount);
-  }
+export interface SingleNonFixedRateConversionResult extends SingleFixedRateConversionResult {
+  readonly exchangeRate: ExchangeRate;
+}
+
+export function buildSingleNonFixedRateConversionResult(
+  exchangeRate: ExchangeRate,
+  convertedAmount: CurrencyAmount,
+  roundedOffConvertedAmount: CurrencyAmount
+): SingleNonFixedRateConversionResult {
+  return {
+    exchangeRate,
+    convertedAmount,
+    roundedOffConvertedAmount
+  };
 }

@@ -5,10 +5,11 @@ import {
   CurrencyConversionError,
   ConversionParameterForNonFixedRate,
   ExchangeRate,
-  ExchangeRateValue,
   ExchangeRateTypeDetail,
   TenantSettings,
-  ConversionModelError
+  ConversionModelError,
+  buildExchangeRate,
+  buildExchangeRateValue
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { BigNumber } from 'bignumber.js';
 import { logAndGetError, logger as log } from '../helper/logger';
@@ -168,12 +169,12 @@ export class ExchangeRateRecordDeterminer {
       toReferenceCurrencyPair
     );
     const derivedExchangeRateList: ExchangeRate[] = [];
-    const derivedExchangeRate: ExchangeRate = new ExchangeRate(
+    const derivedExchangeRate: ExchangeRate = buildExchangeRate(
       this._tenant,
       this._isTenantSettingNull ? null : fromReferenceCurrencyPair.ratesDataProviderCode,
       this._isTenantSettingNull ? null : fromReferenceCurrencyPair.ratesDataSource,
       fromReferenceCurrencyPair.exchangeRateType,
-      new ExchangeRateValue(derivedExchangeRateValue),
+      buildExchangeRateValue(derivedExchangeRateValue),
       fromReferenceCurrencyPair.fromCurrency,
       toReferenceCurrencyPair.fromCurrency,
       fromReferenceCurrencyPair.validFromDateTime.getTime() < toReferenceCurrencyPair.validFromDateTime.getTime()

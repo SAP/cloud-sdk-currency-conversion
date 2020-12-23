@@ -10,7 +10,11 @@ import {
   ExchangeRateTypeDetail,
   ExchangeRateValue,
   SingleNonFixedRateConversionResult,
-  TenantSettings
+  TenantSettings,
+  buildExchangeRateValue,
+  buildConversionParameterForNonFixedRate,
+  buildExchangeRate,
+  buildTenantSettings
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { CurrencyConverter } from '../../src/core/currency-converter';
 import { ConversionError } from '../../src/constants/conversion-error';
@@ -26,17 +30,14 @@ const M = 'M';
 const INR: Currency = buildCurrency('INR');
 const EUR: Currency = buildCurrency('EUR');
 
-const S_0: ExchangeRateValue = new ExchangeRateValue('0');
-const S_10: ExchangeRateValue = new ExchangeRateValue('10');
+const S_0: ExchangeRateValue = buildExchangeRateValue('0');
+const S_10: ExchangeRateValue = buildExchangeRateValue('10');
 
 const S_2019_09_16T02_30_00Z: Date = new Date('2019-09-16T02:30:00Z');
 
-const overrideTenantSettings: TenantSettings = {
-  ratesDataProviderCode: MRM,
-  ratesDataSource: THR
-};
+const overrideTenantSettings: TenantSettings = buildTenantSettings(MRM, THR);
 
-const inrEurMConversionParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
+const inrEurMConversionParam: ConversionParameterForNonFixedRate = buildConversionParameterForNonFixedRate(
   'INR',
   'EUR',
   '100',
@@ -48,7 +49,7 @@ const inrEurMConversionParam: ConversionParameterForNonFixedRate = new Conversio
 
 /* MRM, ECB */
 
-const inrEurMrmEcbDirectZeroRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbDirectZeroRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -62,7 +63,7 @@ const inrEurMrmEcbDirectZeroRate: ExchangeRate = new ExchangeRate(
   1
 );
 
-const inrEurMrmEcbDirectZeroToFactorRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbDirectZeroToFactorRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -76,7 +77,7 @@ const inrEurMrmEcbDirectZeroToFactorRate: ExchangeRate = new ExchangeRate(
   0
 );
 
-const inrEurMrmEcbIndirectZeroRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbIndirectZeroRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -90,7 +91,7 @@ const inrEurMrmEcbIndirectZeroRate: ExchangeRate = new ExchangeRate(
   1
 );
 
-const inrEurMrmEcbIndirectZeroFactorsZeroRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbIndirectZeroFactorsZeroRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -104,7 +105,7 @@ const inrEurMrmEcbIndirectZeroFactorsZeroRate: ExchangeRate = new ExchangeRate(
   0
 );
 
-const inrEurMrmEcbIndirectZeroToFactorZeroRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbIndirectZeroToFactorZeroRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -118,7 +119,7 @@ const inrEurMrmEcbIndirectZeroToFactorZeroRate: ExchangeRate = new ExchangeRate(
   0
 );
 
-const inrEurMrmEcbIndirectZeroFromFactZeroRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbIndirectZeroFromFactZeroRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -132,7 +133,7 @@ const inrEurMrmEcbIndirectZeroFromFactZeroRate: ExchangeRate = new ExchangeRate(
   1
 );
 
-const inrEurMrmEcbDirectZeroFactorsZeroRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbDirectZeroFactorsZeroRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -146,7 +147,7 @@ const inrEurMrmEcbDirectZeroFactorsZeroRate: ExchangeRate = new ExchangeRate(
   0
 );
 
-const inrEurMrmEcbDirectZeroFromFactZeroRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbDirectZeroFromFactZeroRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -160,7 +161,7 @@ const inrEurMrmEcbDirectZeroFromFactZeroRate: ExchangeRate = new ExchangeRate(
   1
 );
 
-const inrEurMrmEcbIndirectZeroFactorsRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbIndirectZeroFactorsRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -174,7 +175,7 @@ const inrEurMrmEcbIndirectZeroFactorsRate: ExchangeRate = new ExchangeRate(
   0
 );
 
-const inrEurMrmEcbIndirectZeroFromFactorRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbIndirectZeroFromFactorRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -188,7 +189,7 @@ const inrEurMrmEcbIndirectZeroFromFactorRate: ExchangeRate = new ExchangeRate(
   1
 );
 
-const inrEurMrmEcbDirectZeroFactorsRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbDirectZeroFactorsRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -202,7 +203,7 @@ const inrEurMrmEcbDirectZeroFactorsRate: ExchangeRate = new ExchangeRate(
   0
 );
 
-const inrEurMrmEcbDirectZeroFromFactorRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbDirectZeroFromFactorRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -217,7 +218,7 @@ const inrEurMrmEcbDirectZeroFromFactorRate: ExchangeRate = new ExchangeRate(
 );
 /* MRM ECB */
 
-const inrEurMrmEcbIndirectZeroToFactorRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbIndirectZeroToFactorRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -231,7 +232,7 @@ const inrEurMrmEcbIndirectZeroToFactorRate: ExchangeRate = new ExchangeRate(
   0
 );
 
-const inrEurMrmEcbDirectZeroToFactorZeroRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbDirectZeroToFactorZeroRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -246,7 +247,7 @@ const inrEurMrmEcbDirectZeroToFactorZeroRate: ExchangeRate = new ExchangeRate(
 );
 
 // MRM, THR
-const inrEurMrmThrIndirectZeroRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmThrIndirectZeroRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   THR,
@@ -259,7 +260,7 @@ const inrEurMrmThrIndirectZeroRate: ExchangeRate = new ExchangeRate(
   1,
   1
 );
-const inrEurMrmThrDirectZeroRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmThrDirectZeroRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   THR,
@@ -273,7 +274,7 @@ const inrEurMrmThrDirectZeroRate: ExchangeRate = new ExchangeRate(
   1
 );
 
-const inrEurMrmThrIndirectZeroFactorsZeroRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmThrIndirectZeroFactorsZeroRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   THR,
@@ -286,92 +287,12 @@ const inrEurMrmThrIndirectZeroFactorsZeroRate: ExchangeRate = new ExchangeRate(
   0,
   0
 );
-const inrEurMrmThrIndirectZeroToFactorZeroRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmThrIndirectZeroToFactorZeroRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   THR,
   M,
   S_0,
-  INR,
-  EUR,
-  S_2019_09_16T02_30_00Z,
-  true,
-  1,
-  0
-);
-const inrEurMrmThrIndirectZeroFromFactZeroRate: ExchangeRate = new ExchangeRate(
-  TENANT_ID,
-  MRM,
-  THR,
-  M,
-  S_0,
-  INR,
-  EUR,
-  S_2019_09_16T02_30_00Z,
-  true,
-  0,
-  1
-);
-
-const inrEurMrmThrDirectZeroFactorsZeroRate: ExchangeRate = new ExchangeRate(
-  TENANT_ID,
-  MRM,
-  THR,
-  M,
-  S_0,
-  INR,
-  EUR,
-  S_2019_09_16T02_30_00Z,
-  false,
-  0,
-  0
-);
-const inrEurMrmThrDirectZeroToFactorZeroRate: ExchangeRate = new ExchangeRate(
-  TENANT_ID,
-  MRM,
-  THR,
-  M,
-  S_0,
-  INR,
-  EUR,
-  S_2019_09_16T02_30_00Z,
-  false,
-  1,
-  0
-);
-const inrEurMrmThrDirectZeroFromFactZeroRate: ExchangeRate = new ExchangeRate(
-  TENANT_ID,
-  MRM,
-  THR,
-  M,
-  S_0,
-  INR,
-  EUR,
-  S_2019_09_16T02_30_00Z,
-  false,
-  0,
-  1
-);
-
-const inrEurMrmThrIndirectZeroFactorsRate: ExchangeRate = new ExchangeRate(
-  TENANT_ID,
-  MRM,
-  THR,
-  M,
-  S_10,
-  INR,
-  EUR,
-  S_2019_09_16T02_30_00Z,
-  true,
-  0,
-  0
-);
-const inrEurMrmThrIndirectZeroToFactorRate: ExchangeRate = new ExchangeRate(
-  TENANT_ID,
-  MRM,
-  THR,
-  M,
-  S_10,
   INR,
   EUR,
   S_2019_09_16T02_30_00Z,
@@ -379,12 +300,12 @@ const inrEurMrmThrIndirectZeroToFactorRate: ExchangeRate = new ExchangeRate(
   1,
   0
 );
-const inrEurMrmThrIndirectZeroFromFactorRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmThrIndirectZeroFromFactZeroRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   THR,
   M,
-  S_10,
+  S_0,
   INR,
   EUR,
   S_2019_09_16T02_30_00Z,
@@ -393,7 +314,87 @@ const inrEurMrmThrIndirectZeroFromFactorRate: ExchangeRate = new ExchangeRate(
   1
 );
 
-const inrEurMrmThrDirectZeroFactorsRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmThrDirectZeroFactorsZeroRate: ExchangeRate = buildExchangeRate(
+  TENANT_ID,
+  MRM,
+  THR,
+  M,
+  S_0,
+  INR,
+  EUR,
+  S_2019_09_16T02_30_00Z,
+  false,
+  0,
+  0
+);
+const inrEurMrmThrDirectZeroToFactorZeroRate: ExchangeRate = buildExchangeRate(
+  TENANT_ID,
+  MRM,
+  THR,
+  M,
+  S_0,
+  INR,
+  EUR,
+  S_2019_09_16T02_30_00Z,
+  false,
+  1,
+  0
+);
+const inrEurMrmThrDirectZeroFromFactZeroRate: ExchangeRate = buildExchangeRate(
+  TENANT_ID,
+  MRM,
+  THR,
+  M,
+  S_0,
+  INR,
+  EUR,
+  S_2019_09_16T02_30_00Z,
+  false,
+  0,
+  1
+);
+
+const inrEurMrmThrIndirectZeroFactorsRate: ExchangeRate = buildExchangeRate(
+  TENANT_ID,
+  MRM,
+  THR,
+  M,
+  S_10,
+  INR,
+  EUR,
+  S_2019_09_16T02_30_00Z,
+  true,
+  0,
+  0
+);
+const inrEurMrmThrIndirectZeroToFactorRate: ExchangeRate = buildExchangeRate(
+  TENANT_ID,
+  MRM,
+  THR,
+  M,
+  S_10,
+  INR,
+  EUR,
+  S_2019_09_16T02_30_00Z,
+  true,
+  1,
+  0
+);
+const inrEurMrmThrIndirectZeroFromFactorRate: ExchangeRate = buildExchangeRate(
+  TENANT_ID,
+  MRM,
+  THR,
+  M,
+  S_10,
+  INR,
+  EUR,
+  S_2019_09_16T02_30_00Z,
+  true,
+  0,
+  1
+);
+
+const inrEurMrmThrDirectZeroFactorsRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   THR,
@@ -406,7 +407,7 @@ const inrEurMrmThrDirectZeroFactorsRate: ExchangeRate = new ExchangeRate(
   0,
   0
 );
-const inrEurMrmThrDirectZeroToFactorRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmThrDirectZeroToFactorRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   THR,
@@ -419,7 +420,7 @@ const inrEurMrmThrDirectZeroToFactorRate: ExchangeRate = new ExchangeRate(
   1,
   0
 );
-const inrEurMrmThrDirectZeroFromFactorRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmThrDirectZeroFromFactorRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   THR,

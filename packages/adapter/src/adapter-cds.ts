@@ -7,7 +7,10 @@ import {
   ExchangeRateTypeDetail,
   ConversionParameterForNonFixedRate,
   ExchangeRate,
-  ExchangeRateValue
+  buildExchangeRate,
+  buildExchangeRateValue,
+  buildExchangeRateTypeDetail,
+  buildTenantSettings
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { isNullish } from '@sap-cloud-sdk/util';
 import { logger as log, logAndGetError } from './helper/logger';
@@ -169,12 +172,12 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
   fetchExchangeRateFromResultSet(exchangeRateResults: ExchangeRate[]): ExchangeRate[] {
     const exchangeRateList: ExchangeRate[] = exchangeRateResults.map((result: any) => {
       const TENANT_ID = { id: result.tenantID };
-      return new ExchangeRate(
+      return buildExchangeRate(
         TENANT_ID,
         result.dataProviderCode == null ? (null as any) : result.dataProviderCode,
         result.dataSource == null ? (null as any) : result.dataSource,
         result.exchangeRateType,
-        new ExchangeRateValue(result.exchangeRateValue.toString()),
+        buildExchangeRateValue(result.exchangeRateValue.toString()),
         buildCurrency(result.fromCurrencyThreeLetterISOCode),
         buildCurrency(result.toCurrencyThreeLetterISOCode),
         new Date(result.validFromDateTime),
@@ -216,10 +219,10 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
   fetchDefaultSettingsForTenantFromResultSet(defaultTenantSettingsResult: any): TenantSettings {
     // get the last tenant setting
     const defaultTenantSetting = defaultTenantSettingsResult[defaultTenantSettingsResult.length - 1];
-    const tenantSettings: TenantSettings = {
-      ratesDataProviderCode: defaultTenantSetting.defaultDataProviderCode,
-      ratesDataSource: defaultTenantSetting.defaultDataSource
-    };
+    const tenantSettings: TenantSettings = buildTenantSettings(
+      defaultTenantSetting.defaultDataProviderCode,
+      defaultTenantSetting.defaultDataSource
+    );
     log.debug(`Tenant settings returned from query is: ${tenantSettings}`);
     return tenantSettings;
   }
@@ -269,7 +272,7 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
     exchangeRateTypeDetailsResults.forEach((result: any) => {
       exchangeRateTypeDetailMap.set(
         result.exchangeRateType,
-        new ExchangeRateTypeDetail(
+        buildExchangeRateTypeDetail(
           result.referenceCurrencyThreeLetterISOCode === 'NULL'
             ? (null as any)
             : buildCurrency(result.referenceCurrencyThreeLetterISOCode),

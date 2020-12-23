@@ -8,9 +8,13 @@ import {
   DataAdapter,
   ExchangeRate,
   ExchangeRateTypeDetail,
-  ExchangeRateValue,
   SingleNonFixedRateConversionResult,
-  TenantSettings
+  TenantSettings,
+  buildCurrencyAmount,
+  buildExchangeRateValue,
+  buildExchangeRate,
+  buildSingleNonFixedRateConversionResult,
+  buildTenantSettings
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { isNullish } from '@sap-cloud-sdk/util';
 import { BigNumber } from 'bignumber.js';
@@ -118,13 +122,13 @@ function performSingleNonFixedConversion(
   let convertedValue: CurrencyAmount;
   let exchangeRateUsed: ExchangeRate;
   if (conversionParameters.fromCurrency.currencyCode === conversionParameters.toCurrency.currencyCode) {
-    convertedValue = new CurrencyAmount(conversionParameters.fromAmount.decimalValue.toFormat(CURR_FORMAT));
-    exchangeRateUsed = new ExchangeRate(
+    convertedValue = buildCurrencyAmount(conversionParameters.fromAmount.decimalValue.toFormat(CURR_FORMAT));
+    exchangeRateUsed = buildExchangeRate(
       tenant,
       null,
       null,
       conversionParameters.exchangeRateType,
-      new ExchangeRateValue('1'),
+      buildExchangeRateValue('1'),
       conversionParameters.fromCurrency,
       conversionParameters.toCurrency,
       conversionParameters.conversionAsOfDateTime
@@ -133,7 +137,7 @@ function performSingleNonFixedConversion(
     exchangeRateUsed = exchangeRateDeterminer.getBestMatchedExchangeRateRecord(conversionParameters);
     convertedValue = doConversionWithThePickedRateRecord(conversionParameters, exchangeRateUsed);
   }
-  return new SingleNonFixedRateConversionResult(
+  return buildSingleNonFixedRateConversionResult(
     exchangeRateUsed,
     convertedValue,
     getRoundedOffConvertedAmount(convertedValue, conversionParameters)
@@ -144,7 +148,7 @@ function getRoundedOffConvertedAmount(
   currAmount: CurrencyAmount,
   conversionParam: ConversionParameterForNonFixedRate
 ): CurrencyAmount {
-  return new CurrencyAmount(
+  return buildCurrencyAmount(
     currAmount.decimalValue
       .decimalPlaces(conversionParam.toCurrency.defaultFractionDigits, BigNumber.ROUND_HALF_UP)
       .toFormat(CURR_FORMAT)
@@ -171,7 +175,7 @@ function doConversionWithThePickedRateRecord(
   const convertedValue: BigNumber = fromAmount.multipliedBy(
     getEffectiveExchangeRateValue(conversionParameters, exchangeRateToBeUsed)
   );
-  return new CurrencyAmount(convertedValue.toFormat(CURR_FORMAT));
+  return buildCurrencyAmount(convertedValue.toFormat(CURR_FORMAT));
 }
 
 function getEffectiveExchangeRateValue(
@@ -297,10 +301,10 @@ function fetchOverrideTenantSettings(overrideSetting: TenantSettings): TenantSet
     throw new CurrencyConversionError(ConversionError.EMPTY_OVERRIDE_TENANT_SETTING);
   }
   // create a TenantSettings object from overrideSetting
-  const tenantSettingsToBeUsed: TenantSettings = {
-    ratesDataProviderCode: overrideSetting.ratesDataProviderCode,
-    ratesDataSource: overrideSetting.ratesDataSource
-  };
+  const tenantSettingsToBeUsed: TenantSettings = buildTenantSettings(
+    overrideSetting.ratesDataProviderCode,
+    overrideSetting.ratesDataSource
+  );
   log.debug(
     `Override settings is used for conversion : 
     ${overrideSetting.ratesDataProviderCode}, ${overrideSetting.ratesDataSource}`
