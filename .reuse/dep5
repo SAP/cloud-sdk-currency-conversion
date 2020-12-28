@@ -1,7 +1,6 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: cloud-sdk-js
-Upstream-Contact: The SAP Cloud SDK team (cloudsdk@sap.com)
-Source: https://github.com/SAP/cloud-sdk-js
+Upstream-Name: cloud-sdk-currency-conversion
+Source: https://github.com/SAP/cloud-sdk-currency-conversion
 Disclaimer: The code in this project may include calls to APIs (“API Calls”) of
  SAP or third-party products or services developed outside of this project
  (“External Products”).
@@ -25,5 +24,5 @@ Disclaimer: The code in this project may include calls to APIs (“API Calls”)
  parties the right to use of access any SAP External Product, through API Calls.
 
 Files: *
-Copyright:  2018-2020 SAP SE or an SAP affiliate company and cloud-sdk-js
+Copyright:  2018-2020 SAP SE or an SAP affiliate company and cloud-sdk-currency-conversion
 License: Apache-2.0
