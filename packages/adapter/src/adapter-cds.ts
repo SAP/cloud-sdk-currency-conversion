@@ -51,7 +51,6 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
       if (isNullish(conversionParameters) || conversionParameters.length === 0) {
         throw logAndGetError(AdapterError.NULL_CONVERSION_PARAMETERS);
       }
-
       const rateTypeSet: Set<string> = new Set();
       conversionParameters.map((param: any) => {
         rateTypeSet.add(param.exchangeRateType);
@@ -64,7 +63,7 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
         exchangeRateTypeDetailMap
       );
       log.debug(`CDS Query generated: ${exchangeRateQuery}`);
-      const resultSet = await cds.run(exchangeRateQuery);
+      const resultSet = await exchangeRateQuery;
       return this.fetchExchangeRateFromResultSet(resultSet);
     } catch (error) {
       throw logAndGetError(AdapterError.EXCHANGE_RATE_CONNECTION_ERROR);
@@ -107,8 +106,7 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
   ): string {
     if (this.referenceCurrencyExists(conversionParameter.exchangeRateType, exchangeRateTypeDetailMap)) {
       predicate = this.buildPredicateForReferenceCurrency(predicate, conversionParameter, exchangeRateTypeDetailMap);
-    }
-    if (this.isInversionAllowed(conversionParameter.exchangeRateType, exchangeRateTypeDetailMap)) {
+    } else if (this.isInversionAllowed(conversionParameter.exchangeRateType, exchangeRateTypeDetailMap)) {
       predicate = this.buildPredicateForInvertedCurrency(predicate, conversionParameter);
     }
     return predicate;
@@ -178,7 +176,7 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
         buildCurrency(result.fromCurrencyThreeLetterISOCode),
         buildCurrency(result.toCurrencyThreeLetterISOCode),
         new Date(result.validFromDateTime),
-        result.isIndirect,
+        result.isRateValueIndirect,
         parseFloat(result.fromCurrencyFactor),
         parseFloat(result.toCurrencyFactor)
       );
@@ -254,8 +252,8 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
         predicate += `exchangeRateType = '${rateType}' or `;
       });
       predicate += `exchangeRateType = '${rateTypes[rateTypes.length - 1]}' )`;
-      const rateTypeDetailsQuery: any = SELECT.from(ExchangeRateTypes).where(predicate);
-      const exchangeRateTypeDetailsResults: JSON[] = await cds.run(rateTypeDetailsQuery);
+      // const rateTypeDetailsQuery: any = SELECT.from(ExchangeRateTypes).where(predicate);
+      const exchangeRateTypeDetailsResults = await SELECT.from(ExchangeRateTypes).where(predicate);
       return this.fetchExchangeRateTypeDetailsForTenantFromResultSet(exchangeRateTypeDetailsResults);
     } catch (error) {
       throw logAndGetError(AdapterError.EXCHANGE_RATE_DETAIL_CONNECTION_ERROR);
