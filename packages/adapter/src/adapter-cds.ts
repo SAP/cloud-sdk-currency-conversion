@@ -202,9 +202,9 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
   async getDefaultSettingsForTenant(tenant: Tenant): Promise<TenantSettings> {
     try {
       const { TenantConfigForConversions } = cds.entities('com.sap.integrationmodel.currencyconversion');
-      const defaultTenantSettingsResult = await cds
-        .read(TenantConfigForConversions)
-        .where(`tenantID = '${tenant.id}' and isConfigurationActive = true`);
+      const defaultTenantSettingsResult = await SELECT.from(TenantConfigForConversions).where(
+        `tenantID = '${tenant.id}' and isConfigurationActive = true`
+      );
       return this.fetchDefaultSettingsForTenantFromResultSet(defaultTenantSettingsResult);
     } catch (error) {
       throw logAndGetError(AdapterError.TENANT_SETTING_CONNECTION_ERROR);
@@ -252,7 +252,6 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
         predicate += `exchangeRateType = '${rateType}' or `;
       });
       predicate += `exchangeRateType = '${rateTypes[rateTypes.length - 1]}' )`;
-      // const rateTypeDetailsQuery: any = SELECT.from(ExchangeRateTypes).where(predicate);
       const exchangeRateTypeDetailsResults = await SELECT.from(ExchangeRateTypes).where(predicate);
       return this.fetchExchangeRateTypeDetailsForTenantFromResultSet(exchangeRateTypeDetailsResults);
     } catch (error) {
