@@ -1,0 +1,23 @@
+{
+  "auth": {
+    "passport": {
+      "uaa": {
+        "tag": "xsuaa"
+      },
+      "strategy": "mock",
+      "users": {
+        "cds": {
+          "roles": [
+            "CurrencyConversionConfigure",
+            "CurrencyConversionDisplay"
+          ],
+          "ID": "vidhya.k.pai@sap.com",
+          "password": "secret",
+          "userAttributes": {
+            "country": "en_US"
+          }
+        }
+      }
+    }
+  }
+}

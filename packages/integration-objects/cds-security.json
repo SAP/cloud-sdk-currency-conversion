@@ -1,0 +1,33 @@
+{
+  "xsappname": "currency-conversion-integration-objects",
+  "tenant-mode": "dedicated",
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.CurrencyConversionDisplay",
+      "description": "CurrencyConversionDisplay"
+    },
+    {
+      "name": "$XSAPPNAME.CurrencyConversionConfigure",
+      "description": "CurrencyConversionConfigure"
+    }
+  ],
+  "attributes": [],
+  "role-templates": [
+    {
+      "name": "CurrencyConversionDisplay",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.CurrencyConversionDisplay"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "CurrencyConversionConfigure",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.CurrencyConversionConfigure"
+      ],
+      "attribute-references": []
+    }
+  ]
+}
