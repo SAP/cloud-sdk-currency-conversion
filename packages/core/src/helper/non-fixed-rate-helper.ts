@@ -10,13 +10,14 @@ import {
   ExchangeRateTypeDetail,
   ExchangeRateValue,
   SingleNonFixedRateConversionResult,
-  TenantSettings
+  TenantSettings,
+  logAndGetError,
+  logger as log
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { isNullish } from '@sap-cloud-sdk/util';
 import { BigNumber } from 'bignumber.js';
 import { ConversionError } from '../constants/conversion-error';
 import { ExchangeRateRecordDeterminer } from '../core/exchange-rate-record-determiner';
-import { logAndGetError, logger as log } from './logger';
 import { configureBigNumber } from './configure-big-number';
 import { validateCurrencyFactor } from './validate-currency-factor';
 

@@ -7,11 +7,12 @@ import {
   ConversionParameterForNonFixedRate,
   DataAdapter,
   SingleNonFixedRateConversionResult,
-  TenantSettings
+  TenantSettings,
+  logAndGetError,
+  logger as log
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { isNullish } from '@sap-cloud-sdk/util';
 import { ConversionParameter } from '@sap-cloud-sdk/currency-conversion-models/src/conversion-parameter';
-import { logger as log, logAndGetError } from '../helper/logger';
 import { ConversionError } from '../constants/conversion-error';
 import { performNonFixedConversion } from '../helper/non-fixed-rate-helper';
 import { performSingleFixedConversion } from '../helper/fixed-rate-helper';

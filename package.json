@@ -4,8 +4,7 @@
   "workspaces": [
     "packages/core",
     "packages/models",
-    "packages/adapter",
-    "packages/bookshop"
+    "packages/adapter"
   ],
   "dependencies": {
     "lerna": "^3.22.1"

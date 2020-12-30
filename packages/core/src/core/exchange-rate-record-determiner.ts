@@ -8,10 +8,11 @@ import {
   ExchangeRateValue,
   ExchangeRateTypeDetail,
   TenantSettings,
-  ConversionModelError
+  ConversionModelError,
+  logAndGetError,
+  logger as log
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { BigNumber } from 'bignumber.js';
-import { logAndGetError, logger as log } from '../helper/logger';
 import { ConversionError } from '../constants/conversion-error';
 import { configureBigNumber } from '../helper/configure-big-number';
 import { isStringEmpty } from '../helper/is-string-empty';

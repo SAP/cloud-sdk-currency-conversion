@@ -1,6 +1,6 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
-import { CurrencyConversionError } from '@sap-cloud-sdk/currency-conversion-models';
 import { createLogger } from '@sap-cloud-sdk/util';
+import { CurrencyConversionError } from '../currency-conversion-error';
 
 export const logger = createLogger();
 

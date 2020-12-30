@@ -61,8 +61,8 @@ export interface DataAdapter {
    * @param tenant
    *            The {@link Tenant} for which the exchange rate type details
    *            is requested.
-   * @param rateTypeSet
-   *            The {@link Set} of {@link RateType} used to fetch the relevant
+   * @param rateTypes
+   *            The {@link Array} of {@link String} used to fetch the relevant
    *            exchange rate type details.
    *
    * @return The {@link Map} of the {@link ExchangeRateTypeDetail} with the
@@ -71,6 +71,6 @@ export interface DataAdapter {
    */
   getExchangeRateTypeDetailsForTenant(
     tenant: Tenant,
-    rateTypeSet: Set<string>
+    rateTypes: string[]
   ): Promise<Map<string, ExchangeRateTypeDetail>>;
 }
