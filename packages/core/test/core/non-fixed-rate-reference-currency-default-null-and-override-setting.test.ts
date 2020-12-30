@@ -627,7 +627,7 @@ function buildAdapter(exchangeRates: ExchangeRate[]): DataAdapter {
 
   adapter.getExchangeRateTypeDetailsForTenant = (
     tenant: Tenant,
-    rateTypeSet: Set<string>
+    rateTypeSet: string[]
   ): Promise<Map<string, ExchangeRateTypeDetail>> => {
     const exchangeRate: Map<string, ExchangeRateTypeDetail> = new Map();
     exchangeRate.set(A, new ExchangeRateTypeDetail(buildCurrency('INR'), true));

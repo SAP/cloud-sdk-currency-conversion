@@ -330,7 +330,7 @@ function buildAdapter(exchangeRates: ExchangeRate[]): DataAdapter {
 
   adapter.getExchangeRateTypeDetailsForTenant = (
     tenant: Tenant,
-    rateTypeSet: Set<string>
+    rateTypeSet: string[]
   ): Promise<Map<string, ExchangeRateTypeDetail>> => {
     const exchangeRateTypeDetailMap: Map<string, ExchangeRateTypeDetail> = new Map();
     exchangeRateTypeDetailMap.set(B, new ExchangeRateTypeDetail(null as any, false));

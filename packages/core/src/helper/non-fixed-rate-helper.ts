@@ -81,7 +81,7 @@ async function fetchExchangeRateType(
 ): Promise<Map<string, ExchangeRateTypeDetail>> {
   const rateTypes = conversionParameters.map(conversionParameter => conversionParameter.exchangeRateType);
   const exchangeRateTypeDetailMap = await dataAdapter
-    .getExchangeRateTypeDetailsForTenant(tenant, new Set(rateTypes))
+    .getExchangeRateTypeDetailsForTenant(tenant, rateTypes)
     .catch(error => {
       log.error(error.message);
       throw logAndGetError(ConversionError.ERROR_FETCHING_EXCHANGE_RATES);

@@ -661,7 +661,7 @@ function buildAdapter(exchangeRates: ExchangeRate[]): DataAdapter {
 
   adapter.getExchangeRateTypeDetailsForTenant = (
     tenant: Tenant,
-    rateTypeSet: Set<string>
+    rateTypeSet: string[]
   ): Promise<Map<string, ExchangeRateTypeDetail>> => Promise.resolve(new Map());
   return adapter;
 }
@@ -679,7 +679,7 @@ function buildAdapterWithNullExchangeRateTypeDetails(exchangeRates: ExchangeRate
 
   adapter.getExchangeRateTypeDetailsForTenant = (
     tenant: Tenant,
-    rateTypeSet: Set<string>
+    rateTypeSet: string[]
   ): Promise<Map<string, ExchangeRateTypeDetail>> => Promise.resolve(null as any);
   return adapter;
 }
@@ -697,7 +697,7 @@ function buildAdapterWithNullExchangeRates(): DataAdapter {
 
   adapter.getExchangeRateTypeDetailsForTenant = (
     tenant: Tenant,
-    rateTypeSet: Set<string>
+    rateTypeSet: string[]
   ): Promise<Map<string, ExchangeRateTypeDetail>> => Promise.resolve(new Map());
   return adapter;
 }
@@ -715,7 +715,7 @@ function buildAdapterWithEmptyExchangeRates(): DataAdapter {
 
   adapter.getExchangeRateTypeDetailsForTenant = (
     tenant: Tenant,
-    rateTypeSet: Set<string>
+    rateTypeSet: string[]
   ): Promise<Map<string, ExchangeRateTypeDetail>> => Promise.resolve(new Map());
   return adapter;
 }
@@ -733,7 +733,7 @@ function buildAdapterWithNullExchangeRatesAndDefaultTenantSettings(): DataAdapte
 
   adapter.getExchangeRateTypeDetailsForTenant = (
     tenant: Tenant,
-    rateTypeSet: Set<string>
+    rateTypeSet: string[]
   ): Promise<Map<string, ExchangeRateTypeDetail>> => Promise.resolve(new Map());
   return adapter;
 }
