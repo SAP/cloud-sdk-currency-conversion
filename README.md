@@ -39,4 +39,4 @@ You can report a BCP incident or error through the SAP Support Portal Informatio
 
 ## License
 
-This project is licensed under Apache 2.0 as noted in the [license file](LICENSES/Apache-2.0.txt).
+This project is licensed under Apache 2.0 as noted in the [license file](https://github.com/sap-staging/cloud-sdk-currency-conversion/blob/main/LICENSES/Apache-2.0.txt).
