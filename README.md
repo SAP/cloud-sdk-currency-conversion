@@ -19,6 +19,20 @@ The library provides the following modules:
 - [Adapter](packages/adapter/)
 - [Models](packages/models/)
 
+## Features
+
+### Convert Currencies
+
+Get currency exchange rates converted from a base currency to a target currency by using the Currency Conversion library.
+
+#### Get Bulk Conversions
+
+Get multiple currency pairs converted through a single call. You can use the library methods to get more than one currency pair converted at the same time.
+
+#### Get Direct and Indirect Conversions
+
+Get direct and indirect currency conversions for your currency pairs. Direct conversions are one-to-one conversions between a source and a target currency. Indirect conversions are performed by using inverse rates or a reference currency.
+
 ## Requirements
 
 Currency Conversion requires the following to run:
