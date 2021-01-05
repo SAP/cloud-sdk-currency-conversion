@@ -20,6 +20,7 @@ describe('Adapter Test', () => {
     expect(cds.db).to.exist;
     expect(cds.db.model).to.exist;
   });
+
   it('Test connection success', () => {
     expect(simpleIntegrationObjectsAdapter).to.instanceof(SimpleIntegrationObjectsAdapter);
   });
