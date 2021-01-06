@@ -16,6 +16,28 @@ You can request a conversion from INR to USD even if the rates available are fro
 
 A currency conversion can be performed by using a reference or intermediate currency outside of your desired currency pair. A conversion from INR to USD can be performed by using a reference currency, say EUR, with the currency exchange rates for INR to EUR and USD to EUR. Note that this can be done only if a reference currency for these rates is specified in when you define these exchange rate pairs, in the 'toCurrency' field.
 
+## Usage
+
+### Direct Conversion
+
+```js
+import {
+  SingleFixedRateConversionResult,
+  ConversionParameterForFixedRate
+} from '@sap-cloud-sdk/currency-conversion-models';
+import { CurrencyConverter } from '@sap-cloud-sdk/currency-conversion-core';
+// Initialize the Currency Conversion Library.
+const currConverter = new CurrencyConverter();
+
+try {
+  const result: SingleFixedRateConversionResult = currConverter.convertCurrencyWithFixedRate(
+    new ConversionParameterForFixedRate('INR', 'USD', '10.00', '70.23')
+  );
+} catch (error) {
+  // Exception handling here
+}
+```
+
 > INFO:
 Indirect conversions using inverse rates and reference currencies are disabled by default. You can use the data adapter implementation to specify whether you want to enable them, for each exchange rate type.
 
