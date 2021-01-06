@@ -57,9 +57,33 @@ yarn install
 
 ## Usage
 
-The code example that follows, shows the end-to-end process flow in using the Currency Conversion library.
+The following code examples show the various usages of the library:
+
+- Direct Conversion
 
 ```js
+import {
+  SingleFixedRateConversionResult,
+  ConversionParameterForFixedRate
+} from '@sap-cloud-sdk/currency-conversion-models';
+import { CurrencyConverter } from '@sap-cloud-sdk/currency-conversion-core';
+// Initialize the Currency Conversion Library.
+const currConverter = new CurrencyConverter();
+
+try {
+  const result: SingleFixedRateConversionResult = currConverter.convertCurrencyWithFixedRate(
+    new ConversionParameterForFixedRate('INR', 'USD', '10.00', '70.23')
+  );
+} catch (error) {
+  // Exception handling here
+}
+```
+
+- Non-Fixed Rate Conversion
+  1. Single Conversion
+
+```js
+/* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
 import { Tenant } from '@sap-cloud-sdk/core';
 import {
   BulkConversionResult,
@@ -76,7 +100,7 @@ const currConverter = new CurrencyConverter();
 const dataAdapter = new SimpleIntegrationObjectsAdapter();
 
 // Prepare the parameter for your conversion request.
-const parameter: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
+const eurUsdMidParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'EUR',
   'USD',
   '500.123',
@@ -90,11 +114,29 @@ const TENANT_ID: Tenant = { id: 'TenantID' };
 // Prepare the override tenant setting
 const overrideTenantSetting: TenantSettings = { ratesDataProviderCode: 'MRM', ratesDataSource: 'ECB' };
 
+// Call the conversion library for a single conversion using adapter.
+
+try {
+  const singleConversionresult: SingleNonFixedRateConversionResult = await currConverter.convertCurrencyWithNonFixedRate(
+    eurUsdMidParam,
+    dataAdapter,
+    TENANT_ID,
+    overrideTenantSetting
+  );
+  const convertedAmount = singleConversionresult.convertedAmount.decimalValue;
+} catch (error) {
+  // Exception handling here
+}
+```
+
+  2. Bulk Conversion
+
+```js
 // Or... if you would like to perform bulk conversions, use the following...
 
-const paramList: ConversionParameterForNonFixedRate[] = [parameter];
+const paramList: ConversionParameterForNonFixedRate[] = [eurUsdMidParam];
 
-const parameter2: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
+const jpyUsdMidParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
   'JPY',
   'USD',
   '485.324',
@@ -102,30 +144,14 @@ const parameter2: ConversionParameterForNonFixedRate = new ConversionParameterFo
   new Date('2020-01-01T02:30:00Z')
 );
 
-paramList.push(parameter2);
+paramList.push(jpyUsdMidParam);
 
 // ...and so on.
 
-// Call the conversion library for a single conversion.
-
-try {
-  const singleConversionresult: SingleNonFixedRateConversionResult = await currConverter.convertCurrencyWithNonFixedRate(
-    parameter,
-    dataAdapter,
-    TENANT_ID,
-    tenantSetting
-  );
-  const convertedAmount = singleConversionresult.convertedAmount.decimalValue;
-} catch (error) {
-  // Exception handling here
-}
-
 // Call the conversion library for bulk conversion.
 
-const bulkConversionresult: BulkConversionResult = null;
-
 try {
-  const bulkConversionresult: BulkConversionResult<
+  const bulkConversionResult: BulkConversionResult<
     ConversionParameterForNonFixedRate,
     SingleNonFixedRateConversionResult
   > = await currConverter.convertCurrenciesWithNonFixedRate(paramList, dataAdapter, TENANT_ID, overrideTenantSetting);
@@ -136,7 +162,7 @@ try {
 // Process the results.
 
 paramList.forEach((param: ConversionParameterForNonFixedRate) => {
-  if (bulkConversionresult.get(param) != null) {
+  if (bulkConversionResult.get(param) != null) {
     const convertedAmount = bulkConversionresult.get(param).convertedAmount.decimalValue;
   } else {
     // Handle specific failures.
@@ -146,7 +172,7 @@ paramList.forEach((param: ConversionParameterForNonFixedRate) => {
 
 ## How to obtain support
 
-You can report a BCP incident or error through the SAP Support Portal Information published on the SAP site. Use `XX-S4C-SDK-CC` as the component.
+The GitHub issue tracker is the preferred channel for bug reports, features requests and asking questions.
 
 ## License
 
