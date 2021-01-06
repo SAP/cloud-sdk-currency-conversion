@@ -80,7 +80,8 @@ try {
 ```
 
 - Non-Fixed Rate Conversion
-  1. Single Conversion
+
+1. Single Conversion
 
 ```js
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
@@ -129,7 +130,7 @@ try {
 }
 ```
 
-  2. Bulk Conversion
+2. Bulk Conversion
 
 ```js
 // Or... if you would like to perform bulk conversions, use the following...
