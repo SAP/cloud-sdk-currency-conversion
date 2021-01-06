@@ -15,8 +15,6 @@ The following code examples show the various usages of the module:
 1. Single Conversion
 
 ```js
-/* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
-import { Tenant } from '@sap-cloud-sdk/core';
 import {
   BulkConversionResult,
   SingleNonFixedRateConversionResult,
@@ -40,9 +38,6 @@ const eurUsdMidParam: ConversionParameterForNonFixedRate = new ConversionParamet
   new Date('2020-02-01T02:30:00Z')
 );
 
-// Prepare the tenant id
-const TENANT_ID: Tenant = { id: 'TenantID' };
-
 // Prepare the override tenant setting
 const overrideTenantSetting: TenantSettings = { ratesDataProviderCode: 'MRM', ratesDataSource: 'ECB' };
 
@@ -52,7 +47,7 @@ try {
   const singleConversionresult: SingleNonFixedRateConversionResult = await currConverter.convertCurrencyWithNonFixedRate(
     eurUsdMidParam,
     dataAdapter,
-    TENANT_ID,
+    { id: 'TenantID' },
     overrideTenantSetting
   );
   const convertedAmount = singleConversionresult.convertedAmount.decimalValue;
@@ -94,7 +89,7 @@ try {
 // Process the results.
 
 paramList.forEach((param: ConversionParameterForNonFixedRate) => {
-  if (bulkConversionResult.get(param) != null) {
+  if (bulkConversionResult.get(param) instanceof SingleNonFixedRateConversionResult) {
     const convertedAmount = bulkConversionresult.get(param).convertedAmount.decimalValue;
   } else {
     // Handle specific failures.
