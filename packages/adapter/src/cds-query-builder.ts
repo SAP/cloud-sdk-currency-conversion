@@ -92,7 +92,7 @@ function getCurrencyPair(fromCurrency: Currency | undefined, toCurrency: Currenc
     `fromCurrencyThreeLetterISOCode = '${fromCurrency?.currencyCode}'`,
     `toCurrencyThreeLetterISOCode = '${toCurrency?.currencyCode}'`
   ];
-  return `(${pair.join(' and ')})`;
+  return `( ${pair.join(' and ')} )`;
 }
 
 function validateExchangeRates(rateTypes: string[]): void {
