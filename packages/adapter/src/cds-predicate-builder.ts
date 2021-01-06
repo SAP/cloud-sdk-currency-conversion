@@ -9,9 +9,6 @@ import {
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { isNullish, unique } from '@sap-cloud-sdk/util';
 import { AdapterError } from './constants/adapter-error';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const cds = require('@sap/cds');
-const { SELECT } = cds.ql;
 
 export function buildPredicateForDefaultTenantSettings(tenant: Tenant): string {
   return `${getTenantIdPredicate(tenant)} and isConfigurationActive = true`;

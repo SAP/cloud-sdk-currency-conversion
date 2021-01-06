@@ -16,7 +16,7 @@ import {
   buildPredicateForDefaultTenantSettings,
   buildPredicateForExchangeRates,
   buildPredicateForExchangeRateTypeDetails
-} from './cds-query-builder';
+} from './cds-predicate-builder';
 import { AdapterError } from './constants/adapter-error';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const cds = require('@sap/cds');
