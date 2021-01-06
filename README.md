@@ -1,10 +1,10 @@
-# Cloud SDK Currency Conversion
+# SAP Cloud SDK Currency Conversion Library
 
 ## Description
 
-Currency Conversion is an extension library built on SAP Cloud SDK. You can use this library to facilitate currency exchange rate conversions.
+The currency conversion library is an extension to the SAP Cloud SDK. You can use this library to facilitate currency exchange rate conversion.
 
-> The library does not provide any market data out-of-the-box. You must provide the currency exchange rates to the library from your own data sources. You can use the [SAP Market Rates Management](https://www.sap.com/products/market-rates-management.html) service or any other of your choice.
+> The library does not provide any market data out-of-the-box. You must provide the currency exchange rates to the library from your own data sources. You can use the [SAP Market Rates Management](https://www.sap.com/products/market-rates-management.html) service or any other service of your choice.
 
 You can use the library for the following functions:
 
@@ -23,7 +23,7 @@ The library provides the following modules:
 
 ### Convert Currencies
 
-Get currency exchange rates converted from a base currency to a target currency by using the Currency Conversion library.
+Get currency exchange rates converted from a base currency to a target currency by using the currency conversion library.
 
 #### Get Bulk Conversions
 
@@ -35,7 +35,7 @@ Get direct and indirect currency conversions for your currency pairs. Direct con
 
 ## Requirements
 
-Currency Conversion requires the following to run:
+The currency conversion library requires the following to run:
 
 - TypeScript 4.0.2+
 - Node.js
