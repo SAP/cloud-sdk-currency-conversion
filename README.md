@@ -43,16 +43,10 @@ The currency conversion library requires the following to run:
 
 ## Download and Installation
 
-1. Clone the repository
+Install the currency conversion library using npm:
 
 ```bash
-git clone https://github.com/sap-staging/cloud-sdk-currency-conversion.git
-```
-
-2. Install the dependencies
-
-```bash
-yarn install
+npm install @sap-cloud-sdk/currency-conversion-core, @sap-cloud-sdk/currency-conversion-data-adapter, @sap-cloud-sdk/currency-conversion-models
 ```
 
 ## Usage
