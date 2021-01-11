@@ -7,13 +7,18 @@ import {
   ExchangeRateTypeDetail,
   ConversionParameterForNonFixedRate,
   ExchangeRate,
-  buildExchangeRate,
+  logAndGetError,
+  logger as log,
   buildExchangeRateValue,
-  buildExchangeRateTypeDetail,
-  buildTenantSettings
+  buildExchangeRate,
+  buildExchangeRateTypeDetail
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { isNullish } from '@sap-cloud-sdk/util';
-import { logger as log, logAndGetError } from './helper/logger';
+import {
+  buildPredicateForDefaultTenantSettings,
+  buildPredicateForExchangeRates,
+  buildPredicateForExchangeRateTypeDetails
+} from './cds-predicate-builder';
 import { AdapterError } from './constants/adapter-error';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const cds = require('@sap/cds');
@@ -42,8 +47,8 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
    *
    * @returns The promise of list of {@link ExchangeRate}.
    *
-   * @throws DataAdapterException
-   *             An exception that occurs when none of the requested conversions could be processed.
+   * @throws AdapterError
+   *             An error that occurs when none of the requested conversions could be processed.
    */
   async getExchangeRatesForTenant(
     conversionParameters: ConversionParameterForNonFixedRate[],
@@ -54,141 +59,19 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
       if (isNullish(conversionParameters) || conversionParameters.length === 0) {
         throw logAndGetError(AdapterError.NULL_CONVERSION_PARAMETERS);
       }
-
-      const rateTypeSet: Set<string> = new Set();
-      conversionParameters.map((param: any) => {
-        rateTypeSet.add(param.exchangeRateType);
-      });
-      const exchangeRateTypeDetailMap = await this.getExchangeRateTypeDetailsForTenant(tenant, rateTypeSet);
-      const exchangeRateQuery = this.prepareQueryForExchangeRatesForTenant(
-        conversionParameters,
-        tenant,
-        tenantSettings,
-        exchangeRateTypeDetailMap
-      );
+      const exchangeRateTypes = conversionParameters.map((param: any) => param.exchangeRateType);
+      const exchangeRateTypeDetailMap = await this.getExchangeRateTypeDetailsForTenant(tenant, exchangeRateTypes);
+      const { CurrencyExchangeRates } = cds.entities('com.sap.integrationmodel.currencyconversion');
+      const exchangeRateQuery = SELECT.from(CurrencyExchangeRates)
+        .where(buildPredicateForExchangeRates(conversionParameters, tenant, tenantSettings, exchangeRateTypeDetailMap))
+        .orderBy('validFromDateTime', 'desc');
       log.debug(`CDS Query generated: ${exchangeRateQuery}`);
-      const resultSet = await cds.run(exchangeRateQuery);
-      return this.fetchExchangeRateFromResultSet(resultSet);
+      const resultSet = await exchangeRateQuery;
+
+      return this.buildExchangeRates(resultSet);
     } catch (error) {
       throw logAndGetError(AdapterError.EXCHANGE_RATE_CONNECTION_ERROR);
     }
-  }
-
-  prepareQueryForExchangeRatesForTenant(
-    conversionParameters: ConversionParameterForNonFixedRate[],
-    tenant: Tenant,
-    tenantSettings: TenantSettings,
-    exchangeRateTypeDetailMap: Map<string, ExchangeRateTypeDetail>
-  ): any {
-    const { CurrencyExchangeRates } = cds.entities('com.sap.integrationmodel.currencyconversion');
-    let predicate = '';
-
-    conversionParameters.forEach((param: any, index: any) => {
-      predicate += index === 0 ? `( tenantID = '${tenant.id}' ` : `or ( tenantID = '${tenant.id}' `;
-      if (tenantSettings != null) {
-        predicate += `and dataProviderCode = '${tenantSettings.ratesDataProviderCode}' 
-          and dataSource = '${tenantSettings.ratesDataSource}'`;
-      }
-      predicate += `and exchangeRateType = '${param.exchangeRateType}' 
-        and validFromDateTime <= '${param.conversionAsOfDateTime.toISOString()}' 
-        and ( ( fromCurrencyThreeLetterISOCode = '${param.fromCurrency.currencyCode}' 
-        and toCurrencyThreeLetterISOCode = '${param.toCurrency.currencyCode}' ) `;
-      predicate = this.addReferenceAndInverseCurrency(param, exchangeRateTypeDetailMap, predicate);
-      predicate += ') )';
-    });
-
-    const exchangeRateQuery: any = SELECT.from(CurrencyExchangeRates)
-      .where(predicate)
-      .orderBy('validFromDateTime', 'desc');
-    return exchangeRateQuery;
-  }
-
-  addReferenceAndInverseCurrency(
-    conversionParameter: ConversionParameterForNonFixedRate,
-    exchangeRateTypeDetailMap: Map<string, ExchangeRateTypeDetail>,
-    predicate: string
-  ): string {
-    if (this.referenceCurrencyExists(conversionParameter.exchangeRateType, exchangeRateTypeDetailMap)) {
-      predicate = this.buildPredicateForReferenceCurrency(predicate, conversionParameter, exchangeRateTypeDetailMap);
-    }
-    if (this.isInversionAllowed(conversionParameter.exchangeRateType, exchangeRateTypeDetailMap)) {
-      predicate = this.buildPredicateForInvertedCurrency(predicate, conversionParameter);
-    }
-    return predicate;
-  }
-
-  referenceCurrencyExists(rateType: string, exchangeRateTypeDetailMap: Map<string, ExchangeRateTypeDetail>): boolean {
-    return (
-      this.rateTypeExists(rateType, exchangeRateTypeDetailMap) &&
-      exchangeRateTypeDetailMap.get(rateType)?.referenceCurrency != null
-    );
-  }
-
-  rateTypeExists(rateType: string, exchangeRateTypeDetailMap: Map<string, ExchangeRateTypeDetail>): boolean {
-    return (
-      exchangeRateTypeDetailMap != null &&
-      exchangeRateTypeDetailMap.size !== 0 &&
-      exchangeRateTypeDetailMap.get(rateType) != null
-    );
-  }
-
-  isInversionAllowed(rateType: string, exchangeRateTypeDetailMap: Map<string, ExchangeRateTypeDetail>): boolean {
-    const exchangeRateTypeDetail: ExchangeRateTypeDetail | undefined = exchangeRateTypeDetailMap.get(rateType);
-    const isInversible = exchangeRateTypeDetail ? exchangeRateTypeDetail.isInversionAllowed : false;
-    return this.rateTypeExists(rateType, exchangeRateTypeDetailMap) && isInversible;
-  }
-
-  buildPredicateForReferenceCurrency(
-    exchangeRateQuery: string,
-    conversionParameter: ConversionParameterForNonFixedRate,
-    exchangeRateTypeDetailMap: Map<string, ExchangeRateTypeDetail>
-  ): string {
-    const exchangeRateTypeDetail: ExchangeRateTypeDetail | undefined = exchangeRateTypeDetailMap.get(
-      conversionParameter.exchangeRateType
-    );
-
-    // Build the predicate for 'from' to 'reference currency'
-    exchangeRateQuery += `or ( fromCurrencyThreeLetterISOCode = '${conversionParameter.fromCurrency.currencyCode}' 
-        and toCurrencyThreeLetterISOCode = '${exchangeRateTypeDetail?.referenceCurrency?.currencyCode}' ) `;
-
-    // Build the predicate for 'to' to 'reference currency'
-    exchangeRateQuery += `or ( fromCurrencyThreeLetterISOCode = '${conversionParameter.toCurrency.currencyCode}' 
-        and toCurrencyThreeLetterISOCode = '${exchangeRateTypeDetail?.referenceCurrency?.currencyCode}' ) `;
-
-    return exchangeRateQuery;
-  }
-
-  buildPredicateForInvertedCurrency(
-    exchangeRateQuery: string,
-    conversionParameter: ConversionParameterForNonFixedRate
-  ): string {
-    // Build the predicate for inverted currency pair
-    exchangeRateQuery += `or ( fromCurrencyThreeLetterISOCode = '${conversionParameter.toCurrency.currencyCode}' 
-        and toCurrencyThreeLetterISOCode = '${conversionParameter.fromCurrency.currencyCode}' ) `;
-
-    return exchangeRateQuery;
-  }
-
-  fetchExchangeRateFromResultSet(exchangeRateResults: ExchangeRate[]): ExchangeRate[] {
-    const exchangeRateList: ExchangeRate[] = exchangeRateResults.map((result: any) => {
-      const TENANT_ID = { id: result.tenantID };
-      return buildExchangeRate(
-        TENANT_ID,
-        result.dataProviderCode == null ? (null as any) : result.dataProviderCode,
-        result.dataSource == null ? (null as any) : result.dataSource,
-        result.exchangeRateType,
-        buildExchangeRateValue(result.exchangeRateValue.toString()),
-        buildCurrency(result.fromCurrencyThreeLetterISOCode),
-        buildCurrency(result.toCurrencyThreeLetterISOCode),
-        new Date(result.validFromDateTime),
-        result.isIndirect,
-        parseFloat(result.fromCurrencyFactor),
-        parseFloat(result.toCurrencyFactor)
-      );
-    });
-    log.debug(`Number of exchange rates returned from query is: ${exchangeRateResults.length}`);
-    log.debug(`Exchange rates returned from query is: ${exchangeRateList}`);
-    return exchangeRateList;
   }
 
   /**
@@ -201,30 +84,19 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
    *
    * @returns The promise of default {@link TenantSettings} for the given {@link Tenant}.
    *
-   * @throws DataAdapterException
-   *             An exception that occurs when none of the requested conversions could be processed.
+   * @throws AdapterError
+   *             An error that occurs when none of the requested conversions could be processed.
    */
   async getDefaultSettingsForTenant(tenant: Tenant): Promise<TenantSettings> {
     try {
       const { TenantConfigForConversions } = cds.entities('com.sap.integrationmodel.currencyconversion');
-      const defaultTenantSettingsResult = await cds
-        .read(TenantConfigForConversions)
-        .where(`tenantID = '${tenant.id}' and isConfigurationActive = true`);
-      return this.fetchDefaultSettingsForTenantFromResultSet(defaultTenantSettingsResult);
+      const defaultTenantSettingsResult = await SELECT.from(TenantConfigForConversions).where(
+        buildPredicateForDefaultTenantSettings(tenant)
+      );
+      return this.buildDefaultSettingsForTenant(defaultTenantSettingsResult);
     } catch (error) {
       throw logAndGetError(AdapterError.TENANT_SETTING_CONNECTION_ERROR);
     }
-  }
-
-  fetchDefaultSettingsForTenantFromResultSet(defaultTenantSettingsResult: any): TenantSettings {
-    // get the last tenant setting
-    const defaultTenantSetting = defaultTenantSettingsResult[defaultTenantSettingsResult.length - 1];
-    const tenantSettings: TenantSettings = buildTenantSettings(
-      defaultTenantSetting.defaultDataProviderCode,
-      defaultTenantSetting.defaultDataSource
-    );
-    log.debug(`Tenant settings returned from query is: ${tenantSettings}`);
-    return tenantSettings;
   }
 
   /**
@@ -235,60 +107,80 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
    *
    * @param tenant
    *            The {@link Tenant} for which the exchange rate type details is requested.
-   * @param rateTypeSet
-   *            The {@link Set} of {@link RateType} used to fetch the relevant exchange rate type details.
+   * @param rateTypes
+   *            The {@link Array} of {@link RateType} used to fetch the relevant exchange rate type details.
    *
    * @returns The promise of {@link Map} of the {@link ExchangeRateTypeDetail} with the {@link RateType} as the key.
    *
-   * @throws DataAdapterException
-   *             An exception that occurs when none of the requested conversions could be processed.
+   * @throws AdapterError
+   *             An error that occurs when none of the requested conversions could be processed.
    */
   async getExchangeRateTypeDetailsForTenant(
     tenant: Tenant,
-    rateTypeSet: Set<string>
+    rateTypes: string[]
   ): Promise<Map<string, ExchangeRateTypeDetail>> {
     try {
       const { ExchangeRateTypes } = cds.entities('com.sap.integrationmodel.currencyconversion');
-      this.isRateTypeNullOrEmpty(rateTypeSet);
-
-      let predicate = `tenantID = '${tenant.id}' and ( `;
-      const rateTypes = Array.from(rateTypeSet);
-      rateTypes.slice(0, -1).forEach((rateType: string) => {
-        predicate += `exchangeRateType = '${rateType}' or `;
-      });
-      predicate += `exchangeRateType = '${rateTypes[rateTypes.length - 1]}' )`;
-      const rateTypeDetailsQuery: any = SELECT.from(ExchangeRateTypes).where(predicate);
-      const exchangeRateTypeDetailsResults: JSON[] = await cds.run(rateTypeDetailsQuery);
-      return this.fetchExchangeRateTypeDetailsForTenantFromResultSet(exchangeRateTypeDetailsResults);
+      const exchangeRateTypeDetailsResults = await SELECT.from(ExchangeRateTypes).where(
+        buildPredicateForExchangeRateTypeDetails(rateTypes, tenant)
+      );
+      return this.buildExchangeRateTypeDetails(exchangeRateTypeDetailsResults);
     } catch (error) {
       throw logAndGetError(AdapterError.EXCHANGE_RATE_DETAIL_CONNECTION_ERROR);
     }
   }
 
-  fetchExchangeRateTypeDetailsForTenantFromResultSet(
-    exchangeRateTypeDetailsResults: JSON[]
-  ): Map<string, ExchangeRateTypeDetail> {
-    const exchangeRateTypeDetailMap: Map<string, ExchangeRateTypeDetail> = new Map();
-    exchangeRateTypeDetailsResults.forEach((result: any) => {
-      exchangeRateTypeDetailMap.set(
+  private buildExchangeRates(exchangeRateResults: ExchangeRate[]): ExchangeRate[] {
+    const exchangeRateList: ExchangeRate[] = exchangeRateResults.map((result: any) =>
+      buildExchangeRate(
+        { id: result.tenantID },
+        result.dataProviderCode,
+        result.dataSource,
         result.exchangeRateType,
-        buildExchangeRateTypeDetail(
-          result.referenceCurrencyThreeLetterISOCode === 'NULL'
-            ? (null as any)
-            : buildCurrency(result.referenceCurrencyThreeLetterISOCode),
-          result.isInversionAllowed
-        )
-      );
-    });
-    exchangeRateTypeDetailMap.forEach((value, key) => {
-      log.debug(key, value);
-    });
+        buildExchangeRateValue(result.exchangeRateValue.toString()),
+        buildCurrency(result.fromCurrencyThreeLetterISOCode),
+        buildCurrency(result.toCurrencyThreeLetterISOCode),
+        new Date(result.validFromDateTime),
+        result.isRateValueIndirect,
+        parseFloat(result.fromCurrencyFactor),
+        parseFloat(result.toCurrencyFactor)
+      )
+    );
+    log.debug(`Number of exchange rates returned from query is: ${exchangeRateResults.length}`);
+    log.debug(`Exchange rates returned from query is: ${exchangeRateList}`);
+    return exchangeRateList;
+  }
+
+  private buildExchangeRateTypeDetails(exchangeRateTypeDetailsResults: any[]): Map<string, ExchangeRateTypeDetail> {
+    const exchangeRateTypeDetailMap: Map<string, ExchangeRateTypeDetail> = exchangeRateTypeDetailsResults.reduce(
+      (map: Map<string, ExchangeRateTypeDetail>, result: any) =>
+        map.set(
+          result.exchangeRateType,
+          buildExchangeRateTypeDetail(
+            result.referenceCurrencyThreeLetterISOCode === 'NULL'
+              ? (null as any)
+              : buildCurrency(result.referenceCurrencyThreeLetterISOCode),
+            result.isInversionAllowed
+          )
+        ),
+      new Map()
+    );
+    log.debug(
+      `Map(\n${Array.from(exchangeRateTypeDetailMap)
+        .map(([key, value]) => `  ${key}: ${JSON.stringify(value, null, 2)}`)
+        .join(',\n')}\n)`
+    );
     return exchangeRateTypeDetailMap;
   }
 
-  isRateTypeNullOrEmpty(rateTypeSet: Set<string>): void {
-    if (isNullish(rateTypeSet)) {
-      throw logAndGetError(AdapterError.EMPTY_RATE_TYPE_LIST);
-    }
+  private buildDefaultSettingsForTenant(defaultTenantSettingsResult: any): TenantSettings {
+    // get the last tenant setting
+    const defaultTenantSetting = defaultTenantSettingsResult[defaultTenantSettingsResult.length - 1];
+    const tenantSettings: TenantSettings = {
+      ratesDataProviderCode: defaultTenantSetting.defaultDataProviderCode,
+      ratesDataSource: defaultTenantSetting.defaultDataSource
+    };
+    log.debug(`Tenant settings returned from query is: ${tenantSettings}`);
+    return tenantSettings;
   }
 }

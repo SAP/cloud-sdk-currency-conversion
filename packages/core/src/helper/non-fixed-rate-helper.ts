@@ -14,13 +14,14 @@ import {
   buildExchangeRateValue,
   buildExchangeRate,
   buildSingleNonFixedRateConversionResult,
-  buildTenantSettings
+  buildTenantSettings,
+  logAndGetError,
+  logger as log
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { isNullish } from '@sap-cloud-sdk/util';
 import { BigNumber } from 'bignumber.js';
 import { ConversionError } from '../constants/conversion-error';
 import { ExchangeRateRecordDeterminer } from '../core/exchange-rate-record-determiner';
-import { logAndGetError, logger as log } from './logger';
 import { configureBigNumber } from './configure-big-number';
 import { validateCurrencyFactor } from './validate-currency-factor';
 
@@ -84,7 +85,7 @@ async function fetchExchangeRateType(
 ): Promise<Map<string, ExchangeRateTypeDetail>> {
   const rateTypes = conversionParameters.map(conversionParameter => conversionParameter.exchangeRateType);
   const exchangeRateTypeDetailMap = await dataAdapter
-    .getExchangeRateTypeDetailsForTenant(tenant, new Set(rateTypes))
+    .getExchangeRateTypeDetailsForTenant(tenant, rateTypes)
     .catch(error => {
       log.error(error.message);
       throw logAndGetError(ConversionError.ERROR_FETCHING_EXCHANGE_RATES);
