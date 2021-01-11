@@ -160,7 +160,7 @@ module.exports = {
         pattern:
           'Copyright \\(c\\) \\d{4} SAP SE or an SAP affiliate company. All rights reserved. ',
         template:
-          'Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. ',
+          'Copyright (c) 2021 SAP SE or an SAP affiliate company. All rights reserved. ',
         lineEndings: 'unix'
       }
     ],
