@@ -1,4 +1,4 @@
-/* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
+/* Copyright (c) 2021 SAP SE or an SAP affiliate company. All rights reserved. */
 import { ConversionParameterForFixedRate } from './conversion-parameter-for-fixed-rate';
 import { ConversionParameterForNonFixedRate } from './conversion-parameter-for-non-fixed-rate';
 import { CurrencyConversionError } from './currency-conversion-error';
