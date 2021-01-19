@@ -1,7 +1,5 @@
 # SAP Cloud SDK Currency Conversion Library
 
-## Description
-
 The currency conversion library is an extension to the SAP Cloud SDK. You can use this library to facilitate currency exchange rate conversion.
 
 > The library does not provide any market data out-of-the-box. You must provide the currency exchange rates to the library from your own data sources. You can use the [SAP Market Rates Management](https://www.sap.com/products/market-rates-management.html) service or any other service of your choice.

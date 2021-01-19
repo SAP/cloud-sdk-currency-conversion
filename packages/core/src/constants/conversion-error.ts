@@ -1,4 +1,4 @@
-/* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
+/* Copyright (c) 2021 SAP SE or an SAP affiliate company. All rights reserved. */
 /* eslint-disable max-len */
 export enum ConversionError {
   INVALID_PARAMS = 'Conversion failed due to invalid parameters',
