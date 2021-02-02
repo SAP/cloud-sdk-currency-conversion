@@ -19,14 +19,14 @@ const cds = require('@sap/cds');
 
 export const NULL_TENANT = 'NullTenant';
 export const EMPTY_PARAMETER_LIST = 'EmptyParameterList';
-export const CURRENCY_EUR: Currency = buildCurrency('EUR');
-export const CURRENCY_USD: Currency = buildCurrency('USD');
-export const CURRENCY_INR: Currency = buildCurrency('INR');
-export const CURRENCY_JPY: Currency = buildCurrency('JPY');
-export const CURRENCY_VALUE_0_8: ExchangeRateValue = buildExchangeRateValue('0.8');
-export const CURRENCY_VALUE_80: ExchangeRateValue = buildExchangeRateValue('80');
-export const CURRENCY_VALUE_180: ExchangeRateValue = buildExchangeRateValue('180');
-export const CURRENCY_VALUE_100: ExchangeRateValue = buildExchangeRateValue('100');
+export const EUR: Currency = buildCurrency('EUR');
+export const USD: Currency = buildCurrency('USD');
+export const INR: Currency = buildCurrency('INR');
+export const JPY: Currency = buildCurrency('JPY');
+export const EXCHANGERATE_VALUE_0_8: ExchangeRateValue = buildExchangeRateValue('0.8');
+export const EXCHANGERATE_VALUE_80: ExchangeRateValue = buildExchangeRateValue('80');
+export const EXCHANGERATE_VALUE_180: ExchangeRateValue = buildExchangeRateValue('180');
+export const EXCHANGERATE_VALUE_100: ExchangeRateValue = buildExchangeRateValue('100');
 export const RATES_MID = 'MID';
 export const RATES_BID = 'BID';
 export const RATES_ASK = 'ASK';
@@ -39,8 +39,8 @@ export const S_2020_01_01T02_30_00Z: Date = new Date('2020-01-01T02:30:00Z');
 
 export const noReferenceFalseParam: ExchangeRateTypeDetail = buildExchangeRateTypeDetail(null as any, false);
 export const noReferenceTrueParam: ExchangeRateTypeDetail = buildExchangeRateTypeDetail(null as any, true);
-export const inrFalseParam: ExchangeRateTypeDetail = buildExchangeRateTypeDetail(CURRENCY_INR, false);
-export const inrTrueParam: ExchangeRateTypeDetail = buildExchangeRateTypeDetail(CURRENCY_INR, true);
+export const inrFalseParam: ExchangeRateTypeDetail = buildExchangeRateTypeDetail(INR, false);
+export const inrTrueParam: ExchangeRateTypeDetail = buildExchangeRateTypeDetail(INR, true);
 
 export const tenant: Tenant = { id: '5d4abe96-aecb-4b47-b7ed-ae4be76f9dfb' };
 export const tenant_id2: Tenant = { id: '6e4abe96-aecb-4b47-b7ed-ae4be76f9dfb' };
@@ -52,73 +52,73 @@ export const tenantSettings: TenantSettings = {
 
 /* Conversion Parameter Starts */
 export const eurInrMidConversionParam: ConversionParameterForNonFixedRate = buildConversionParameterForNonFixedRate(
-  CURRENCY_EUR.currencyCode,
-  CURRENCY_INR.currencyCode,
-  CURRENCY_VALUE_80.valueString,
+  EUR.currencyCode,
+  INR.currencyCode,
+  EXCHANGERATE_VALUE_80.valueString,
   RATES_MID,
   S_2020_02_01T02_30_00Z
 );
 
 export const eurJpyMidConversionParam: ConversionParameterForNonFixedRate = buildConversionParameterForNonFixedRate(
-  CURRENCY_EUR.currencyCode,
-  CURRENCY_JPY.currencyCode,
-  CURRENCY_VALUE_180.valueString,
+  EUR.currencyCode,
+  JPY.currencyCode,
+  EXCHANGERATE_VALUE_180.valueString,
   RATES_MID,
   S_2020_02_01T02_30_00Z
 );
 
 export const eurUsdMidConversionParam: ConversionParameterForNonFixedRate = buildConversionParameterForNonFixedRate(
-  CURRENCY_EUR.currencyCode,
-  CURRENCY_USD.currencyCode,
-  CURRENCY_VALUE_80.valueString,
+  EUR.currencyCode,
+  USD.currencyCode,
+  EXCHANGERATE_VALUE_80.valueString,
   RATES_MID,
   S_2020_02_01T02_30_00Z
 );
 
 export const eurUsdBidConversionParam: ConversionParameterForNonFixedRate = buildConversionParameterForNonFixedRate(
-  CURRENCY_EUR.currencyCode,
-  CURRENCY_USD.currencyCode,
-  CURRENCY_VALUE_80.valueString,
+  EUR.currencyCode,
+  USD.currencyCode,
+  EXCHANGERATE_VALUE_80.valueString,
   RATES_BID,
   S_2020_02_01T02_30_00Z
 );
 
 export const eurUsdAskConversionParam: ConversionParameterForNonFixedRate = buildConversionParameterForNonFixedRate(
-  CURRENCY_EUR.currencyCode,
-  CURRENCY_USD.currencyCode,
-  CURRENCY_VALUE_80.valueString,
+  EUR.currencyCode,
+  USD.currencyCode,
+  EXCHANGERATE_VALUE_80.valueString,
   RATES_ASK,
   S_2020_02_01T02_30_00Z
 );
 
 export const usdJpyMidConversionParam: ConversionParameterForNonFixedRate = buildConversionParameterForNonFixedRate(
-  CURRENCY_USD.currencyCode,
-  CURRENCY_JPY.currencyCode,
-  CURRENCY_VALUE_180.valueString,
+  USD.currencyCode,
+  JPY.currencyCode,
+  EXCHANGERATE_VALUE_180.valueString,
   RATES_MID,
   S_2020_02_01T02_30_00Z
 );
 
 export const eurUsdLastConversionParam: ConversionParameterForNonFixedRate = buildConversionParameterForNonFixedRate(
-  CURRENCY_EUR.currencyCode,
-  CURRENCY_USD.currencyCode,
-  CURRENCY_VALUE_180.valueString,
+  EUR.currencyCode,
+  USD.currencyCode,
+  EXCHANGERATE_VALUE_180.valueString,
   RATES_LAST,
   S_2020_02_01T02_30_00Z
 );
 
 export const inrJpyBidConversionParam: ConversionParameterForNonFixedRate = buildConversionParameterForNonFixedRate(
-  CURRENCY_INR.currencyCode,
-  CURRENCY_JPY.currencyCode,
-  CURRENCY_VALUE_180.valueString,
+  INR.currencyCode,
+  JPY.currencyCode,
+  EXCHANGERATE_VALUE_180.valueString,
   RATES_BID,
   S_2020_02_01T02_30_00Z
 );
 
 export const eurUsdNewConversionParam: ConversionParameterForNonFixedRate = buildConversionParameterForNonFixedRate(
-  CURRENCY_EUR.currencyCode,
-  CURRENCY_USD.currencyCode,
-  CURRENCY_VALUE_180.valueString,
+  EUR.currencyCode,
+  USD.currencyCode,
+  EXCHANGERATE_VALUE_180.valueString,
   RATES_NEW,
   S_2020_02_01T02_30_00Z
 );
@@ -132,9 +132,9 @@ export const eurInrMrmEcbMParam: ExchangeRate = buildExchangeRate(
   DATA_SOURCE_PROVIDER_CODE,
   DATA_SOURCE,
   RATES_MID,
-  CURRENCY_VALUE_80,
-  CURRENCY_EUR,
-  CURRENCY_INR,
+  EXCHANGERATE_VALUE_80,
+  EUR,
+  INR,
   S_2020_01_01T02_30_00Z,
   false,
   1,
@@ -146,9 +146,9 @@ export const eurJpyMrmEcbMParam: ExchangeRate = buildExchangeRate(
   DATA_SOURCE_PROVIDER_CODE,
   DATA_SOURCE,
   RATES_MID,
-  CURRENCY_VALUE_180,
-  CURRENCY_EUR,
-  CURRENCY_JPY,
+  EXCHANGERATE_VALUE_180,
+  EUR,
+  JPY,
   S_2020_01_01T02_30_00Z,
   false,
   1,
@@ -160,9 +160,9 @@ export const usdJpyMrmEcbMidParam: ExchangeRate = buildExchangeRate(
   DATA_SOURCE_PROVIDER_CODE,
   DATA_SOURCE,
   RATES_MID,
-  CURRENCY_VALUE_0_8,
-  CURRENCY_USD,
-  CURRENCY_JPY,
+  EXCHANGERATE_VALUE_0_8,
+  USD,
+  JPY,
   S_2020_01_01T02_30_00Z,
   true,
   10,
@@ -174,9 +174,9 @@ export const eurUsdMrmEcbMidParam: ExchangeRate = buildExchangeRate(
   DATA_SOURCE_PROVIDER_CODE,
   DATA_SOURCE,
   RATES_MID,
-  CURRENCY_VALUE_0_8,
-  CURRENCY_EUR,
-  CURRENCY_USD,
+  EXCHANGERATE_VALUE_0_8,
+  EUR,
+  USD,
   S_2020_01_01T02_30_00Z,
   true,
   1,
@@ -188,9 +188,9 @@ export const eurInrMrmEcbBidParam: ExchangeRate = buildExchangeRate(
   DATA_SOURCE_PROVIDER_CODE,
   DATA_SOURCE,
   RATES_BID,
-  CURRENCY_VALUE_80,
-  CURRENCY_EUR,
-  CURRENCY_INR,
+  EXCHANGERATE_VALUE_80,
+  EUR,
+  INR,
   S_2020_01_01T02_30_00Z,
   false,
   1,
@@ -202,9 +202,9 @@ export const usdInrMrmEcbBidParam: ExchangeRate = buildExchangeRate(
   DATA_SOURCE_PROVIDER_CODE,
   DATA_SOURCE,
   RATES_BID,
-  CURRENCY_VALUE_180,
-  CURRENCY_USD,
-  CURRENCY_INR,
+  EXCHANGERATE_VALUE_180,
+  USD,
+  INR,
   S_2020_01_01T02_30_00Z,
   false,
   1,
@@ -216,9 +216,9 @@ export const eurUsdMrmEcbBidParam: ExchangeRate = buildExchangeRate(
   DATA_SOURCE_PROVIDER_CODE,
   DATA_SOURCE,
   RATES_BID,
-  CURRENCY_VALUE_0_8,
-  CURRENCY_EUR,
-  CURRENCY_USD,
+  EXCHANGERATE_VALUE_0_8,
+  EUR,
+  USD,
   S_2020_01_01T02_30_00Z,
   true,
   1,
@@ -230,9 +230,9 @@ export const usdEurMrmEcbAskParam: ExchangeRate = buildExchangeRate(
   DATA_SOURCE_PROVIDER_CODE,
   DATA_SOURCE,
   RATES_ASK,
-  CURRENCY_VALUE_0_8,
-  CURRENCY_USD,
-  CURRENCY_EUR,
+  EXCHANGERATE_VALUE_0_8,
+  USD,
+  EUR,
   S_2020_01_01T02_30_00Z,
   true,
   1,
@@ -244,9 +244,9 @@ export const eurUsdMrmEcbAskParam: ExchangeRate = buildExchangeRate(
   DATA_SOURCE_PROVIDER_CODE,
   DATA_SOURCE,
   RATES_ASK,
-  CURRENCY_VALUE_0_8,
-  CURRENCY_EUR,
-  CURRENCY_USD,
+  EXCHANGERATE_VALUE_0_8,
+  EUR,
+  USD,
   S_2020_01_01T02_30_00Z,
   true,
   1,
@@ -258,9 +258,9 @@ export const eurInrMrmEcbLastParam: ExchangeRate = buildExchangeRate(
   DATA_SOURCE_PROVIDER_CODE,
   DATA_SOURCE,
   RATES_LAST,
-  CURRENCY_VALUE_80,
-  CURRENCY_EUR,
-  CURRENCY_INR,
+  EXCHANGERATE_VALUE_80,
+  EUR,
+  INR,
   S_2020_01_01T02_30_00Z,
   false,
   1,
@@ -272,9 +272,9 @@ export const eurUsdMrmEcbLastParam: ExchangeRate = buildExchangeRate(
   DATA_SOURCE_PROVIDER_CODE,
   DATA_SOURCE,
   RATES_LAST,
-  CURRENCY_VALUE_80,
-  CURRENCY_EUR,
-  CURRENCY_USD,
+  EXCHANGERATE_VALUE_80,
+  EUR,
+  USD,
   S_2020_01_01T02_30_00Z,
   false,
   1,
@@ -286,9 +286,9 @@ export const usdInrMrmEcbLastParam: ExchangeRate = buildExchangeRate(
   DATA_SOURCE_PROVIDER_CODE,
   DATA_SOURCE,
   RATES_LAST,
-  CURRENCY_VALUE_180,
-  CURRENCY_USD,
-  CURRENCY_INR,
+  EXCHANGERATE_VALUE_180,
+  USD,
+  INR,
   S_2020_01_01T02_30_00Z,
   false,
   1,
@@ -300,9 +300,9 @@ export const usdJpyMrmThrMidParam: ExchangeRate = buildExchangeRate(
   DATA_SOURCE_PROVIDER_CODE,
   'THR',
   RATES_MID,
-  CURRENCY_VALUE_180,
-  CURRENCY_USD,
-  CURRENCY_JPY,
+  EXCHANGERATE_VALUE_180,
+  USD,
+  JPY,
   S_2020_01_01T02_30_00Z,
   true,
   1,
@@ -314,9 +314,9 @@ export const eurUsdMrmThrMidParam: ExchangeRate = buildExchangeRate(
   DATA_SOURCE_PROVIDER_CODE,
   'THR',
   RATES_MID,
-  CURRENCY_VALUE_180,
-  CURRENCY_EUR,
-  CURRENCY_USD,
+  EXCHANGERATE_VALUE_180,
+  EUR,
+  USD,
   S_2020_01_01T02_30_00Z,
   true,
   1,
@@ -328,9 +328,9 @@ export const usdJpyNullMidParam: ExchangeRate = buildExchangeRate(
   'NULL',
   'NULL',
   RATES_MID,
-  CURRENCY_VALUE_180,
-  CURRENCY_USD,
-  CURRENCY_JPY,
+  EXCHANGERATE_VALUE_180,
+  USD,
+  JPY,
   S_2020_01_01T02_30_00Z,
   true,
   1,
@@ -342,9 +342,9 @@ export const eurUsdNullMidParam: ExchangeRate = buildExchangeRate(
   'NULL',
   'NULL',
   RATES_MID,
-  CURRENCY_VALUE_180,
-  CURRENCY_EUR,
-  CURRENCY_USD,
+  EXCHANGERATE_VALUE_180,
+  EUR,
+  USD,
   S_2020_01_01T02_30_00Z,
   true,
   1,
@@ -356,9 +356,9 @@ export const eurUsdMrmEcbNewParam: ExchangeRate = buildExchangeRate(
   DATA_SOURCE_PROVIDER_CODE,
   DATA_SOURCE,
   RATES_NEW,
-  CURRENCY_VALUE_100,
-  CURRENCY_EUR,
-  CURRENCY_USD,
+  EXCHANGERATE_VALUE_100,
+  EUR,
+  USD,
   S_2020_01_01T02_30_00Z,
   true,
   1,
