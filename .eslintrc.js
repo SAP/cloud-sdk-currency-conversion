@@ -1,3 +1,4 @@
+/* Copyright (c) 2021 SAP SE or an SAP affiliate company. All rights reserved. */
 module.exports = {
   env: {},
   parser: '@typescript-eslint/parser',
@@ -22,13 +23,7 @@ module.exports = {
     'test-packages/test-services',
     'test-packages/test-services-e2e'
   ],
-  plugins: [
-    '@typescript-eslint',
-    'header',
-    'import',
-    'prettier',
-    'unused-imports'
-  ],
+  plugins: ['@typescript-eslint', 'header', 'import', 'prettier', 'unused-imports'],
   overrides: [
     {
       files: ['**/test/**/*'],
@@ -124,6 +119,7 @@ module.exports = {
     '@typescript-eslint/no-namespace': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/no-parameter-properties': 'off',
+    '@typescript-eslint/no-shadow': 'error',
     '@typescript-eslint/no-this-alias': 'error',
     '@typescript-eslint/no-use-before-define': 'off',
     '@typescript-eslint/no-var-requires': 'error',
@@ -157,10 +153,8 @@ module.exports = {
       'error',
       'block',
       {
-        pattern:
-          'Copyright \\(c\\) \\d{4} SAP SE or an SAP affiliate company. All rights reserved. ',
-        template:
-          'Copyright (c) 2021 SAP SE or an SAP affiliate company. All rights reserved. ',
+        pattern: 'Copyright \\(c\\) \\d{4} SAP SE or an SAP affiliate company. All rights reserved. ',
+        template: 'Copyright (c) 2021 SAP SE or an SAP affiliate company. All rights reserved. ',
         lineEndings: 'unix'
       }
     ],
@@ -189,7 +183,7 @@ module.exports = {
     //     }
     // ],
     'max-classes-per-file': ['error', 1],
-    //"max-len": "off",
+    // "max-len": "off",
     'new-parens': 'error',
     'no-bitwise': 'error',
     'no-caller': 'error',
@@ -212,12 +206,7 @@ module.exports = {
     'no-restricted-imports': ['error', '../', './'],
     'no-return-await': 'error',
     'no-sequences': 'error',
-    'no-shadow': [
-      'error',
-      {
-        hoist: 'all'
-      }
-    ],
+    'no-shadow': 'off',
     'no-sparse-arrays': 'error',
     'no-template-curly-in-string': 'error',
     'no-throw-literal': 'error',
