@@ -2,14 +2,14 @@
 
 The currency conversion library is an extension to the SAP Cloud SDK. You can use this library to facilitate currency exchange rate conversion.
 
-> The library does not provide any market data out-of-the-box. You must provide the currency exchange rates to the library from your own data sources. You can use the [SAP Market Rates Management](https://www.sap.com/products/market-rates-management.html) service or any other service of your choice.
+> The library does not provide any out of the box market data. You must provide the currency exchange rates to the library from your own data sources. You can use the [SAP Market Rates Management](https://www.sap.com/products/market-rates-management.html) service or any other service of your choice.
 
 You can use the library for the following functions:
 
-- Direct one-to-one conversions, from a source currency to a target currency.
-- Indirect conversions by using inverse rates or a "reference currency".
-- Fixed rate conversions, for when you have the exact currency exchange rate that you want to use in your conversion operations.
-- Non-fixed rate conversions, for when you have a set of exchange rates, as opposed to the exact rate. The library will pick the "best rate" from the set depending on [various factors](https://sap.github.io/cloud-sdk/docs/java/features/extensions/extension-library/curconv/sap-currency-conversion-extension-library-for-cloud-sdk-for-java/#non-fixed-rate).
+- Direct one-to-one conversions - from a source currency to a target currency.
+- Indirect conversions - uses inverse rates or a "reference currency".
+- Fixed rate conversions - you have the exact currency exchange rate that you want to use in your conversion operations.
+- Non-fixed rate conversions - unlike the fixed rate, you have a set of exchange rates. The library will pick the "best rate" from the set depending on [various factors](https://sap.github.io/cloud-sdk/docs/java/features/extensions/extension-library/curconv/sap-currency-conversion-extension-library-for-cloud-sdk-for-java/#non-fixed-rate).
 
 The library provides the following modules:
 
@@ -21,11 +21,11 @@ The library provides the following modules:
 
 ### Convert Currencies
 
-Get currency exchange rates converted from a base currency to a target currency by using the currency conversion library.
+Get currency exchange rates converted from a source currency to a target currency by using the currency conversion library.
 
 #### Get Bulk Conversions
 
-Get multiple currency pairs converted through a single call. You can use the library methods to get more than one currency pair converted at the same time.
+Get multiple currency pairs converted through a single call. You can use the library methods to get more than one currency pair converted simultaneously. 
 
 #### Get Direct and Indirect Conversions
 
@@ -33,7 +33,7 @@ Get direct and indirect currency conversions for your currency pairs. Direct con
 
 ## Requirements
 
-The currency conversion library requires the following to run:
+The currency conversion library requires:
 
 - TypeScript 4.0.2+
 - Node.js
@@ -57,7 +57,7 @@ The following code examples show the various usages of the library:
 
 ## How to obtain support
 
-The GitHub issue tracker is the preferred channel for bug reports, features requests and asking questions.
+GitHub issue tracker is the preferred channel for reporting bugs, feature requests, or querying.
 
 ## License
 
