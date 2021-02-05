@@ -8,11 +8,9 @@ import {
   ExchangeRateValue,
   Currency,
   TenantSettings,
-  buildExchangeRateValue,
   buildConversionParameterForNonFixedRate,
   buildExchangeRate,
-  buildExchangeRateTypeDetail,
-  buildTenantSettings
+  buildExchangeRateTypeDetail
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { ExchangeRateRecordDeterminer } from '../../src/core/exchange-rate-record-determiner';
 import { ConversionError } from '../../src/constants/conversion-error';
@@ -33,24 +31,24 @@ const INR: Currency = buildCurrency('INR');
 const EUR: Currency = buildCurrency('EUR');
 const USD: Currency = buildCurrency('USD');
 
-const S_0: ExchangeRateValue = buildExchangeRateValue('0');
-const S_0_5: ExchangeRateValue = buildExchangeRateValue('0.5');
-const S_1: ExchangeRateValue = buildExchangeRateValue('1');
-const S_2: ExchangeRateValue = buildExchangeRateValue('2');
-const S_3: ExchangeRateValue = buildExchangeRateValue('3');
-const S_50: ExchangeRateValue = buildExchangeRateValue('50');
-const S_5: ExchangeRateValue = buildExchangeRateValue('5');
-const S_8: ExchangeRateValue = buildExchangeRateValue('8');
-const S_10: ExchangeRateValue = buildExchangeRateValue('10');
-const S_0_02: ExchangeRateValue = buildExchangeRateValue('0.02');
-const S_0_08: ExchangeRateValue = buildExchangeRateValue('0.08');
-const S_7_00000001: ExchangeRateValue = buildExchangeRateValue('7.00000001');
-const S_21_00000001: ExchangeRateValue = buildExchangeRateValue('21.00000001');
-const S_100: ExchangeRateValue = buildExchangeRateValue('100');
-const S_200: ExchangeRateValue = buildExchangeRateValue('200');
-const S_7_0: ExchangeRateValue = buildExchangeRateValue('7.0');
-const S_21_0: ExchangeRateValue = buildExchangeRateValue('21.0');
-const S_0_33333333333333: ExchangeRateValue = buildExchangeRateValue('0.33333333333333');
+const S_0: ExchangeRateValue = new ExchangeRateValue('0');
+const S_0_5: ExchangeRateValue = new ExchangeRateValue('0.5');
+const S_1: ExchangeRateValue = new ExchangeRateValue('1');
+const S_2: ExchangeRateValue = new ExchangeRateValue('2');
+const S_3: ExchangeRateValue = new ExchangeRateValue('3');
+const S_50: ExchangeRateValue = new ExchangeRateValue('50');
+const S_5: ExchangeRateValue = new ExchangeRateValue('5');
+const S_8: ExchangeRateValue = new ExchangeRateValue('8');
+const S_10: ExchangeRateValue = new ExchangeRateValue('10');
+const S_0_02: ExchangeRateValue = new ExchangeRateValue('0.02');
+const S_0_08: ExchangeRateValue = new ExchangeRateValue('0.08');
+const S_7_00000001: ExchangeRateValue = new ExchangeRateValue('7.00000001');
+const S_21_00000001: ExchangeRateValue = new ExchangeRateValue('21.00000001');
+const S_100: ExchangeRateValue = new ExchangeRateValue('100');
+const S_200: ExchangeRateValue = new ExchangeRateValue('200');
+const S_7_0: ExchangeRateValue = new ExchangeRateValue('7.0');
+const S_21_0: ExchangeRateValue = new ExchangeRateValue('21.0');
+const S_0_33333333333333: ExchangeRateValue = new ExchangeRateValue('0.33333333333333');
 
 const S_2020_01_01T02_30_00Z: Date = new Date('2020-01-01T02:30:00Z');
 const S_2020_02_01T02_30_00Z: Date = new Date('2020-02-01T02:30:00Z');
@@ -59,7 +57,10 @@ const S_2019_09_16T02_30_00Z: Date = new Date('2019-09-16T02:30:00Z');
 const S_2020_03_01T02_30_00Z: Date = new Date('2020-03-01T02:30:00Z');
 const S_1990_03_01T02_30_00Z: Date = new Date('1990-03-01T02:30:00Z');
 
-const overrideTenantSettings: TenantSettings = buildTenantSettings(MRM, THR);
+const overrideTenantSettings: TenantSettings = {
+  ratesDataProviderCode: MRM,
+  ratesDataSource: THR
+};
 
 const inrEurMConversionParam: ConversionParameterForNonFixedRate = buildConversionParameterForNonFixedRate(
   'INR',
@@ -1489,7 +1490,7 @@ describe('Exchange Rate Record Determiner Override Tenant Setting', () => {
       MRM,
       THR,
       A,
-      buildExchangeRateValue('0.3333333336507937'),
+      new ExchangeRateValue('0.3333333336507937'),
       EUR,
       USD,
       S_2020_01_01T02_30_00Z,

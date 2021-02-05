@@ -9,7 +9,7 @@ import {
   TenantSettings,
   ConversionModelError,
   buildExchangeRate,
-  buildExchangeRateValue,
+  ExchangeRateValue,
   logAndGetError,
   logger as log
 } from '@sap-cloud-sdk/currency-conversion-models';
@@ -175,7 +175,7 @@ export class ExchangeRateRecordDeterminer {
       this._isTenantSettingNull ? null : fromReferenceCurrencyPair.ratesDataProviderCode,
       this._isTenantSettingNull ? null : fromReferenceCurrencyPair.ratesDataSource,
       fromReferenceCurrencyPair.exchangeRateType,
-      buildExchangeRateValue(derivedExchangeRateValue),
+      new ExchangeRateValue(derivedExchangeRateValue),
       fromReferenceCurrencyPair.fromCurrency,
       toReferenceCurrencyPair.fromCurrency,
       fromReferenceCurrencyPair.validFromDateTime.getTime() < toReferenceCurrencyPair.validFromDateTime.getTime()

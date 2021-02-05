@@ -11,10 +11,8 @@ import {
   ExchangeRateValue,
   SingleNonFixedRateConversionResult,
   TenantSettings,
-  buildExchangeRateValue,
   buildConversionParameterForNonFixedRate,
-  buildExchangeRate,
-  buildTenantSettings
+  buildExchangeRate
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { CurrencyConverter } from '../../src/core/currency-converter';
 
@@ -35,16 +33,19 @@ const USD: Currency = buildCurrency('USD');
 const BHD: Currency = buildCurrency('BHD');
 const CLF: Currency = buildCurrency('CLF');
 
-const S_100: ExchangeRateValue = buildExchangeRateValue('100');
-const S_123_123: ExchangeRateValue = buildExchangeRateValue('123.123');
-const S_0_300623: ExchangeRateValue = buildExchangeRateValue('0.300623');
+const S_100: ExchangeRateValue = new ExchangeRateValue('100');
+const S_123_123: ExchangeRateValue = new ExchangeRateValue('123.123');
+const S_0_300623: ExchangeRateValue = new ExchangeRateValue('0.300623');
 
 const S_2020_01_01T02_30_00Z: Date = new Date('2020-01-01T02:30:00Z');
 const S_2020_01_16T02_30_00Z: Date = new Date('2020-01-16T02:30:00Z');
 const S_2019_09_16T02_30_00Z: Date = new Date('2019-09-16T02:30:00Z');
 const S_1990_03_01T02_30_00Z: Date = new Date('1990-03-01T02:30:00Z');
 
-const defaultTenantSettings: TenantSettings = buildTenantSettings(MRM, ECB);
+const defaultTenantSettings: TenantSettings = {
+  ratesDataProviderCode: MRM,
+  ratesDataSource: ECB
+};
 
 const inrEurMConversionParam: ConversionParameterForNonFixedRate = buildConversionParameterForNonFixedRate(
   'INR',

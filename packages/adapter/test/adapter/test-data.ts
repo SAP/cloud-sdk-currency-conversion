@@ -10,7 +10,6 @@ import {
   ExchangeRateValue,
   Currency,
   buildCurrency,
-  buildExchangeRateValue,
   buildExchangeRateTypeDetail,
   buildExchangeRate,
   buildConversionParameterForNonFixedRate
@@ -23,10 +22,10 @@ export const EUR: Currency = buildCurrency('EUR');
 export const USD: Currency = buildCurrency('USD');
 export const INR: Currency = buildCurrency('INR');
 export const JPY: Currency = buildCurrency('JPY');
-export const EXCHANGERATE_VALUE_0_8: ExchangeRateValue = buildExchangeRateValue('0.8');
-export const EXCHANGERATE_VALUE_80: ExchangeRateValue = buildExchangeRateValue('80');
-export const EXCHANGERATE_VALUE_180: ExchangeRateValue = buildExchangeRateValue('180');
-export const EXCHANGERATE_VALUE_100: ExchangeRateValue = buildExchangeRateValue('100');
+export const EXCHANGERATE_VALUE_0_8: ExchangeRateValue = new ExchangeRateValue('0.8');
+export const EXCHANGERATE_VALUE_80: ExchangeRateValue = new ExchangeRateValue('80');
+export const EXCHANGERATE_VALUE_180: ExchangeRateValue = new ExchangeRateValue('180');
+export const EXCHANGERATE_VALUE_100: ExchangeRateValue = new ExchangeRateValue('100');
 export const RATES_MID = 'MID';
 export const RATES_BID = 'BID';
 export const RATES_ASK = 'ASK';

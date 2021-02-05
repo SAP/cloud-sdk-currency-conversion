@@ -5,9 +5,7 @@ import {
   ConversionParameterForFixedRate,
   CurrencyAmount,
   CurrencyConversionError,
-  buildConversionParameterForFixedRate,
-  buildCurrencyAmount,
-  buildSingleFixedRateConversionResult
+  buildConversionParameterForFixedRate
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { BigNumber } from 'bignumber.js';
 import { CurrencyConverter } from '../../src/core/currency-converter';
@@ -19,9 +17,9 @@ const inrUsdConversionParameter: ConversionParameterForFixedRate = buildConversi
   '10.00',
   '70.23'
 );
-const currencyAmount: CurrencyAmount = buildCurrencyAmount('702.3');
-const roundedOffAmount: CurrencyAmount = buildCurrencyAmount('702.30');
-const expectedSingleFixedRateConversionResult: SingleFixedRateConversionResult = buildSingleFixedRateConversionResult(
+const currencyAmount: CurrencyAmount = new CurrencyAmount('702.3');
+const roundedOffAmount: CurrencyAmount = new CurrencyAmount('702.30');
+const expectedSingleFixedRateConversionResult: SingleFixedRateConversionResult = new SingleFixedRateConversionResult(
   currencyAmount,
   roundedOffAmount
 );
@@ -32,9 +30,9 @@ const inrUsdConversionParameter2: ConversionParameterForFixedRate = buildConvers
   '10.00',
   '70.23'
 );
-const currAmount: CurrencyAmount = buildCurrencyAmount('702.3');
-const roundedAmount: CurrencyAmount = buildCurrencyAmount('702.30');
-const inrUsdExpectedSingleFixedRateConversionResult = buildSingleFixedRateConversionResult(currAmount, roundedAmount);
+const currAmount: CurrencyAmount = new CurrencyAmount('702.3');
+const roundedAmount: CurrencyAmount = new CurrencyAmount('702.30');
+const inrUsdExpectedSingleFixedRateConversionResult = new SingleFixedRateConversionResult(currAmount, roundedAmount);
 
 const usdEurConversionParameter: ConversionParameterForFixedRate = buildConversionParameterForFixedRate(
   'USD',
@@ -42,9 +40,9 @@ const usdEurConversionParameter: ConversionParameterForFixedRate = buildConversi
   '1000',
   '10'
 );
-const currencyAmount1: CurrencyAmount = buildCurrencyAmount('10000');
-const roundedOffAmount1: CurrencyAmount = buildCurrencyAmount('10000.00');
-const expectedSingleFixedRateConversionResult1: SingleFixedRateConversionResult = buildSingleFixedRateConversionResult(
+const currencyAmount1: CurrencyAmount = new CurrencyAmount('10000');
+const roundedOffAmount1: CurrencyAmount = new CurrencyAmount('10000.00');
+const expectedSingleFixedRateConversionResult1: SingleFixedRateConversionResult = new SingleFixedRateConversionResult(
   currencyAmount1,
   roundedOffAmount1
 );
@@ -55,9 +53,9 @@ const usdInrConversionParameter: ConversionParameterForFixedRate = buildConversi
   '15.25',
   '10'
 );
-const currencyAmount2: CurrencyAmount = buildCurrencyAmount('152.5');
-const roundedOffAmount2: CurrencyAmount = buildCurrencyAmount('152.50');
-const expectedSingleFixedRateConversionResult2: SingleFixedRateConversionResult = buildSingleFixedRateConversionResult(
+const currencyAmount2: CurrencyAmount = new CurrencyAmount('152.5');
+const roundedOffAmount2: CurrencyAmount = new CurrencyAmount('152.50');
+const expectedSingleFixedRateConversionResult2: SingleFixedRateConversionResult = new SingleFixedRateConversionResult(
   currencyAmount2,
   roundedOffAmount2
 );
@@ -68,9 +66,9 @@ const eurInrConversionParameter: ConversionParameterForFixedRate = buildConversi
   '100',
   '10.25'
 );
-const currencyAmount3: CurrencyAmount = buildCurrencyAmount('1025');
-const roundedOffAmount3: CurrencyAmount = buildCurrencyAmount('1025.00');
-const expectedSingleFixedRateConversionResult3: SingleFixedRateConversionResult = buildSingleFixedRateConversionResult(
+const currencyAmount3: CurrencyAmount = new CurrencyAmount('1025');
+const roundedOffAmount3: CurrencyAmount = new CurrencyAmount('1025.00');
+const expectedSingleFixedRateConversionResult3: SingleFixedRateConversionResult = new SingleFixedRateConversionResult(
   currencyAmount3,
   roundedOffAmount3
 );

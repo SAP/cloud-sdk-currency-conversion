@@ -4,15 +4,13 @@ import { CurrencyConversionError } from './currency-conversion-error';
 import { ConversionModelError } from './constants/conversion-model-error';
 import { StringDecimalValue } from './string-decimal-value';
 
-export type ExchangeRateValue = StringDecimalValue;
-
-export function buildExchangeRateValue(valueString: string): ExchangeRateValue {
-  const decimalValue = new BigNumber(valueString.trim());
-  if (decimalValue < new BigNumber(0)) {
-    throw new CurrencyConversionError(ConversionModelError.ILLEGAL_EXCHANGE_RATE);
+export class ExchangeRateValue extends StringDecimalValue {
+  constructor(valueString: string) {
+    const trimmedString: string = valueString.trim();
+    const decimalValue = new BigNumber(trimmedString);
+    if (decimalValue < new BigNumber(0)) {
+      throw new CurrencyConversionError(ConversionModelError.ILLEGAL_EXCHANGE_RATE);
+    }
+    super(trimmedString, decimalValue);
   }
-  return {
-    valueString: valueString.trim(),
-    decimalValue
-  };
 }
