@@ -11,11 +11,9 @@ import {
   ExchangeRateValue,
   SingleNonFixedRateConversionResult,
   TenantSettings,
-  buildExchangeRateValue,
   buildConversionParameterForNonFixedRate,
   buildExchangeRate,
-  buildExchangeRateTypeDetail,
-  buildTenantSettings
+  buildExchangeRateTypeDetail
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { CurrencyConverter } from '../../src/core/currency-converter';
 
@@ -33,17 +31,23 @@ const INR: Currency = buildCurrency('INR');
 const EUR: Currency = buildCurrency('EUR');
 const USD: Currency = buildCurrency('USD');
 
-const S_2: ExchangeRateValue = buildExchangeRateValue('2');
-const S_5: ExchangeRateValue = buildExchangeRateValue('5');
-const S_10: ExchangeRateValue = buildExchangeRateValue('10');
+const S_2: ExchangeRateValue = new ExchangeRateValue('2');
+const S_5: ExchangeRateValue = new ExchangeRateValue('5');
+const S_10: ExchangeRateValue = new ExchangeRateValue('10');
 
 const S_2020_01_01T02_30_00Z: Date = new Date('2020-01-01T02:30:00Z');
 const S_2020_02_01T02_30_00Z: Date = new Date('2020-02-01T02:30:00Z');
 const S_2020_03_01T02_30_00Z: Date = new Date('2020-03-01T02:30:00Z');
 const S_1990_03_01T02_30_00Z: Date = new Date('1990-03-01T02:30:00Z');
 
-const defaultTenantSettings: TenantSettings = buildTenantSettings(MRM, ECB);
-const overrideTenantSettings: TenantSettings = buildTenantSettings(MRM, THR);
+const defaultTenantSettings: TenantSettings = {
+  ratesDataProviderCode: MRM,
+  ratesDataSource: ECB
+};
+const overrideTenantSettings: TenantSettings = {
+  ratesDataProviderCode: MRM,
+  ratesDataSource: THR
+};
 
 const eurUsdAConversionParam: ConversionParameterForNonFixedRate = buildConversionParameterForNonFixedRate(
   'EUR',

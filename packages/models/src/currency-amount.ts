@@ -2,11 +2,9 @@
 import { BigNumber } from 'bignumber.js';
 import { StringDecimalValue } from './string-decimal-value';
 
-export type CurrencyAmount = StringDecimalValue;
-
-export function buildCurrencyAmount(valueString: string): CurrencyAmount {
-  return {
-    valueString: valueString.trim(),
-    decimalValue: new BigNumber(valueString.trim())
-  };
+export class CurrencyAmount extends StringDecimalValue {
+  constructor(valueString: string) {
+    const trimmedString: string = valueString.trim();
+    super(trimmedString, new BigNumber(trimmedString));
+  }
 }

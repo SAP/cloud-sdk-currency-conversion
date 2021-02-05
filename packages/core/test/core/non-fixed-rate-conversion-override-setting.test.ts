@@ -13,12 +13,8 @@ import {
   ExchangeRateValue,
   CurrencyConversionError,
   BulkConversionResult,
-  buildExchangeRateValue,
   buildConversionParameterForNonFixedRate,
-  buildExchangeRate,
-  buildCurrencyAmount,
-  buildSingleNonFixedRateConversionResult,
-  buildTenantSettings
+  buildExchangeRate
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { BigNumber } from 'bignumber.js';
 import { ConversionError } from '../../src/constants/conversion-error';
@@ -41,25 +37,31 @@ const EUR: Currency = buildCurrency('EUR');
 const USD: Currency = buildCurrency('USD');
 const BHD: Currency = buildCurrency('BHD');
 
-const S_0_300623: ExchangeRateValue = buildExchangeRateValue('0.300623');
-const S_123_123: ExchangeRateValue = buildExchangeRateValue('123.123');
-const S_100: ExchangeRateValue = buildExchangeRateValue('100');
-const S_1: ExchangeRateValue = buildExchangeRateValue('1');
+const S_0_300623: ExchangeRateValue = new ExchangeRateValue('0.300623');
+const S_123_123: ExchangeRateValue = new ExchangeRateValue('123.123');
+const S_100: ExchangeRateValue = new ExchangeRateValue('100');
+const S_1: ExchangeRateValue = new ExchangeRateValue('1');
 
-const S_0_5: CurrencyAmount = buildCurrencyAmount('0.5');
-const S_2: CurrencyAmount = buildCurrencyAmount('2');
-const S_120: CurrencyAmount = buildCurrencyAmount('120');
-const S_5000: CurrencyAmount = buildCurrencyAmount('5000');
-const S_10000: CurrencyAmount = buildCurrencyAmount('10000');
-const S_20000: CurrencyAmount = buildCurrencyAmount('20000');
+const S_0_5: CurrencyAmount = new CurrencyAmount('0.5');
+const S_2: CurrencyAmount = new CurrencyAmount('2');
+const S_120: CurrencyAmount = new CurrencyAmount('120');
+const S_5000: CurrencyAmount = new CurrencyAmount('5000');
+const S_10000: CurrencyAmount = new CurrencyAmount('10000');
+const S_20000: CurrencyAmount = new CurrencyAmount('20000');
 
 const S_2020_01_01T02_30_00Z: Date = new Date('2020-01-01T02:30:00Z');
 const S_2020_01_16T02_30_00Z: Date = new Date('2020-01-16T02:30:00Z');
 const S_2019_09_16T02_30_00Z: Date = new Date('2019-09-16T02:30:00Z');
 const S_1990_03_01T02_30_00Z: Date = new Date('1990-03-01T02:30:00Z');
 
-const defaultTenantSettings: TenantSettings = buildTenantSettings(MRM, ECB);
-const overrideTenantSettings: TenantSettings = buildTenantSettings(MRM, THR);
+const defaultTenantSettings: TenantSettings = {
+  ratesDataProviderCode: MRM,
+  ratesDataSource: ECB
+};
+const overrideTenantSettings: TenantSettings = {
+  ratesDataProviderCode: MRM,
+  ratesDataSource: THR
+};
 
 /* Conversion Parameter starts*/
 
@@ -747,7 +749,7 @@ function buildAdapterWithNullExchangeRatesAndDefaultTenantSettings(): DataAdapte
 }
 describe('Non Fixed Rate Conversion override tenant settings', () => {
   it('Single Conversion With Empty Exchange Rate Type Details', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       inrEurMrmThrMRate,
       S_10000,
       S_10000
@@ -817,7 +819,7 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
   });
 
   it('Bulk Conversion With Empty Exchange Rate Type Details', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       inrEurMrmThrMRate,
       S_10000,
       S_10000
@@ -847,7 +849,7 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
   });
 
   it('Bulk Conversion With null Exchange Rate Type Details', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       inrEurMrmThrMRate,
       S_10000,
       S_10000
@@ -953,7 +955,7 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
   });
 
   it('Bulk Conversion With Direct Factor Five Ten Rate', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       inrEurMrmThrMDirectFactorFiveTenRate,
       S_20000,
       S_20000
@@ -972,7 +974,7 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
   });
 
   it('Bulk Conversion With Direct Factor More Than One Rate', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       inrEurMrmThrMDirectFactorMoreThanOneRate,
       S_5000,
       S_5000
@@ -991,7 +993,7 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
   });
 
   it('Bulk Conversion With indirect Factor Five Ten Rate', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       inrEurMrmThrMIndirectFactorFiveTenRate,
       S_2,
       S_2
@@ -1010,7 +1012,7 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
   });
 
   it('Bulk Conversion With Inirect Factor More Than One Rate', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       inrEurMrmThrMIndirectFactorMoreThanOneRate,
       S_0_5,
       S_0_5
@@ -1080,17 +1082,17 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
   });
 
   it('Multiple Conversion Success Failure', async () => {
-    const expectedConversionResult1: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult1: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       inrEurMrmThrMRate,
       S_10000,
       S_10000
     );
-    const expectedConversionResult2: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult2: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       eurUsdMrmThrAskRate,
       S_10000,
       S_10000
     );
-    const expectedConversionResult3: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult3: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       eurInrMrmThrAskIndirectFalseRate,
       S_10000,
       S_10000
@@ -1126,10 +1128,10 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
   });
 
   it('Bulk Indirect Conversion', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       eurInrMrmThrIndirectConversionRate,
-      buildCurrencyAmount('1'),
-      buildCurrencyAmount('1')
+      new CurrencyAmount('1'),
+      new CurrencyAmount('1')
     );
     const result: BulkConversionResult<
       ConversionParameterForNonFixedRate,
@@ -1152,10 +1154,10 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
   });
 
   it('Bulk Indirect Conversion Decimal Value', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       eurInrMrmThrIndirectConversionDecimalRate,
-      buildCurrencyAmount('0.97835236045058661466079243313883250280145'),
-      buildCurrencyAmount('0.98')
+      new CurrencyAmount('0.97835236045058661466079243313883250280145'),
+      new CurrencyAmount('0.98')
     );
     const result: BulkConversionResult<
       ConversionParameterForNonFixedRate,
@@ -1178,10 +1180,10 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
   });
 
   it('Bulk direct Conversion Decimal Value', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       eurInrMrmThrDirectConversionDecimal,
-      buildCurrencyAmount('14831.1106484722999998921741'),
-      buildCurrencyAmount('14831.11')
+      new CurrencyAmount('14831.1106484722999998921741'),
+      new CurrencyAmount('14831.11')
     );
     const result: BulkConversionResult<
       ConversionParameterForNonFixedRate,
@@ -1204,7 +1206,7 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
   });
 
   it('Bulk Conversion With Different Tenant Record Found', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       inrEurMrmThrMDiffrentTenantRate,
       S_10000,
       S_10000
@@ -1228,7 +1230,7 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
   });
 
   it('Bulk Conversion With Old Conversion Time', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       inrEurMrmThrMRate,
       S_10000,
       S_10000
@@ -1247,12 +1249,12 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
   });
 
   it('Bulk Conversion With Same Currency Pair List', async () => {
-    const expectedConversionResult1: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult1: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       inrInrMrmThrMRate,
       S_120,
       S_120
     );
-    const expectedConversionResult2: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult2: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       eurEurMrmThrMRate,
       S_120,
       S_120
@@ -1273,10 +1275,10 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
   });
 
   it('Non Fixed Rate Conversion Rounded Half Up Last Digit Five', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       inrBhdMrmThrMRate,
-      buildCurrencyAmount('6.0425223'),
-      buildCurrencyAmount('6.043')
+      new CurrencyAmount('6.0425223'),
+      new CurrencyAmount('6.043')
     );
     const result: BulkConversionResult<
       ConversionParameterForNonFixedRate,
@@ -1292,10 +1294,10 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
   });
 
   it('Non Fixed Rate Conversion Rounded Half Up Last Digit More Than Five', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       inrBhdMrmThrMRate,
-      buildCurrencyAmount('2555295.4999699377'),
-      buildCurrencyAmount('2555295.5')
+      new CurrencyAmount('2555295.4999699377'),
+      new CurrencyAmount('2555295.5')
     );
     const result: BulkConversionResult<
       ConversionParameterForNonFixedRate,
@@ -1311,10 +1313,10 @@ describe('Non Fixed Rate Conversion override tenant settings', () => {
   });
 
   it('Non Fixed Rate Conversion Rounded Half Up Last Digit Less Than Five', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       inrBhdMrmThrMRate,
-      buildCurrencyAmount('60.155263546'),
-      buildCurrencyAmount('60.155')
+      new CurrencyAmount('60.155263546'),
+      new CurrencyAmount('60.155')
     );
     const result: BulkConversionResult<
       ConversionParameterForNonFixedRate,

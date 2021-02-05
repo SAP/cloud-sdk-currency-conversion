@@ -13,13 +13,9 @@ import {
   TenantSettings,
   ExchangeRateTypeDetail,
   ConversionParameterForNonFixedRate,
-  buildExchangeRateValue,
   buildConversionParameterForNonFixedRate,
   buildExchangeRate,
-  buildCurrencyAmount,
-  buildExchangeRateTypeDetail,
-  buildSingleNonFixedRateConversionResult,
-  buildTenantSettings
+  buildExchangeRateTypeDetail
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { ConversionError } from '../../src/constants/conversion-error';
 import { CurrencyConverter } from '../../src/core/currency-converter';
@@ -37,22 +33,25 @@ const ABC = 'ABC';
 const EUR: Currency = buildCurrency('EUR');
 const USD: Currency = buildCurrency('USD');
 
-const S_20: ExchangeRateValue = buildExchangeRateValue('20');
-const S_30: ExchangeRateValue = buildExchangeRateValue('30');
-const S_100: ExchangeRateValue = buildExchangeRateValue('100');
+const S_20: ExchangeRateValue = new ExchangeRateValue('20');
+const S_30: ExchangeRateValue = new ExchangeRateValue('30');
+const S_100: ExchangeRateValue = new ExchangeRateValue('100');
 
-const S_1: CurrencyAmount = buildCurrencyAmount('1');
-const S_10000: CurrencyAmount = buildCurrencyAmount('10000');
-const S_20000: CurrencyAmount = buildCurrencyAmount('20000');
-const S_300: CurrencyAmount = buildCurrencyAmount('300');
-const S_50: CurrencyAmount = buildCurrencyAmount('50');
-const S_0_333333333333: CurrencyAmount = buildCurrencyAmount('0.333333333333');
-const S_0_33: CurrencyAmount = buildCurrencyAmount('0.33');
+const S_1: CurrencyAmount = new CurrencyAmount('1');
+const S_10000: CurrencyAmount = new CurrencyAmount('10000');
+const S_20000: CurrencyAmount = new CurrencyAmount('20000');
+const S_300: CurrencyAmount = new CurrencyAmount('300');
+const S_50: CurrencyAmount = new CurrencyAmount('50');
+const S_0_333333333333: CurrencyAmount = new CurrencyAmount('0.333333333333');
+const S_0_33: CurrencyAmount = new CurrencyAmount('0.33');
 
 const S_2020_01_01T02_30_00Z: Date = new Date('2020-01-01T02:30:00Z');
 const S_1990_03_01T02_30_00Z: Date = new Date('1990-03-01T02:30:00Z');
 
-const overrideTenantSettings: TenantSettings = buildTenantSettings(MRM, THR);
+const overrideTenantSettings: TenantSettings = {
+  ratesDataProviderCode: MRM,
+  ratesDataSource: THR
+};
 
 /* Conversion Parameter starts*/
 
@@ -574,7 +573,7 @@ function buildAdapter(exchangeRates: ExchangeRate[]): DataAdapter {
 
 describe('Non Fixed Rate -- Inverted Rate conversion default null and override tenant settings', () => {
   it('Inverted Single Conversion With Inverted Currency Pair', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       eurUsdMrmThrIndirectFalseInvertedTrueRate,
       S_1,
       S_1
@@ -590,7 +589,7 @@ describe('Non Fixed Rate -- Inverted Rate conversion default null and override t
   });
 
   it('Inverted Single Conversion With Direct Currency Pair', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       usdEurMrmThrIndirectFalseInvertedTrueRate,
       S_10000,
       S_10000
@@ -611,7 +610,7 @@ describe('Non Fixed Rate -- Inverted Rate conversion default null and override t
   });
 
   it('Inverted Bulk Conversion With Inverted Currency Pair', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       eurUsdMrmThrIndirectFalseInvertedTrueRate,
       S_1,
       S_1
@@ -630,7 +629,7 @@ describe('Non Fixed Rate -- Inverted Rate conversion default null and override t
   });
 
   it('Inverted Bulk Conversion With Direct Currency Pair', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       usdEurMrmThrIndirectFalseInvertedTrueRate,
       S_10000,
       S_10000
@@ -670,7 +669,7 @@ describe('Non Fixed Rate -- Inverted Rate conversion default null and override t
   });
 
   it('Inverted Conversion With New Exchange Rate Type', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       eurUsdMrmThrNewRateType,
       S_10000,
       S_10000
@@ -689,7 +688,7 @@ describe('Non Fixed Rate -- Inverted Rate conversion default null and override t
   });
 
   it('Conversion For Indirect True Inverted True Inverted Currency Pair', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       eurUsdMrmThrIndirectTrueInvertedTrueRate,
       S_10000,
       S_10000
@@ -724,7 +723,7 @@ describe('Non Fixed Rate -- Inverted Rate conversion default null and override t
   });
 
   it('Conversion For Indirect False Inverted True Inverted Currency Pair', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       eurUsdMrmThrIndirectFalseInvertedTrueRate,
       S_1,
       S_1
@@ -759,7 +758,7 @@ describe('Non Fixed Rate -- Inverted Rate conversion default null and override t
   });
 
   it('Conversion For Indirect True Inverted True Inverted Currency Pair Factor More Than One Rate', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       eurUsdMrmThrIndirectTrueInvertedTrueFactorMoreThanOneRate,
       S_300,
       S_300
@@ -800,7 +799,7 @@ describe('Non Fixed Rate -- Inverted Rate conversion default null and override t
   });
 
   it('Conversion For Indirect False Inverted True Inverted Currency Pair Factor More Than One Rate', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       eurUsdMrmThrIndirectFalseInvertedTrueFactorMoreThanOneRate,
       S_0_333333333333,
       S_0_33
@@ -841,7 +840,7 @@ describe('Non Fixed Rate -- Inverted Rate conversion default null and override t
   });
 
   it('Conversion For Indirect True Inverted True Direct Currency Pair', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       usdEurMrmThrIndirectTrueInvertedTrueRate,
       S_1,
       S_1
@@ -865,7 +864,7 @@ describe('Non Fixed Rate -- Inverted Rate conversion default null and override t
   });
 
   it('Conversion For Indirect True Inverted False Direct Currency Pair', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       usdEurMrmThrIndirectTrueInvertedFalseRate,
       S_1,
       S_1
@@ -889,7 +888,7 @@ describe('Non Fixed Rate -- Inverted Rate conversion default null and override t
   });
 
   it('Conversion For Indirect False Inverted True Direct Currency Pair', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       usdEurMrmThrIndirectFalseInvertedTrueRate,
       S_10000,
       S_10000
@@ -913,7 +912,7 @@ describe('Non Fixed Rate -- Inverted Rate conversion default null and override t
   });
 
   it('Conversion For Indirect False Inverted False Direct Currency Pair', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       usdEurMrmThrIndirectFalseInvertedFalseRate,
       S_10000,
       S_10000
@@ -937,7 +936,7 @@ describe('Non Fixed Rate -- Inverted Rate conversion default null and override t
   });
 
   it('Conversion For Indirect True Inverted True Direct Currency Pair Factor More Than One Rate', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       usdEurMrmThrIndirectTrueInvertedTrueFactorMoreThanOneRate,
       S_50,
       S_50
@@ -961,7 +960,7 @@ describe('Non Fixed Rate -- Inverted Rate conversion default null and override t
   });
 
   it('Conversion For Indirect True Inverted False Direct Currency Pair Factor More Than One Rate', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       usdEurMrmThrIndirectTrueInvertedFalseFactorMoreThanOneRate,
       S_50,
       S_50
@@ -985,7 +984,7 @@ describe('Non Fixed Rate -- Inverted Rate conversion default null and override t
   });
 
   it('Conversion For Indirect False Inverted True Direct Currency Pair Factor More Than One Rate', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       usdEurMrmThrIndirectFalseInvertedTrueFactorMoreThanOneRate,
       S_20000,
       S_20000
@@ -1009,7 +1008,7 @@ describe('Non Fixed Rate -- Inverted Rate conversion default null and override t
   });
 
   it('Conversion For Indirect False Inverted False Direct Currency Pair Factor More Than One Rate', async () => {
-    const expectedConversionResult: SingleNonFixedRateConversionResult = buildSingleNonFixedRateConversionResult(
+    const expectedConversionResult: SingleNonFixedRateConversionResult = new SingleNonFixedRateConversionResult(
       usdEurMrmThrIndirectFalseInvertedFalseFactorMoreThanOneRate,
       S_20000,
       S_20000

@@ -11,10 +11,8 @@ import {
   ExchangeRateValue,
   SingleNonFixedRateConversionResult,
   TenantSettings,
-  buildExchangeRateValue,
   buildConversionParameterForNonFixedRate,
-  buildExchangeRate,
-  buildTenantSettings
+  buildExchangeRate
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { CurrencyConverter } from '../../src/core/currency-converter';
 import { ConversionError } from '../../src/constants/conversion-error';
@@ -29,12 +27,15 @@ const M = 'M';
 const INR: Currency = buildCurrency('INR');
 const EUR: Currency = buildCurrency('EUR');
 
-const S_0: ExchangeRateValue = buildExchangeRateValue('0');
-const S_10: ExchangeRateValue = buildExchangeRateValue('10');
+const S_0: ExchangeRateValue = new ExchangeRateValue('0');
+const S_10: ExchangeRateValue = new ExchangeRateValue('10');
 
 const S_2019_09_16T02_30_00Z: Date = new Date('2019-09-16T02:30:00Z');
 
-const defaultTenantSettings: TenantSettings = buildTenantSettings(MRM, ECB);
+const defaultTenantSettings: TenantSettings = {
+  ratesDataProviderCode: MRM,
+  ratesDataSource: ECB
+};
 
 const inrEurMConversionParam: ConversionParameterForNonFixedRate = buildConversionParameterForNonFixedRate(
   'INR',
@@ -263,7 +264,10 @@ function buildAdapterWithDataSource(exchangeRates: ExchangeRate[], dataSource: s
 
   adapter.getExchangeRatesForTenant = (): Promise<ExchangeRate[]> => Promise.resolve(exchangeRates);
 
-  const tenantSettings = buildTenantSettings(MRM, dataSource);
+  const tenantSettings = {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: dataSource
+  };
   adapter.getDefaultSettingsForTenant = (): Promise<TenantSettings> => Promise.resolve(tenantSettings);
 
   adapter.getExchangeRateTypeDetailsForTenant = (): Promise<Map<string, ExchangeRateTypeDetail>> =>

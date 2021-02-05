@@ -11,7 +11,6 @@ import {
   ExchangeRateValue,
   SingleNonFixedRateConversionResult,
   TenantSettings,
-  buildExchangeRateValue,
   buildConversionParameterForNonFixedRate,
   buildExchangeRate,
   buildExchangeRateTypeDetail
@@ -31,9 +30,9 @@ const INR: Currency = buildCurrency('INR');
 const EUR: Currency = buildCurrency('EUR');
 const USD: Currency = buildCurrency('USD');
 
-const S_2: ExchangeRateValue = buildExchangeRateValue('2');
-const S_5: ExchangeRateValue = buildExchangeRateValue('5');
-const S_10: ExchangeRateValue = buildExchangeRateValue('10');
+const S_2: ExchangeRateValue = new ExchangeRateValue('2');
+const S_5: ExchangeRateValue = new ExchangeRateValue('5');
+const S_10: ExchangeRateValue = new ExchangeRateValue('10');
 
 const S_2020_01_01T02_30_00Z: Date = new Date('2020-01-01T02:30:00Z');
 const S_2020_02_01T02_30_00Z: Date = new Date('2020-02-01T02:30:00Z');

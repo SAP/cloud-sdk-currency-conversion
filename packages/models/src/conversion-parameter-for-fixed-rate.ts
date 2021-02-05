@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 SAP SE or an SAP affiliate company. All rights reserved. */
-import { buildExchangeRateValue, ExchangeRateValue } from './exchange-rate-value';
+import { ExchangeRateValue } from './exchange-rate-value';
 import { ConversionParameter } from './conversion-parameter';
-import { buildCurrencyAmount } from './currency-amount';
+import { CurrencyAmount } from './currency-amount';
 import { buildCurrency } from './helper';
 
 export interface ConversionParameterForFixedRate extends ConversionParameter {
@@ -17,7 +17,7 @@ export function buildConversionParameterForFixedRate(
   return {
     fromCurrency: buildCurrency(fromCurrency),
     toCurrency: buildCurrency(toCurrency),
-    fromAmount: buildCurrencyAmount(fromAmount),
-    fixedRateValue: buildExchangeRateValue(fixedRate)
+    fromAmount: new CurrencyAmount(fromAmount),
+    fixedRateValue: new ExchangeRateValue(fixedRate)
   };
 }

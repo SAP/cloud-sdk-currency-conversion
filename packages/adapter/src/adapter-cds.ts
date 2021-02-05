@@ -9,7 +9,7 @@ import {
   ExchangeRate,
   logAndGetError,
   logger as log,
-  buildExchangeRateValue,
+  ExchangeRateValue,
   buildExchangeRate,
   buildExchangeRateTypeDetail
 } from '@sap-cloud-sdk/currency-conversion-models';
@@ -137,7 +137,7 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
         result.dataProviderCode,
         result.dataSource,
         result.exchangeRateType,
-        buildExchangeRateValue(result.exchangeRateValue.toString()),
+        new ExchangeRateValue(result.exchangeRateValue.toString()),
         buildCurrency(result.fromCurrencyThreeLetterISOCode),
         buildCurrency(result.toCurrencyThreeLetterISOCode),
         new Date(result.validFromDateTime),
