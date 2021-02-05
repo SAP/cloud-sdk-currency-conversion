@@ -2,7 +2,7 @@
 
 import { buildCurrency } from '../build';
 import { buildExchangeRate } from '../src/exchange-rate';
-import { buildExchangeRateValue } from '../src/exchange-rate-value';
+import { ExchangeRateValue } from '../src/exchange-rate-value';
 
 describe('Build Exchange Rate Tests', () => {
   it('Default exchange rate fields test', () => {
@@ -11,7 +11,7 @@ describe('Build Exchange Rate Tests', () => {
       ratesDataProviderCode: 'MRM',
       ratesDataSource: 'ECB',
       exchangeRateType: 'ASK',
-      exchangeRateValue: buildExchangeRateValue('12'),
+      exchangeRateValue: new ExchangeRateValue('12'),
       fromCurrency: buildCurrency('INR'),
       toCurrency: buildCurrency('EUR'),
       validFromDateTime: new Date('2019-09-16T02:30:00Z'),
@@ -24,7 +24,7 @@ describe('Build Exchange Rate Tests', () => {
       'MRM',
       'ECB',
       'ASK',
-      buildExchangeRateValue('12'),
+      new ExchangeRateValue('12'),
       buildCurrency('INR'),
       buildCurrency('EUR'),
       new Date('2019-09-16T02:30:00Z')
