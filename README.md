@@ -57,7 +57,7 @@ The following code examples show the various usages of the library:
 
 ## How to obtain support
 
-GitHub issue tracker is the preferred channel for reporting bugs, feature requests, or querying.
+The GitHub issue tracker is the preferred channel for reporting bugs, feature requests, or querying.
 
 ## License
 
