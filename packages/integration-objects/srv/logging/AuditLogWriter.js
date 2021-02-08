@@ -8,7 +8,7 @@ const uaaData = xsenv.getServices({ xsuaa: { tag: 'xsuaa' } }).xsuaa;
 
 async function writeAuditLog(req, auditParams, currentValues, objectType) {
   try {
-    const entityType = `${req.event} ` + objectType;
+    const entityType = `${req.event} ${objectType}`;
     const clientId = uaaData.clientid;
     const logonUser = req.user ? req.user.id : clientId;
     const accessedObject = {
