@@ -8,8 +8,8 @@ const uaaData = xsenv.getServices({ xsuaa: { tag: 'xsuaa' } }).xsuaa;
 
 async function writeAuditLog(req, auditParams, currentValues, objectType) {
   try {
-    const entityType = req.event + ' ' + objectType;
-    const clientId = uaaData['clientid'];
+    const entityType = `${req.event} ` + objectType;
+    const clientId = uaaData.clientid;
     const logonUser = req.user ? req.user.id : clientId;
     const accessedObject = {
       type: entityType,
@@ -21,7 +21,7 @@ async function writeAuditLog(req, auditParams, currentValues, objectType) {
     configChangeMessage.by(logonUser);
     await auditLog.logPrepare(configChangeMessage);
   } catch (e) {
-    logger.error('Error ' + e.message);
+    logger.error(e);
     return Promise.reject(e);
   }
   return Promise.resolve();
