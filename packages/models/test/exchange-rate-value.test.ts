@@ -1,5 +1,4 @@
 /* Copyright (c) 2021 SAP SE or an SAP affiliate company. All rights reserved. */
-import { BigNumber } from 'bignumber.js';
 import { ConversionModelError } from '../src/constants/conversion-model-error';
 import { ExchangeRateValue } from '../src/exchange-rate-value';
 
