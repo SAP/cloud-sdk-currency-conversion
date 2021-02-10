@@ -2,5 +2,12 @@
 import { BigNumber } from 'bignumber.js';
 
 export class StringDecimalValue {
-  constructor(readonly valueString: string, readonly decimalValue: BigNumber) {}
+  readonly valueString: string;
+  constructor(valueString: string) {
+    this.valueString = valueString.trim();
+  }
+
+  get decimalValue() {
+    return new BigNumber(this.valueString);
+  }
 }

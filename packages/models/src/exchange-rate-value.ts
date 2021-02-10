@@ -6,11 +6,9 @@ import { StringDecimalValue } from './string-decimal-value';
 
 export class ExchangeRateValue extends StringDecimalValue {
   constructor(valueString: string) {
-    const trimmedString: string = valueString.trim();
-    const decimalValue = new BigNumber(trimmedString);
-    if (decimalValue < new BigNumber(0)) {
+    super(valueString);
+    if (this.decimalValue < new BigNumber(0)) {
       throw new CurrencyConversionError(ConversionModelError.ILLEGAL_EXCHANGE_RATE);
     }
-    super(trimmedString, decimalValue);
   }
 }
