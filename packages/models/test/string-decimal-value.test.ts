@@ -9,6 +9,6 @@ describe('String Decimal Value Tests', () => {
       decimalValue: new BigNumber(1234)
     };
     const actualResult = new StringDecimalValue('  1234   ');
-    expect(actualResult).toEqual(expectedResult);
+    expect(actualResult.decimalValue).toEqual(expectedResult.decimalValue);
   });
 });
