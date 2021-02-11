@@ -8,19 +8,14 @@ module.exports = {
       exclude: [
         '**/*.d.ts',
         '**/build/**/*',
-        '**/node_modules/**/*',
-        'test-packages/test-services-e2e/**/*',
-        'packages/core/test/test-util/test-services/**/*'
+        '**/node_modules/**/*'
       ]
     },
     sourceType: 'module'
   },
   ignorePatterns: [
     'build',
-    'node_modules',
-    'packages/core/test/test-util/test-services',
-    'test-packages/test-services',
-    'test-packages/test-services-e2e'
+    'node_modules'
   ],
   plugins: [
     '@typescript-eslint',
