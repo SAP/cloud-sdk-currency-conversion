@@ -17,11 +17,11 @@ const dataSourceField = 'dataSource';
 const dataProviderCodeField = 'dataProviderCode';
 
 async function validatePrimaryKeyFieldsForCurrencyExchangeRate(data) {
-  validateDataProviderCode(data.dataProviderCode);
-  validateDataSource(data.dataSource);
-  validateRateTypePattern(data.exchangeRateType);
-  validateFromCurrencyPattern(data.fromCurrencyThreeLetterISOCode);
-  validateToCurrencyPattern(data.toCurrencyThreeLetterISOCode);
+  await validateDataProviderCode(data.dataProviderCode);
+  await validateDataSource(data.dataSource);
+  await validateRateTypePattern(data.exchangeRateType);
+  await validateFromCurrencyPattern(data.fromCurrencyThreeLetterISOCode);
+  await validateToCurrencyPattern(data.toCurrencyThreeLetterISOCode);
   validateFromAndToCurrencyEquality(data.fromCurrencyThreeLetterISOCode, data.toCurrencyThreeLetterISOCode);
   validateFromDateTime(data.validFromDateTime);
 }
@@ -43,8 +43,8 @@ function validateFromAndToCurrencyEquality(fromCurrencyThreeLetterISOCode, toCur
   }
 }
 
-function validateToCurrencyPattern(toCurrencyThreeLetterISOCode) {
-  validatePattern(
+async function validateToCurrencyPattern(toCurrencyThreeLetterISOCode) {
+  await validatePattern(
     Constants.CURRENCY_CODE_PATTERN,
     toCurrencyField,
     toCurrencyThreeLetterISOCode,
@@ -52,8 +52,8 @@ function validateToCurrencyPattern(toCurrencyThreeLetterISOCode) {
   );
 }
 
-function validateFromCurrencyPattern(fromCurrencyThreeLetterISOCode) {
-  validatePattern(
+async function validateFromCurrencyPattern(fromCurrencyThreeLetterISOCode) {
+  await validatePattern(
     Constants.CURRENCY_CODE_PATTERN,
     fromCurrencyField,
     fromCurrencyThreeLetterISOCode,
@@ -61,8 +61,8 @@ function validateFromCurrencyPattern(fromCurrencyThreeLetterISOCode) {
   );
 }
 
-function validateRateTypePattern(exchangeRateType) {
-  validatePattern(
+async function validateRateTypePattern(exchangeRateType) {
+  await validatePattern(
     Constants.EXCHANGE_RATE_TYPE_PATTERN,
     exchangeRateTypeField,
     exchangeRateType,
@@ -70,12 +70,12 @@ function validateRateTypePattern(exchangeRateType) {
   );
 }
 
-function validateDataSource(dataSource) {
-  validateLength(dataSourceField, dataSource, MAX_VALUE_DATA_SOURCE_DATA_PROVIDER);
+async function validateDataSource(dataSource) {
+  await validateLength(dataSourceField, dataSource, MAX_VALUE_DATA_SOURCE_DATA_PROVIDER);
 }
 
-function validateDataProviderCode(dataProviderCode) {
-  validateLength(dataProviderCodeField, dataProviderCode, MAX_VALUE_DATA_SOURCE_DATA_PROVIDER);
+async function validateDataProviderCode(dataProviderCode) {
+  await validateLength(dataProviderCodeField, dataProviderCode, MAX_VALUE_DATA_SOURCE_DATA_PROVIDER);
 }
 
 module.exports = {
