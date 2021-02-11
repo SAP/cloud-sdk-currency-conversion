@@ -34,11 +34,11 @@
     "typescript": "^4.0.2"
   },
   "dependencies": {
-    "@sap/cds": "^4.3.0",
+    "@sap/cds": "4.3.0",
     "@sap/hana-client": "^2.6.58",
     "@sap-cloud-sdk/core": "^1.32.1",
     "@sap-cloud-sdk/currency-conversion-models": "^1.0.0",
     "@sap-cloud-sdk/util": "^1.32.1",
-    "sqlite3": "^5.0.0"
+    "sqlite3": "5.0.0"
   }
 }

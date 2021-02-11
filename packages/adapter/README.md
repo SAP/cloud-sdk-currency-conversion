@@ -1,6 +1,6 @@
 # SAP Cloud SDK Currency Conversion Data Adapter
 
-The SAP Cloud SDK currency conversion library is a TypeScript library that you can use to convert currency exchange rates. You can perform conversions either with one currency pair or perform multiple conversions through a single API call. You can use a data adapter to provide exchange rates, configuration settings, and so on.
+The SAP Cloud SDK currency conversion library is a TypeScript library that can be used to convert currency exchange rates. You can perform conversions with either one currency pair or multiple conversions through a single API call. You can use a data adapter to provide exchange rates, configuration settings, and so on.
 
 The data adapter is developed using the [SAP Cloud Application Programming Model](https://cap.cloud.sap/docs/about/) (CAP) and it provides the library with access to relevant exchange rates and configurations. You use the data adapter to send currency exchange rates to the library.
 
