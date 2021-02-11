@@ -25,7 +25,8 @@ describe('validate fields of rate type description', function () {
       ID: 'id'
     };
     await expect(validateFieldsForExchangeRateTypeDescription(reqObj, params)).rejects.toThrow(
-      "Provide a valid value for locale. The value must be 1 - 14 characters long.");
+      'Provide a valid value for locale. The value must be 1 - 14 characters long.'
+    );
   });
 
   it('locale undefined check', async () => {
@@ -37,7 +38,8 @@ describe('validate fields of rate type description', function () {
       ID: 'id'
     };
     await expect(validateFieldsForExchangeRateTypeDescription(reqObj, params)).rejects.toThrow(
-      "Provide a valid value for locale. The value must be 1 - 14 characters long.");
+      'Provide a valid value for locale. The value must be 1 - 14 characters long.'
+    );
   });
 
   it('locale greater than 14 check', async () => {
@@ -49,7 +51,7 @@ describe('validate fields of rate type description', function () {
       ID: 'id'
     };
     await expect(validateFieldsForExchangeRateTypeDescription(reqObj, params)).rejects.toThrow(
-      "Provide a valid value for locale. The value must be 1 - 14 characters long."
+      'Provide a valid value for locale. The value must be 1 - 14 characters long.'
     );
   });
 
@@ -76,7 +78,7 @@ describe('validate fields of rate type description', function () {
       ID: 'id'
     };
     await expect(validateFieldsForExchangeRateTypeDescription(reqObj, params)).rejects.toThrow(
-      "Provide a valid value for exchangeRateTypeDescritpion. The value must be 1 - 30 characters long."
+      'Provide a valid value for exchangeRateTypeDescription. The value must be 1 - 30 characters long.'
     );
   });
 
@@ -89,7 +91,7 @@ describe('validate fields of rate type description', function () {
       ID: 'id'
     };
     await expect(validateFieldsForExchangeRateTypeDescription(reqObj, params)).rejects.toThrow(
-      "Provide a valid value for exchangeRateTypeDescritpion. The value must be 1 - 30 characters long."
+      'Provide a valid value for exchangeRateTypeDescription. The value must be 1 - 30 characters long.'
     );
   });
 });

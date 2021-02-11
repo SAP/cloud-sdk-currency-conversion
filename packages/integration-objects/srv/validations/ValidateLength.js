@@ -5,15 +5,15 @@ const Constants = require('../utils/Constants');
 const { logger } = require('../logging/Logger');
 const ErrorStatuses = require('../utils/ErrorStatuses');
 
-function validateLength(fieldName, fieldValue, maxLength) {
+async function validateLength(fieldName, fieldValue, maxLength) {
   if (
     util.isNullish(fieldValue) ||
     fieldValue.trim().length < Constants.MIN_LENGTH ||
     fieldValue.trim().length > maxLength
   ) {
-    logger.error(`${fieldValue} value for ${fieldName} is null or the value provided is invalid.`);
+    logger.error(`Provide a valid value for ${fieldName}. The value must be 1 - ${maxLength} characters long.`);
     throw new ValidationError(
-      'Provide a valid value for ' + `${fieldName}` + '. The value must be 1 - ' + `${maxLength}` + ' characters long.',
+      `Provide a valid value for ${fieldName}. The value must be 1 - ${maxLength} characters long.`,
       ErrorStatuses.BAD_REQUEST
     );
   }

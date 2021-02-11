@@ -12,14 +12,14 @@ const referenceCurrencyField = 'referenceCurrencyThreeLetterISOCode';
 const exchangeRateTypeField = 'exchangeRateType';
 
 async function validateFieldsForExchangeRateTypes(data) {
-  validateRateTypePattern(data.exchangeRateType);
-  validateReferencCurrencyInversionAllowed(data.isInversionAllowed, data.referenceCurrencyThreeLetterISOCode);
+  await validateRateTypePattern(data.exchangeRateType);
+  await validateReferencCurrencyInversionAllowed(data.isInversionAllowed, data.referenceCurrencyThreeLetterISOCode);
   setInversionAllowedWhenNull(data);
 }
 
-function validateReferencCurrencyInversionAllowed(isInversionAllowed,referenceCurrency){
+async function validateReferencCurrencyInversionAllowed(isInversionAllowed,referenceCurrency){
   if (!util.isNullish(referenceCurrency)){
-    validateReferenceCurrencyCode(referenceCurrency);
+    await validateReferenceCurrencyCode(referenceCurrency);
     validateInversionAllowed(isInversionAllowed);
   }
 }
@@ -30,8 +30,8 @@ function setInversionAllowedWhenNull(data) {
   }
 }
 
-function validateReferenceCurrencyCode(referenceCurrencyThreeLetterISOCode) {
-  validatePattern(Constants.CURRENCY_CODE_PATTERN, referenceCurrencyField, referenceCurrencyThreeLetterISOCode, MAX_REF_CURRENCY_LENGTH);
+async function validateReferenceCurrencyCode(referenceCurrencyThreeLetterISOCode) {
+  await validatePattern(Constants.CURRENCY_CODE_PATTERN, referenceCurrencyField, referenceCurrencyThreeLetterISOCode, MAX_REF_CURRENCY_LENGTH);
 }
 
 function validateInversionAllowed(isInversionAllowed) {
@@ -46,8 +46,8 @@ function validateInversionAllowed(isInversionAllowed) {
   }
 }
 
-function validateRateTypePattern(exchangeRateType) {
-  validatePattern(Constants.EXCHANGE_RATE_TYPE_PATTERN, exchangeRateTypeField, exchangeRateType, MAX_RATE_TYPE_LENGTH);
+async function validateRateTypePattern(exchangeRateType) {
+  await validatePattern(Constants.EXCHANGE_RATE_TYPE_PATTERN, exchangeRateTypeField, exchangeRateType, MAX_RATE_TYPE_LENGTH);
 }
 
 module.exports = {
