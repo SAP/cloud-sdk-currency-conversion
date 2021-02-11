@@ -4,8 +4,7 @@ import {
   TenantSettings,
   ConversionParameterForNonFixedRate,
   ExchangeRateTypeDetail,
-  Currency,
-  logAndGetError
+  Currency
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { isNullish, unique, createLogger } from '@sap-cloud-sdk/util';
 import { AdapterError } from './constants/adapter-error';
