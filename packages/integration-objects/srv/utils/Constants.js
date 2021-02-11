@@ -1,7 +1,5 @@
 /* Copyright (c) 2021 SAP SE or an SAP affiliate company. All rights reserved. */
 const Constants = {
-  MIN_VALUE_DATA_SOURCE_DATA_PROVIDER: 1,
-  MAX_VALUE_DATA_SOURCE_DATA_PROVIDER: 15,
   EXCHANGE_RATE_TYPE_PATTERN: /^[A-Za-z0-9]{1,15}$/,
   CURRENCY_CODE_PATTERN: /^[A-Z]{3}$/,
   DEFAULT_VALUE_FOR_IS_DIRECT_VALUE: false,
@@ -11,13 +9,10 @@ const Constants = {
   UPDATE_EVENT: 'UPDATE',
   DELETE_EVENT: 'DELETE',
   DESTINATION_NAME_PATTERN: /^[A-Za-z0-9]{1,200}$/,
-  MIN_VALUE_LOCALE: 1,
-  MAX_VALUE_LOCALE: 14,
-  MIN_VALUE_EXCHANGE_RATE_TYPE_DESCRIPTION: 1,
-  MAX_VALUE_EXCHANGE_RATE_TYPE_DESCRIPTION: 30,
   AUDITLOG: 'auditlog',
   PRODUCTION: 'production',
-  TEST: 'test'
+  TEST: 'test',
+  MIN_LENGTH: 1
 };
 
 module.exports = Constants;

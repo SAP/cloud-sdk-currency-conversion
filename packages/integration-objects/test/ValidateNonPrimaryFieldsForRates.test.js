@@ -33,13 +33,8 @@ describe('validate valid fields among non-primary keys', function () {
       exchangeRateValue: '80.00',
       toCurrencyFactor: '-2'
     };
-    await expect(
-      validateNonPrimaryKeyFieldsForCurrencyExchangeRate(reqObj)
-    ).rejects.toThrow(
-      new ValidationError(
-        RateExtensionConstants.INVALID_TO_CURRENCY_FACTOR_VALUE_FIELD,
-        ErrorStatuses.BAD_REQUEST
-      )
+    await expect(validateNonPrimaryKeyFieldsForCurrencyExchangeRate(reqObj)).rejects.toThrow(
+      new ValidationError(RateExtensionConstants.INVALID_TO_CURRENCY_FACTOR_VALUE_FIELD, ErrorStatuses.BAD_REQUEST)
     );
   });
 
@@ -55,13 +50,8 @@ describe('validate valid fields among non-primary keys', function () {
       exchangeRateValue: '80.00',
       fromCurrencyFactor: '-2'
     };
-    await expect(
-      validateNonPrimaryKeyFieldsForCurrencyExchangeRate(reqObj)
-    ).rejects.toThrow(
-      new ValidationError(
-        RateExtensionConstants.INVALID_FROM_CURRENCY_FACTOR_VALUE_FIELD,
-        ErrorStatuses.BAD_REQUEST
-      )
+    await expect(validateNonPrimaryKeyFieldsForCurrencyExchangeRate(reqObj)).rejects.toThrow(
+      new ValidationError(RateExtensionConstants.INVALID_FROM_CURRENCY_FACTOR_VALUE_FIELD, ErrorStatuses.BAD_REQUEST)
     );
   });
 
@@ -108,13 +98,8 @@ describe('validate valid fields among non-primary keys', function () {
       validFromDateTime: '2020-02-28T06:38:29Z',
       exchangeRateValue: '-80.00'
     };
-    await expect(
-      validateNonPrimaryKeyFieldsForCurrencyExchangeRate(reqObj)
-    ).rejects.toThrow(
-      new ValidationError(
-        RateExtensionConstants.INVALID_EXCHANGE_RATE_VALUE_FIELD,
-        ErrorStatuses.BAD_REQUEST
-      )
+    await expect(validateNonPrimaryKeyFieldsForCurrencyExchangeRate(reqObj)).rejects.toThrow(
+      new ValidationError(RateExtensionConstants.INVALID_EXCHANGE_RATE_VALUE_FIELD, ErrorStatuses.BAD_REQUEST)
     );
   });
 
@@ -129,13 +114,8 @@ describe('validate valid fields among non-primary keys', function () {
       validFromDateTime: '2020-02-28T06:38:29Z',
       exchangeRateValue: null
     };
-    await expect(
-      validateNonPrimaryKeyFieldsForCurrencyExchangeRate(reqObj)
-    ).rejects.toThrow(
-      new ValidationError(
-        RateExtensionConstants.INVALID_EXCHANGE_RATE_VALUE_FIELD,
-        ErrorStatuses.BAD_REQUEST
-      )
+    await expect(validateNonPrimaryKeyFieldsForCurrencyExchangeRate(reqObj)).rejects.toThrow(
+      new ValidationError(RateExtensionConstants.INVALID_EXCHANGE_RATE_VALUE_FIELD, ErrorStatuses.BAD_REQUEST)
     );
   });
 
