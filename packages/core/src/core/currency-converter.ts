@@ -37,7 +37,7 @@ export class CurrencyConverter {
    *
    * <p>
    * If the 'fromCurrency' and 'toCurrency' are the same in the
-   * {@link ConversionParametersForFixedRate}, the response amount will be
+   * {@link ConversionParameterForFixedRate}, the response amount will be
    * the same as the input currency amount and the given exchange rate value
    * is not used in the conversion.
    * </p>
@@ -78,7 +78,7 @@ export class CurrencyConverter {
    *
    * <p>
    * If the 'fromCurrency' and 'toCurrency' are the same in the
-   * {@link ConversionParametersForFixedRate}, the response amount will be
+   * {@link ConversionParameterForFixedRate}, the response amount will be
    * the same as the input currency amount and the given exchange rate value
    * is not used in the conversion.
    * </p>
@@ -113,7 +113,7 @@ export class CurrencyConverter {
    *
    * <p>
    * If the 'fromCurrency' and 'toCurrency' are the same in the
-   * {@link ConversionParametersForNonFixedRate}, the response amount will be
+   * {@link ConversionParameterForNonFixedRate}, the response amount will be
    * the same as the input currency amount and an {@link ExchangeRate} entry is
    * provided with default values, with the exchange rate value as 1.
    * </p>
@@ -174,7 +174,7 @@ export class CurrencyConverter {
    *
    * <p>
    * If the 'fromCurrency' and 'toCurrency' are the same in the
-   * {@link ConversionParametersForNonFixedRate}, the response amount will be
+   * {@link ConversionParameterForNonFixedRate}, the response amount will be
    * the same as the input currency amount and a {@link ExchangeRate} entry is
    * provided with default values, with the exchange rate value as 1.
    * </p>
