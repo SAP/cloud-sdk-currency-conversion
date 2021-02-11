@@ -5,14 +5,23 @@ const { logger } = require('../logging/Logger');
 const Constants = require('../utils/Constants');
 const ErrorStatuses = require('../utils/ErrorStatuses');
 const RateTypeExtensionConstants = require('../utils/RateTypeExtensionConstants');
+const { validatePattern } = require('./ValidatePattern');
+const MAX_RATE_TYPE_LENGTH = 15;
+const MAX_REF_CURRENCY_LENGTH = 3;
+const referenceCurrencyField = 'referenceCurrencyThreeLetterISOCode';
+const exchangeRateTypeField = 'exchangeRateType';
 
 async function validateFieldsForExchangeRateTypes(data) {
   validateRateTypePattern(data.exchangeRateType);
-  if (!util.isNullish(data.referenceCurrencyThreeLetterISOCode)) {
-    validateInversionAllowed(data.isInversionAllowed);
-    validateReferenceCurrencyCode(data.referenceCurrencyThreeLetterISOCode);
-  }
+  validateReferencCurrencyInversionAllowed(data.isInversionAllowed, data.referenceCurrencyThreeLetterISOCode);
   setInversionAllowedWhenNull(data);
+}
+
+function validateReferencCurrencyInversionAllowed(isInversionAllowed,referenceCurrency){
+  if (!util.isNullish(referenceCurrency)){
+    validateReferenceCurrencyCode(referenceCurrency);
+    validateInversionAllowed(isInversionAllowed);
+  }
 }
 
 function setInversionAllowedWhenNull(data) {
@@ -22,19 +31,13 @@ function setInversionAllowedWhenNull(data) {
 }
 
 function validateReferenceCurrencyCode(referenceCurrencyThreeLetterISOCode) {
-  if (!Constants.CURRENCY_CODE_PATTERN.test(referenceCurrencyThreeLetterISOCode)) {
-    logger.error('The value for referenceCurrencyThreeLetterISOCode in the payload is invalid.');
-    throw new ValidationError(
-      RateTypeExtensionConstants.INVALID_REFERENCE_CURRENCY_VALUE_FIELD,
-      ErrorStatuses.BAD_REQUEST
-    );
-  }
+  validatePattern(Constants.CURRENCY_CODE_PATTERN, referenceCurrencyField, referenceCurrencyThreeLetterISOCode, MAX_REF_CURRENCY_LENGTH);
 }
 
 function validateInversionAllowed(isInversionAllowed) {
-  if (isInversionAllowed !== false && !util.isNullish(isInversionAllowed)) {
+  if (isInversionAllowed) {
     logger.error(
-      'Valid values must be provided to either of Inversion Allowed or Reference Currency fields and not both of it.'
+      RateTypeExtensionConstants.INVALID_COMBINATION_OF_INVERSION_REF_CURRENCY
     );
     throw new ValidationError(
       RateTypeExtensionConstants.INVALID_COMBINATION_OF_INVERSION_REF_CURRENCY,
@@ -44,13 +47,7 @@ function validateInversionAllowed(isInversionAllowed) {
 }
 
 function validateRateTypePattern(exchangeRateType) {
-  if (!Constants.EXCHANGE_RATE_TYPE_PATTERN.test(exchangeRateType)) {
-    logger.error('Exchange Rate Type field value provided is invalid.');
-    throw new ValidationError(
-      RateTypeExtensionConstants.INVALID_EXCHANGE_RATE_TYPE_FIELD_VALUE,
-      ErrorStatuses.BAD_REQUEST
-    );
-  }
+  validatePattern(Constants.EXCHANGE_RATE_TYPE_PATTERN, exchangeRateTypeField, exchangeRateType, MAX_RATE_TYPE_LENGTH);
 }
 
 module.exports = {

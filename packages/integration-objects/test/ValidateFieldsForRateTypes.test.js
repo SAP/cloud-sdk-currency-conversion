@@ -25,7 +25,7 @@ describe('validate fields of rate type', function () {
       referenceCurrencyThreeLetterISOCode: 'EUR'
     };
     await expect(validateFieldsForExchangeRateTypes(reqObj)).rejects.toThrow(
-      new ValidationError(RateTypeExtensionConstants.INVALID_EXCHANGE_RATE_TYPE_FIELD_VALUE, ErrorStatuses.BAD_REQUEST)
+      'Provide a valid value for exchangeRateType. The value must be 1 - 15 characters long.'
     );
   });
 
@@ -54,7 +54,7 @@ describe('validate fields of rate type', function () {
       referenceCurrencyThreeLetterISOCode: 'ESUR'
     };
     await expect(validateFieldsForExchangeRateTypes(reqObj)).rejects.toThrow(
-      new ValidationError(RateTypeExtensionConstants.INVALID_REFERENCE_CURRENCY_VALUE_FIELD, ErrorStatuses.BAD_REQUEST)
+      'Provide a valid value for referenceCurrencyThreeLetterISOCode. The value must be 1 - 3 characters long.'
     );
   });
 
