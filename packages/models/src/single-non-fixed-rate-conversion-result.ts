@@ -7,8 +7,8 @@ import { SingleFixedRateConversionResult } from './single-fixed-rate-conversion-
 export class SingleNonFixedRateConversionResult extends SingleFixedRateConversionResult {
   constructor(
     readonly exchangeRate: ExchangeRate,
-    readonly convertedAmount: CurrencyAmount,
-    readonly roundedOffConvertedAmount: CurrencyAmount
+    convertedAmount: CurrencyAmount,
+    roundedOffConvertedAmount: CurrencyAmount
   ) {
     super(convertedAmount, roundedOffConvertedAmount);
   }

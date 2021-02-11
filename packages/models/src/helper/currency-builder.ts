@@ -21,5 +21,9 @@ export function buildCurrency(currencyCode: string): Currency {
   if (isNullish(currency)) {
     throw new CurrencyConversionError(ConversionModelError.INVALID_CURRENCY_CODES);
   }
-  return new Currency(currencyCode, Number.parseInt(currency[defaultFractionDigits], 10), currency[numericCode]);
+  return {
+    currencyCode,
+    defaultFractionDigits: Number.parseInt(currency[defaultFractionDigits], 10),
+    numericCode: currency[numericCode]
+  };
 }

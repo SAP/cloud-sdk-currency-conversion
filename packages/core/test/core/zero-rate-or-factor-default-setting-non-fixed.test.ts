@@ -10,7 +10,9 @@ import {
   ExchangeRateTypeDetail,
   ExchangeRateValue,
   SingleNonFixedRateConversionResult,
-  TenantSettings
+  TenantSettings,
+  buildConversionParameterForNonFixedRate,
+  buildExchangeRate
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { CurrencyConverter } from '../../src/core/currency-converter';
 import { ConversionError } from '../../src/constants/conversion-error';
@@ -35,7 +37,7 @@ const defaultTenantSettings: TenantSettings = {
   ratesDataSource: ECB
 };
 
-const inrEurMConversionParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
+const inrEurMConversionParam: ConversionParameterForNonFixedRate = buildConversionParameterForNonFixedRate(
   'INR',
   'EUR',
   '100',
@@ -47,7 +49,7 @@ const inrEurMConversionParam: ConversionParameterForNonFixedRate = new Conversio
 
 /* MRM, THR */
 
-const inrEurMrmEcbDirectZeroRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbDirectZeroRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -61,7 +63,7 @@ const inrEurMrmEcbDirectZeroRate: ExchangeRate = new ExchangeRate(
   1
 );
 
-const inrEurMrmEcbDirectZeroToFactorRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbDirectZeroToFactorRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -75,7 +77,7 @@ const inrEurMrmEcbDirectZeroToFactorRate: ExchangeRate = new ExchangeRate(
   0
 );
 
-const inrEurMrmEcbIndirectZeroRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbIndirectZeroRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -89,7 +91,7 @@ const inrEurMrmEcbIndirectZeroRate: ExchangeRate = new ExchangeRate(
   1
 );
 
-const inrEurMrmEcbIndirectZeroFactorsZeroRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbIndirectZeroFactorsZeroRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -103,7 +105,7 @@ const inrEurMrmEcbIndirectZeroFactorsZeroRate: ExchangeRate = new ExchangeRate(
   0
 );
 
-const inrEurMrmEcbIndirectZeroToFactorZeroRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbIndirectZeroToFactorZeroRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -117,7 +119,7 @@ const inrEurMrmEcbIndirectZeroToFactorZeroRate: ExchangeRate = new ExchangeRate(
   0
 );
 
-const inrEurMrmEcbIndirectZeroFromFactZeroRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbIndirectZeroFromFactZeroRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -131,7 +133,7 @@ const inrEurMrmEcbIndirectZeroFromFactZeroRate: ExchangeRate = new ExchangeRate(
   1
 );
 
-const inrEurMrmEcbDirectZeroFactorsZeroRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbDirectZeroFactorsZeroRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -145,7 +147,7 @@ const inrEurMrmEcbDirectZeroFactorsZeroRate: ExchangeRate = new ExchangeRate(
   0
 );
 
-const inrEurMrmEcbDirectZeroFromFactZeroRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbDirectZeroFromFactZeroRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -159,7 +161,7 @@ const inrEurMrmEcbDirectZeroFromFactZeroRate: ExchangeRate = new ExchangeRate(
   1
 );
 
-const inrEurMrmEcbIndirectZeroFactorsRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbIndirectZeroFactorsRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -173,7 +175,7 @@ const inrEurMrmEcbIndirectZeroFactorsRate: ExchangeRate = new ExchangeRate(
   0
 );
 
-const inrEurMrmEcbIndirectZeroFromFactorRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbIndirectZeroFromFactorRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -187,7 +189,7 @@ const inrEurMrmEcbIndirectZeroFromFactorRate: ExchangeRate = new ExchangeRate(
   1
 );
 
-const inrEurMrmEcbDirectZeroFactorsRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbDirectZeroFactorsRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -201,7 +203,7 @@ const inrEurMrmEcbDirectZeroFactorsRate: ExchangeRate = new ExchangeRate(
   0
 );
 
-const inrEurMrmEcbDirectZeroFromFactorRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbDirectZeroFromFactorRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -216,7 +218,7 @@ const inrEurMrmEcbDirectZeroFromFactorRate: ExchangeRate = new ExchangeRate(
 );
 /* MRM ECB */
 
-const inrEurMrmEcbIndirectZeroToFactorRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbIndirectZeroToFactorRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,
@@ -230,7 +232,7 @@ const inrEurMrmEcbIndirectZeroToFactorRate: ExchangeRate = new ExchangeRate(
   0
 );
 
-const inrEurMrmEcbDirectZeroToFactorZeroRate: ExchangeRate = new ExchangeRate(
+const inrEurMrmEcbDirectZeroToFactorZeroRate: ExchangeRate = buildExchangeRate(
   TENANT_ID,
   MRM,
   ECB,

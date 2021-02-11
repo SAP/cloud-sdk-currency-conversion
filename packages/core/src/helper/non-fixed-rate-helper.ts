@@ -8,9 +8,10 @@ import {
   DataAdapter,
   ExchangeRate,
   ExchangeRateTypeDetail,
-  ExchangeRateValue,
   SingleNonFixedRateConversionResult,
   TenantSettings,
+  ExchangeRateValue,
+  buildExchangeRate,
   logAndGetError,
   logger as log
 } from '@sap-cloud-sdk/currency-conversion-models';
@@ -120,7 +121,7 @@ function performSingleNonFixedConversion(
   let exchangeRateUsed: ExchangeRate;
   if (conversionParameters.fromCurrency.currencyCode === conversionParameters.toCurrency.currencyCode) {
     convertedValue = new CurrencyAmount(conversionParameters.fromAmount.decimalValue.toFormat(CURR_FORMAT));
-    exchangeRateUsed = new ExchangeRate(
+    exchangeRateUsed = buildExchangeRate(
       tenant,
       null,
       null,

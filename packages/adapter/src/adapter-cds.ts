@@ -7,9 +7,11 @@ import {
   ExchangeRateTypeDetail,
   ConversionParameterForNonFixedRate,
   ExchangeRate,
-  ExchangeRateValue,
   logAndGetError,
-  logger as log
+  logger as log,
+  ExchangeRateValue,
+  buildExchangeRate,
+  buildExchangeRateTypeDetail
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { isNullish } from '@sap-cloud-sdk/util';
 import {
@@ -129,21 +131,20 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
   }
 
   private buildExchangeRates(exchangeRateResults: ExchangeRate[]): ExchangeRate[] {
-    const exchangeRateList: ExchangeRate[] = exchangeRateResults.map(
-      (result: any) =>
-        new ExchangeRate(
-          { id: result.tenantID },
-          result.dataProviderCode,
-          result.dataSource,
-          result.exchangeRateType,
-          new ExchangeRateValue(result.exchangeRateValue.toString()),
-          buildCurrency(result.fromCurrencyThreeLetterISOCode),
-          buildCurrency(result.toCurrencyThreeLetterISOCode),
-          new Date(result.validFromDateTime),
-          result.isRateValueIndirect,
-          parseFloat(result.fromCurrencyFactor),
-          parseFloat(result.toCurrencyFactor)
-        )
+    const exchangeRateList: ExchangeRate[] = exchangeRateResults.map((result: any) =>
+      buildExchangeRate(
+        { id: result.tenantID },
+        result.dataProviderCode,
+        result.dataSource,
+        result.exchangeRateType,
+        new ExchangeRateValue(result.exchangeRateValue.toString()),
+        buildCurrency(result.fromCurrencyThreeLetterISOCode),
+        buildCurrency(result.toCurrencyThreeLetterISOCode),
+        new Date(result.validFromDateTime),
+        result.isRateValueIndirect,
+        parseFloat(result.fromCurrencyFactor),
+        parseFloat(result.toCurrencyFactor)
+      )
     );
     log.debug(`Number of exchange rates returned from query is: ${exchangeRateResults.length}`);
     log.debug(`Exchange rates returned from query is: ${exchangeRateList}`);
@@ -155,7 +156,7 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
       (map: Map<string, ExchangeRateTypeDetail>, result: any) =>
         map.set(
           result.exchangeRateType,
-          new ExchangeRateTypeDetail(
+          buildExchangeRateTypeDetail(
             result.referenceCurrencyThreeLetterISOCode === 'NULL'
               ? (null as any)
               : buildCurrency(result.referenceCurrencyThreeLetterISOCode),
