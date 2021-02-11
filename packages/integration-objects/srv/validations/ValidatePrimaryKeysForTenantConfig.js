@@ -10,15 +10,15 @@ const MAX_DESTINATION_NAME_LENGTH = 200;
 const MAX_VALUE_DATA_SOURCE_DATA_PROVIDER = 15;
 
 async function validatePrimaryCompositeKeysForTenantConfig(data) {
-  validateDefaultDataProviderCode(data.defaultDataProviderCode);
-  validateDefaultDataSource(data.defaultDataSource);
+  await validateDefaultDataProviderCode(data.defaultDataProviderCode);
+  await validateDefaultDataSource(data.defaultDataSource);
   setIsConfigurationActiveIfNull(data);
-  validateConnectionToMRM(data);
+  await validateConnectionToMRM(data);
 }
 
-function validateConnectionToMRM(data) {
+async function validateConnectionToMRM(data) {
   if (!util.isNullish(data.connectToSAPMarketRatesManagement)) {
-    validatePattern(
+    await validatePattern(
       Constants.DESTINATION_NAME_PATTERN,
       destinationNameField,
       data.destinationName,
@@ -33,12 +33,12 @@ function setIsConfigurationActiveIfNull(data) {
   }
 }
 
-function validateDefaultDataSource(defaultDataSource) {
-  validateLength(defaultDataSourceField, defaultDataSource, MAX_VALUE_DATA_SOURCE_DATA_PROVIDER);
+async function validateDefaultDataSource(defaultDataSource) {
+  await validateLength(defaultDataSourceField, defaultDataSource, MAX_VALUE_DATA_SOURCE_DATA_PROVIDER);
 }
 
-function validateDefaultDataProviderCode(defaultDataProviderCode) {
-  validateLength(defaultDataProviderCodeField, defaultDataProviderCode, MAX_VALUE_DATA_SOURCE_DATA_PROVIDER);
+async function validateDefaultDataProviderCode(defaultDataProviderCode) {
+  await validateLength(defaultDataProviderCodeField, defaultDataProviderCode, MAX_VALUE_DATA_SOURCE_DATA_PROVIDER);
 }
 
 module.exports = {
