@@ -36,8 +36,8 @@ function validateFromDateTime(validFromDateTime) {
 function validateFromAndToCurrencyEquality(fromCurrencyThreeLetterISOCode, toCurrencyThreeLetterISOCode) {
   if (fromCurrencyThreeLetterISOCode === toCurrencyThreeLetterISOCode) {
     logger.error(
-      `From currency value ${fromCurrencyThreeLetterISOCode} and to` +
-        `currency field value ${fromCurrencyThreeLetterISOCode} provided are same.`
+      `From currency value ${fromCurrencyThreeLetterISOCode} and 
+      to currency field value ${fromCurrencyThreeLetterISOCode} provided are same.`
     );
     throw new ValidationError(RateExtensionConstants.FROM_AND_TO_CURRENCY_ARE_SAME, ErrorStatuses.BAD_REQUEST);
   }
