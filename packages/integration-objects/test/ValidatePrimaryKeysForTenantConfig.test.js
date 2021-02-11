@@ -1,10 +1,7 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
-const { ValidationError } = require('../srv/exceptions/validation-error');
 const {
   validatePrimaryCompositeKeysForTenantConfig
 } = require('../srv/validations/ValidatePrimaryKeysForTenantConfig');
-const ErrorStatuses = require('../srv/utils/ErrorStatuses');
-const TenantConfigExtensionConstants = require('../srv/utils/TenantConfigExtensionConstants');
 
 describe('validate fields for tenant config', function () {
   it('does not return any error- tenant config', function () {
@@ -22,13 +19,8 @@ describe('validate fields for tenant config', function () {
       defaultDataProviderCode: null,
       defaultDataSource: 'THR'
     };
-    await expect(
-      validatePrimaryCompositeKeysForTenantConfig(reqObj)
-    ).rejects.toThrow(
-      new ValidationError(
-        TenantConfigExtensionConstants.INVALID_DEFAULT_DATA_PROVIDER_FIELD_VALUE,
-        ErrorStatuses.BAD_REQUEST
-      )
+    await expect(validatePrimaryCompositeKeysForTenantConfig(reqObj)).rejects.toThrow(
+      'Provide a valid value for defaultDataProviderCode. The value must be 1 - 15 characters long.'
     );
   });
 
@@ -38,13 +30,8 @@ describe('validate fields for tenant config', function () {
       defaultDataProviderCode: 'abcdefghijklmnop',
       defaultDataSource: 'THR'
     };
-    await expect(
-      validatePrimaryCompositeKeysForTenantConfig(reqObj)
-    ).rejects.toThrow(
-      new ValidationError(
-        TenantConfigExtensionConstants.INVALID_DEFAULT_DATA_PROVIDER_FIELD_VALUE,
-        ErrorStatuses.BAD_REQUEST
-      )
+    await expect(validatePrimaryCompositeKeysForTenantConfig(reqObj)).rejects.toThrow(
+      'Provide a valid value for defaultDataProviderCode. The value must be 1 - 15 characters long.'
     );
   });
 
@@ -54,13 +41,8 @@ describe('validate fields for tenant config', function () {
       defaultDataProviderCode: 'THR',
       defaultDataSource: null
     };
-    await expect(
-      validatePrimaryCompositeKeysForTenantConfig(reqObj)
-    ).rejects.toThrow(
-      new ValidationError(
-        TenantConfigExtensionConstants.INVALID_DEFAULT_DATA_SOURCE_FIELD_VALUE,
-        ErrorStatuses.BAD_REQUEST
-      )
+    await expect(validatePrimaryCompositeKeysForTenantConfig(reqObj)).rejects.toThrow(
+      'Provide a valid value for defaultDataSource. The value must be 1 - 15 characters long.'
     );
   });
 
@@ -70,13 +52,8 @@ describe('validate fields for tenant config', function () {
       defaultDataProviderCode: 'TW',
       defaultDataSource: 'abcdefghijklmnop'
     };
-    await expect(
-      validatePrimaryCompositeKeysForTenantConfig(reqObj)
-    ).rejects.toThrow(
-      new ValidationError(
-        TenantConfigExtensionConstants.INVALID_DEFAULT_DATA_SOURCE_FIELD_VALUE,
-        ErrorStatuses.BAD_REQUEST
-      )
+    await expect(validatePrimaryCompositeKeysForTenantConfig(reqObj)).rejects.toThrow(
+      'Provide a valid value for defaultDataSource. The value must be 1 - 15 characters long.'
     );
   });
 
@@ -98,13 +75,8 @@ describe('validate fields for tenant config', function () {
       connectToSAPMarketRatesManagement: 'mrm',
       destinationName: '*ABc'
     };
-    await expect(
-      validatePrimaryCompositeKeysForTenantConfig(reqObj)
-    ).rejects.toThrow(
-      new ValidationError(
-        TenantConfigExtensionConstants.INVALID_DESTINATION_NAME_FIELD_VALUE,
-        ErrorStatuses.BAD_REQUEST
-      )
+    await expect(validatePrimaryCompositeKeysForTenantConfig(reqObj)).rejects.toThrow(
+      'Provide a valid value for destinationName. The value must be 1 - 200 characters long.'
     );
   });
 });
