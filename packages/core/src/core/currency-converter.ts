@@ -7,15 +7,14 @@ import {
   ConversionParameterForNonFixedRate,
   DataAdapter,
   SingleNonFixedRateConversionResult,
-  TenantSettings,
-  logAndGetError,
-  logger as log
+  TenantSettings
 } from '@sap-cloud-sdk/currency-conversion-models';
-import { isNullish } from '@sap-cloud-sdk/util';
+import { isNullish, createLogger } from '@sap-cloud-sdk/util';
 import { ConversionParameter } from '@sap-cloud-sdk/currency-conversion-models/src/conversion-parameter';
 import { ConversionError } from '../constants/conversion-error';
 import { performNonFixedConversion } from '../helper/non-fixed-rate-helper';
 import { performSingleFixedConversion } from '../helper/fixed-rate-helper';
+const logger = createLogger('core');
 
 /**
  * Currency Converter API class which exposes methods to
@@ -55,14 +54,14 @@ export class CurrencyConverter {
     conversionParameters: ConversionParameterForFixedRate[]
   ): BulkConversionResult<ConversionParameterForFixedRate, SingleFixedRateConversionResult> {
     if (!this.validateBulkConversionParameters(conversionParameters)) {
-      throw logAndGetError(ConversionError.INVALID_PARAMS);
+      throw new Error(ConversionError.INVALID_PARAMS);
     }
     const resultMap = conversionParameters.reduce((results, conversionParameter) => {
       try {
         const singleConversionResult = this.convertCurrencyWithFixedRate(conversionParameter);
         results.set(conversionParameter, singleConversionResult);
       } catch (err) {
-        log.error(`Fixed rate conversion for parameter ${conversionParameter} failed with error: ${err}`);
+        logger.error(`Fixed rate conversion for parameter ${conversionParameter} failed with error: ${err}`);
         results.set(conversionParameter, err);
       }
       return results;
@@ -97,7 +96,7 @@ export class CurrencyConverter {
     conversionParameter: ConversionParameterForFixedRate
   ): SingleFixedRateConversionResult {
     if (!this.validateSingleConversionParameter(conversionParameter)) {
-      throw logAndGetError(ConversionError.INVALID_PARAMS);
+      throw new Error(ConversionError.INVALID_PARAMS);
     }
     return performSingleFixedConversion(conversionParameter);
   }
@@ -149,7 +148,7 @@ export class CurrencyConverter {
     overrideTenantSetting?: TenantSettings
   ): Promise<SingleNonFixedRateConversionResult> {
     if (!this.validateSingleConversionParameter(conversionParameter)) {
-      throw logAndGetError(ConversionError.INVALID_PARAMS);
+      throw new Error(ConversionError.INVALID_PARAMS);
     }
     const bulkConversionResult = await performNonFixedConversion(
       Array.of(conversionParameter),
@@ -212,14 +211,14 @@ export class CurrencyConverter {
     overrideTenantSetting?: TenantSettings
   ): Promise<BulkConversionResult<ConversionParameterForNonFixedRate, SingleNonFixedRateConversionResult>> {
     if (!this.validateBulkConversionParameters(conversionParameters)) {
-      throw logAndGetError(ConversionError.INVALID_PARAMS);
+      throw new Error(ConversionError.INVALID_PARAMS);
     }
     return performNonFixedConversion(conversionParameters, adapter, tenant, overrideTenantSetting);
   }
 
   private validateSingleConversionParameter(conversionParameter: ConversionParameter): boolean {
     if (isNullish(conversionParameter)) {
-      log.error('The conversion parameter used for conversion is null or undefined.');
+      logger.error('The conversion parameter used for conversion is null or undefined.');
       return false;
     }
     return true;
@@ -227,15 +226,15 @@ export class CurrencyConverter {
 
   private validateBulkConversionParameters(conversionParams: ConversionParameter[]): boolean {
     if (isNullish(conversionParams)) {
-      log.error('The conversion parameter list used for conversion is null or undefined.');
+      logger.error('The conversion parameter list used for conversion is null or undefined.');
       return false;
     }
     if (!conversionParams.length) {
-      log.error('The conversion parameter list for conversion is empty.');
+      logger.error('The conversion parameter list for conversion is empty.');
       return false;
     }
     if (conversionParams.length > CurrencyConverter.MAXIMUM_CONVERSION_PARAMETER_ALLOWED) {
-      log.error(
+      logger.error(
         // eslint-disable-next-line max-len
         `The number of conversion parameters for conversion exceeded the allowed limit of ${CurrencyConverter.MAXIMUM_CONVERSION_PARAMETER_ALLOWED}.`
       );

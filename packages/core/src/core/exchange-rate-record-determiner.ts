@@ -1,6 +1,6 @@
 /* Copyright (c) 2021 SAP SE or an SAP affiliate company. All rights reserved. */
 import { Tenant } from '@sap-cloud-sdk/core';
-import { isNullish } from '@sap-cloud-sdk/util';
+import { isNullish, createLogger } from '@sap-cloud-sdk/util';
 import {
   CurrencyConversionError,
   ConversionParameterForNonFixedRate,
@@ -9,15 +9,14 @@ import {
   TenantSettings,
   ConversionModelError,
   buildExchangeRate,
-  ExchangeRateValue,
-  logAndGetError,
-  logger as log
+  ExchangeRateValue
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { BigNumber } from 'bignumber.js';
 import { ConversionError } from '../constants/conversion-error';
 import { configureBigNumber } from '../helper/configure-big-number';
 import { isStringEmpty } from '../helper/is-string-empty';
 import { validateCurrencyFactor } from '../helper/validate-currency-factor';
+const logger = createLogger('core');
 
 export class ExchangeRateRecordDeterminer {
   private static readonly DEFAULT_SCALE: number = 14;
@@ -38,13 +37,13 @@ export class ExchangeRateRecordDeterminer {
     this._exchangeRateResultSet = exchangeRateResultSet;
     this._exchangeRateTypeDetailMap = exchangeRateTypeDetailMap;
     this._isTenantSettingNull = isNullish(tenantSettings);
-    log.debug(`Tenant setting is: ${JSON.stringify(tenantSettings)}`);
+    logger.debug(`Tenant setting is: ${JSON.stringify(tenantSettings)}`);
   }
 
   public getBestMatchedExchangeRateRecord(conversionParameter: ConversionParameterForNonFixedRate): ExchangeRate {
     const filterdExchangeRateList = this.getSortedFilteredExchangeRates(conversionParameter);
     const firstItemFromList: ExchangeRate = this.getFirstEntryFromList(filterdExchangeRateList);
-    log.debug(
+    logger.debug(
       `For conversionRequest ${JSON.stringify(conversionParameter.fromCurrency)} - ${JSON.stringify(
         conversionParameter.toCurrency
       )} - ${conversionParameter.conversionAsOfDateTime} exchange rate information to be used is valid date ${
@@ -63,20 +62,20 @@ export class ExchangeRateRecordDeterminer {
       /* If the reference currency is provided, then get all the exchange rate
        * records including it.
        */
-      log.debug(
+      logger.debug(
         `Reference currency is defined for the exchange rate type - ${JSON.stringify(
           this._exchangeRateTypeDetailMap?.get(conversionParameter.exchangeRateType)?.referenceCurrency
         )}`
       );
       ratesforConversion = this.getRatesWithReferenceCurrency(conversionParameter);
     } else {
-      log.debug(
+      logger.debug(
         `Reference currency is not defined for the exchange rate type in the conversion parameter. 
         Conversion will be performed with either direct or inverted rate.`
       );
       // get the result set having all the combination of 'To/From' currency.
       const directAndInvertedPairRates = this.getRatesWithBothDirectAndInvertedPair(conversionParameter);
-      log.debug(
+      logger.debug(
         `No. of exchange rates with all combinations of 'To/From' currency is - ${directAndInvertedPairRates.length}`
       );
       /* check if there is a record with direct currency pair as the conversion
@@ -98,7 +97,7 @@ export class ExchangeRateRecordDeterminer {
      */
     const fromOrToOrDirectRefCurrency = this.getFilteredRatesWithRefCurrency(conversionParameter);
 
-    log.debug(
+    logger.debug(
       `Number of exchange rate records with 'From' Currency as 'From' or 'To' Currency of conversionParameter or 
       'To' Currency as Reference Currency or direct rate is - ${fromOrToOrDirectRefCurrency.length}`
     );
@@ -138,7 +137,7 @@ export class ExchangeRateRecordDeterminer {
       /* if either pair is empty i.e. To to Reference Currency or From
        * to Reference Currencys, look for direct currency pair.
        */
-      log.debug(
+      logger.debug(
         `Could not find exchange rate record with reference currency, 
         checking for exchange rate record with direct currency pair.`
       );
@@ -147,7 +146,7 @@ export class ExchangeRateRecordDeterminer {
         conversionParameter
       );
     } else {
-      log.debug(
+      logger.debug(
         `Conversion is done based on reference currency ${JSON.stringify(
           this._exchangeRateTypeDetailMap?.get(conversionParameter.exchangeRateType)?.referenceCurrency
         )}`
@@ -182,7 +181,7 @@ export class ExchangeRateRecordDeterminer {
         ? fromReferenceCurrencyPair.validFromDateTime
         : toReferenceCurrencyPair.validFromDateTime
     );
-    log.debug(
+    logger.debug(
       `The derived exchange rate based on reference currency has : rates data provider as ${
         derivedExchangeRate.ratesDataProviderCode
       } data source as ${derivedExchangeRate.ratesDataSource} rate type as ${
@@ -234,7 +233,7 @@ export class ExchangeRateRecordDeterminer {
       toExchangeRateValueScale
     );
 
-    log.debug(
+    logger.debug(
       `FromReferenceCurrencyPair has isIndirect set to ${isFromReferenecPairIndirect}, 
       exchange rate value as ${JSON.stringify(
         fromExchangeRateValue
@@ -263,7 +262,7 @@ export class ExchangeRateRecordDeterminer {
     } else {
       effectiveExchangeRateValue = new bigNum(fromExchangeRateValue).dividedBy(toExchangeRateValue);
     }
-    log.debug(
+    logger.debug(
       `Effective rate for conversion based on reference currency before multiplying the effective currency factor is - 
       ${JSON.stringify(effectiveExchangeRateValue)}`
     );
@@ -291,7 +290,7 @@ export class ExchangeRateRecordDeterminer {
      * and the conversion will fail eventually with null error message in it.
      */
     if (!Number.isFinite(currencyFactorRatio) || Number.isNaN(currencyFactorRatio)) {
-      throw logAndGetError(ConversionError.ZERO_CURRENCY_FACTOR);
+      throw new Error(ConversionError.ZERO_CURRENCY_FACTOR);
     }
   }
 
@@ -345,7 +344,7 @@ export class ExchangeRateRecordDeterminer {
      * check if there is an exchange rate record with inverted currency pair.
      */
     if (!ratesForCurrencyPair.length) {
-      log.debug(
+      logger.debug(
         `Could not find exchange rate record with direct from/to currency pair, 
         checking for exchange rate record with inverted from/to currency pair.`
       );
@@ -430,7 +429,7 @@ export class ExchangeRateRecordDeterminer {
         return 0;
       }); // sort the result set based on validFromDateTime, latest first.
     this.duplicateRateExists(exchangeRateList);
-    log.debug(
+    logger.debug(
       // eslint-disable-next-line max-len
       `Number of exchange rate records with 'From' Currency as 'From' Currency of conversionParameter and 'To' Currency as Reference Currency - 
       ${exchangeRateList.length}`
@@ -462,7 +461,7 @@ export class ExchangeRateRecordDeterminer {
       }); // sort the result set based on validFromDateTime, latest first.
 
     this.duplicateRateExists(exchangeRates);
-    log.debug(
+    logger.debug(
       // eslint-disable-next-line max-len
       `Number of exchange rate records with 'From' Currency as 'To' Currency of conversionParameter and 'To' Currency as Reference Currency - 
       ${exchangeRates.length}`
@@ -478,7 +477,7 @@ export class ExchangeRateRecordDeterminer {
       this.ifFromToCurrencyMatchesForDirectConversion(exchangeRate, conversionParameter)
     );
     this.duplicateRateExists(exchangeRates);
-    log.debug(`Number of exchange rate record with direct currency pair is - ${exchangeRates.length}`);
+    logger.debug(`Number of exchange rate record with direct currency pair is - ${exchangeRates.length}`);
     return exchangeRates;
   }
 
@@ -488,13 +487,13 @@ export class ExchangeRateRecordDeterminer {
   ): ExchangeRate[] {
     let exchangeRates: ExchangeRate[] = [];
     if (this.isInversionAllowed(conversionParameter.exchangeRateType)) {
-      log.debug(`Inversion is allowed for the exchange rate type - ${conversionParameter.exchangeRateType}`);
+      logger.debug(`Inversion is allowed for the exchange rate type - ${conversionParameter.exchangeRateType}`);
       exchangeRates = exchangeRateWithBothDirectAndInvertedCurrencyList.filter(exchangeRate =>
         this.ifFromToCurrencyMatchesForInvertedConversion(exchangeRate, conversionParameter)
       );
     }
     this.duplicateRateExists(exchangeRates);
-    log.debug(`Number of exchange rate record with inverted currency pair is - ${exchangeRates.length}`);
+    logger.debug(`Number of exchange rate record with inverted currency pair is - ${exchangeRates.length}`);
     return exchangeRates;
   }
 
@@ -515,8 +514,8 @@ export class ExchangeRateRecordDeterminer {
           JSON.stringify(firstItemFromList.ratesDataSource) +
           ' Time stamp : ' +
           firstItemFromList.validFromDateTime;
-        log.debug(errorMessage);
-        throw logAndGetError(ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND);
+        logger.debug(errorMessage);
+        throw new Error(ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND);
       }
     }
   }
@@ -546,8 +545,8 @@ export class ExchangeRateRecordDeterminer {
             JSON.stringify(exchangeRate.ratesDataProviderCode) +
             ' Data Source : ' +
             JSON.stringify(exchangeRate.ratesDataSource);
-          log.debug(errorMessage);
-          throw logAndGetError(ConversionError.MULTIPLE_CONVERSION_RECORD_FOUND);
+          logger.debug(errorMessage);
+          throw new Error(ConversionError.MULTIPLE_CONVERSION_RECORD_FOUND);
         }
       });
     }
@@ -562,8 +561,8 @@ export class ExchangeRateRecordDeterminer {
       if (exchangeRateWithSameTimeStamp.length !== 1) {
         const errorMessage: string =
           'Multiple Exchange Rate Records found for same timestamp - ' + firstItemFromList.validFromDateTime;
-        log.debug(errorMessage);
-        throw logAndGetError(ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND);
+        logger.debug(errorMessage);
+        throw new Error(ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND);
       }
     }
   }
@@ -573,7 +572,7 @@ export class ExchangeRateRecordDeterminer {
       /* Throw the exception if there is no exchange rate record found
        * based on above filtering criteria.
        */
-      log.error('No Matching exchange rate record found for conversion.');
+      logger.error('No Matching exchange rate record found for conversion.');
       throw new CurrencyConversionError(ConversionError.NO_MATCHING_EXCHANGE_RATE_RECORD);
     } else {
       return filterdExchangeRateList[0];
