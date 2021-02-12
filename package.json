@@ -50,5 +50,6 @@
     "lint:fix-cached": "yarn lint:fix --cache",
     "doc": "yarn typedoc --options typedoc.json"
   },
-  "name": "currency-conversion-library"
+  "name": "currency-conversion-library",
+  "version": "1.0.0"
 }
