@@ -65,7 +65,7 @@ async function fetchExchangeRate(
     .getExchangeRatesForTenant(conversionParameters, tenant, tenantSettings)
     .catch(error => {
       logger.error(error.message);
-      throw new Error(ConversionError.ERROR_FETCHING_EXCHANGE_RATES);
+      throw new CurrencyConversionError(ConversionError.ERROR_FETCHING_EXCHANGE_RATES);
     });
   if (!exchangeRates?.length) {
     logger.error(`Data Adpater returned empty list for exchange rates for tenant ${JSON.stringify(tenant)}`);
@@ -84,7 +84,7 @@ async function fetchExchangeRateType(
     .getExchangeRateTypeDetailsForTenant(tenant, rateTypes)
     .catch(error => {
       logger.error(error.message);
-      throw new Error(ConversionError.ERROR_FETCHING_EXCHANGE_RATES);
+      throw new CurrencyConversionError(ConversionError.ERROR_FETCHING_EXCHANGE_RATES);
     });
   return exchangeRateTypeDetailMap;
 }
@@ -273,7 +273,7 @@ function isRatioNaNOrInfinite(currencyFactorRatio: number): void {
    * and the conversion will fail eventually with null error message in it.
    */
   if (!Number.isFinite(currencyFactorRatio) || Number.isNaN(currencyFactorRatio)) {
-    throw new Error(ConversionError.ZERO_CURRENCY_FACTOR);
+    throw new CurrencyConversionError(ConversionError.ZERO_CURRENCY_FACTOR);
   }
 }
 

@@ -290,7 +290,7 @@ export class ExchangeRateRecordDeterminer {
      * and the conversion will fail eventually with null error message in it.
      */
     if (!Number.isFinite(currencyFactorRatio) || Number.isNaN(currencyFactorRatio)) {
-      throw new Error(ConversionError.ZERO_CURRENCY_FACTOR);
+      throw new CurrencyConversionError(ConversionError.ZERO_CURRENCY_FACTOR);
     }
   }
 
@@ -515,7 +515,7 @@ export class ExchangeRateRecordDeterminer {
           ' Time stamp : ' +
           firstItemFromList.validFromDateTime;
         logger.debug(errorMessage);
-        throw new Error(ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND);
+        throw new CurrencyConversionError(ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND);
       }
     }
   }
@@ -546,7 +546,7 @@ export class ExchangeRateRecordDeterminer {
             ' Data Source : ' +
             JSON.stringify(exchangeRate.ratesDataSource);
           logger.debug(errorMessage);
-          throw new Error(ConversionError.MULTIPLE_CONVERSION_RECORD_FOUND);
+          throw new CurrencyConversionError(ConversionError.MULTIPLE_CONVERSION_RECORD_FOUND);
         }
       });
     }
@@ -562,7 +562,7 @@ export class ExchangeRateRecordDeterminer {
         const errorMessage: string =
           'Multiple Exchange Rate Records found for same timestamp - ' + firstItemFromList.validFromDateTime;
         logger.debug(errorMessage);
-        throw new Error(ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND);
+        throw new CurrencyConversionError(ConversionError.DUPLICATE_CONVERSION_RECORD_FOUND);
       }
     }
   }

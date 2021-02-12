@@ -7,7 +7,8 @@ import {
   ConversionParameterForNonFixedRate,
   DataAdapter,
   SingleNonFixedRateConversionResult,
-  TenantSettings
+  TenantSettings,
+  CurrencyConversionError
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { isNullish, createLogger } from '@sap-cloud-sdk/util';
 import { ConversionParameter } from '@sap-cloud-sdk/currency-conversion-models/src/conversion-parameter';
@@ -54,7 +55,7 @@ export class CurrencyConverter {
     conversionParameters: ConversionParameterForFixedRate[]
   ): BulkConversionResult<ConversionParameterForFixedRate, SingleFixedRateConversionResult> {
     if (!this.validateBulkConversionParameters(conversionParameters)) {
-      throw new Error(ConversionError.INVALID_PARAMS);
+      throw new CurrencyConversionError(ConversionError.INVALID_PARAMS);
     }
     const resultMap = conversionParameters.reduce((results, conversionParameter) => {
       try {
@@ -96,7 +97,7 @@ export class CurrencyConverter {
     conversionParameter: ConversionParameterForFixedRate
   ): SingleFixedRateConversionResult {
     if (!this.validateSingleConversionParameter(conversionParameter)) {
-      throw new Error(ConversionError.INVALID_PARAMS);
+      throw new CurrencyConversionError(ConversionError.INVALID_PARAMS);
     }
     return performSingleFixedConversion(conversionParameter);
   }
@@ -148,7 +149,7 @@ export class CurrencyConverter {
     overrideTenantSetting?: TenantSettings
   ): Promise<SingleNonFixedRateConversionResult> {
     if (!this.validateSingleConversionParameter(conversionParameter)) {
-      throw new Error(ConversionError.INVALID_PARAMS);
+      throw new CurrencyConversionError(ConversionError.INVALID_PARAMS);
     }
     const bulkConversionResult = await performNonFixedConversion(
       Array.of(conversionParameter),
@@ -211,7 +212,7 @@ export class CurrencyConverter {
     overrideTenantSetting?: TenantSettings
   ): Promise<BulkConversionResult<ConversionParameterForNonFixedRate, SingleNonFixedRateConversionResult>> {
     if (!this.validateBulkConversionParameters(conversionParameters)) {
-      throw new Error(ConversionError.INVALID_PARAMS);
+      throw new CurrencyConversionError(ConversionError.INVALID_PARAMS);
     }
     return performNonFixedConversion(conversionParameters, adapter, tenant, overrideTenantSetting);
   }
