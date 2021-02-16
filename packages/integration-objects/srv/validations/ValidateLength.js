@@ -5,7 +5,7 @@ const Constants = require('../utils/Constants');
 const { logger } = require('../logging/Logger');
 const ErrorStatuses = require('../utils/ErrorStatuses');
 
-async function validateLength(fieldName, fieldValue, maxLength) {
+function validateLength(fieldName, fieldValue, maxLength) {
   if (
     util.isNullish(fieldValue) ||
     fieldValue.trim().length < Constants.MIN_LENGTH ||

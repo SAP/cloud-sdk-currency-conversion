@@ -3,7 +3,7 @@ const { ValidationError } = require('../exceptions/validation-error');
 const { logger } = require('../logging/Logger');
 const ErrorStatuses = require('../utils/ErrorStatuses');
 
-async function validatePattern(patternType, fieldName, fieldValue, maxLength) {
+function validatePattern(patternType, fieldName, fieldValue, maxLength) {
   if (!patternType.test(fieldValue)) {
     logger.error(`Provide a valid value for ${fieldName}. The value must be 1 - ${maxLength} characters long.`);
     throw new ValidationError(

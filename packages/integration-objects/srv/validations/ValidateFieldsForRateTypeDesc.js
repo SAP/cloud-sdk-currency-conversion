@@ -10,13 +10,13 @@ const MAX_VALUE_LOCALE = 14;
 const MAX_VALUE_EXCHANGE_RATE_TYPE_DESCRIPTION = 30;
 
 async function validateFieldsForExchangeRateTypeDescription(data, params) {
-  await validateLocale(data);
+  validateLocale(data);
   validateTextID(params);
-  await validateTextDescription(data);
+  validateTextDescription(data);
 }
 
-async function validateTextDescription(data) {
-  await validateLength(exchangeRateTypeDescField, data.exchangeRateTypeDescription, MAX_VALUE_EXCHANGE_RATE_TYPE_DESCRIPTION);
+function validateTextDescription(data) {
+  validateLength(exchangeRateTypeDescField, data.exchangeRateTypeDescription, MAX_VALUE_EXCHANGE_RATE_TYPE_DESCRIPTION);
 }
 
 function validateTextID(ID) {
@@ -28,8 +28,8 @@ function validateTextID(ID) {
   }
 }
 
-async function validateLocale(data) {
-  await validateLength(localeField, data.locale, MAX_VALUE_LOCALE);
+function validateLocale(data) {
+  validateLength(localeField, data.locale, MAX_VALUE_LOCALE);
 }
 
 module.exports = {

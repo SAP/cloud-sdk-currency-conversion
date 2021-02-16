@@ -9,21 +9,25 @@ describe('validate length', function () {
     expect(() => validateLength('locale', reqObj.locale, 14));
   });
 
-  it('validate locale value null- returns error', async function () {
+  it('validate locale value null- returns error', function () {
     const reqObj = {
       locale: null
     };
-    await expect(validateLength('locale', reqObj.locale, 14)).rejects.toThrow(
-      'Provide a valid value for locale. The value must be 1 - 14 characters long.'
-    );
+    try {
+      validateLength('locale', reqObj.locale, 14);
+    } catch (err) {
+      expect(err.message).toBe('Provide a valid value for locale. The value must be 1 - 14 characters long.');
+    }
   });
 
-  it('validate locale value greater than maxLength- returns error', async function () {
+  it('validate locale value greater than maxLength- returns error', function () {
     const reqObj = {
       locale: 'abcdefghijklmno'
     };
-    await expect(validateLength('locale', reqObj.locale, 14)).rejects.toThrow(
-      'Provide a valid value for locale. The value must be 1 - 14 characters long.'
-    );
+    try {
+      validateLength('locale', reqObj.locale, 14);
+    } catch (err) {
+      expect(err.message).toBe('Provide a valid value for locale. The value must be 1 - 14 characters long.');
+    }
   });
 });

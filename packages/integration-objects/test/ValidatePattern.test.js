@@ -3,7 +3,7 @@ const { validatePattern } = require('../srv/validations/ValidatePattern');
 const Constants = require('../srv/utils/Constants');
 
 describe('validate pattern', function () {
-  it('validatePattern method does not return any error', async function () {
+  it('validatePattern method does not return any error', function () {
     const reqObj = {
       fromCurrencyThreeLetterISOCode: 'INR'
     };
@@ -17,35 +17,39 @@ describe('validate pattern', function () {
     );
   });
 
-  it('validate fromCurrency value null- returns error', async function () {
+  it('validate fromCurrency value null- returns error', function () {
     const reqObj = {
       fromCurrencyThreeLetterISOCode: null
     };
-    await expect(
+    try {
       validatePattern(
         Constants.CURRENCY_CODE_PATTERN,
         'fromCurrencyThreeLetterISOCode',
         reqObj.fromCurrencyThreeLetterISOCode,
         3
-      )
-    ).rejects.toThrow(
-      'Provide a valid value for fromCurrencyThreeLetterISOCode. The value must be 1 - 3 characters long.'
-    );
+      );
+    } catch (err) {
+      expect(err.message).toBe(
+        'Provide a valid value for fromCurrencyThreeLetterISOCode. The value must be 1 - 3 characters long.'
+      );
+    }
   });
 
-  it('validate fromCurrency value invalid- returns error', async function () {
+  it('validate fromCurrency value invalid- returns error', function () {
     const reqObj = {
       fromCurrencyThreeLetterISOCode: '@12'
     };
-    await expect(
+    try {
       validatePattern(
         Constants.CURRENCY_CODE_PATTERN,
         'fromCurrencyThreeLetterISOCode',
         reqObj.fromCurrencyThreeLetterISOCode,
         3
-      )
-    ).rejects.toThrow(
-      'Provide a valid value for fromCurrencyThreeLetterISOCode. The value must be 1 - 3 characters long.'
-    );
+      );
+    } catch (err) {
+      expect(err.message).toBe(
+        'Provide a valid value for fromCurrencyThreeLetterISOCode. The value must be 1 - 3 characters long.'
+      );
+    }
   });
 });
