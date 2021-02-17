@@ -16,7 +16,7 @@ const exchangeRateTypeField = 'exchangeRateType';
 const dataSourceField = 'dataSource';
 const dataProviderCodeField = 'dataProviderCode';
 
-async function validatePrimaryKeyFieldsForCurrencyExchangeRate(data) {
+function validatePrimaryKeyFieldsForCurrencyExchangeRate(data) {
   validateDataProviderCode(data.dataProviderCode);
   validateDataSource(data.dataSource);
   validateRateTypePattern(data.exchangeRateType);

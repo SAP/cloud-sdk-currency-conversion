@@ -30,9 +30,9 @@ module.exports = srv => {
 
   const { CurrencyExchangeRates } = srv.entities;
 
-  async function beforeRead(req) {
+  function beforeRead(req) {
     try {
-      await checkAndAppendTenantIdFilterForReadEvent(req);
+      checkAndAppendTenantIdFilterForReadEvent(req);
     } catch (err) {
       throw new ValidationError(err.message, err.code);
     }
@@ -55,15 +55,15 @@ module.exports = srv => {
   }
 
   async function validatePayload(req) {
-    await validateTenantIdInPayload(req);
-    await validatePrimaryKeyFieldsForCurrencyExchangeRate(req.data);
-    await validateNonPrimaryKeyFieldsForCurrencyExchangeRate(req.data);
+    validateTenantIdInPayload(req);
+    validatePrimaryKeyFieldsForCurrencyExchangeRate(req.data);
+    validateNonPrimaryKeyFieldsForCurrencyExchangeRate(req.data);
     await checkUniquenessForPrimaryKeys(req);
   }
 
-  async function beforeDelete(req) {
+  function beforeDelete(req) {
     try {
-      await validateDelete(req);
+      validateDelete(req);
     } catch (err) {
       throw new ValidationError(err.message, err.code);
     }
@@ -107,7 +107,7 @@ function checkForDuplicateRates(affectedRows, data, event) {
     ErrorStatuses.BAD_REQUEST
   );
 
-  if (affectedRows.length > 0) {
+  if (affectedRows.length) {
     if (Constants.CREATE_EVENT === event) {
       logger.error('Record found in an Active entity for CREATE event.' + 'The primary keys are not unique.');
       throw uniqueConstraintViolationError;

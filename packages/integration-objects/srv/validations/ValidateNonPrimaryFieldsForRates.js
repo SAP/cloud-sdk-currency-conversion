@@ -6,7 +6,7 @@ const Constants = require('../utils/Constants');
 const ErrorStatuses = require('../utils/ErrorStatuses');
 const RateExtensionConstants = require('../utils/RateExtensionConstants');
 
-async function validateNonPrimaryKeyFieldsForCurrencyExchangeRate(data) {
+function validateNonPrimaryKeyFieldsForCurrencyExchangeRate(data) {
   validateExchangeRateValue(data);
   setRateValueIndirect(data);
   validateFromCurrencyFactor(data);

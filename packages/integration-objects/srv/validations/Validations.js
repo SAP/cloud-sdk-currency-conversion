@@ -5,7 +5,7 @@ const ExtensionConstants = require('../utils/ExtensionConstants');
 const ErrorStatuses = require('../utils/ErrorStatuses');
 
 // validate the tenantid in the request payload
-async function validateTenantIdInPayload(req) {
+function validateTenantIdInPayload(req) {
   const tId = req.user.tenant;
   if (!util.isNullish(req.data.tenantID) && tId !== req.data.tenantID) {
     throw new ValidationError(ExtensionConstants.INVALID_TENANTID, ErrorStatuses.BAD_REQUEST);
@@ -14,11 +14,11 @@ async function validateTenantIdInPayload(req) {
   }
 }
 
-async function checkAndAppendTenantIdFilterForReadEvent(req) {
+function checkAndAppendTenantIdFilterForReadEvent(req) {
   setTenantIdPredicate(req);
 }
 
-async function validateDelete(req) {
+function validateDelete(req) {
   setTenantIdPredicate(req);
 }
 
