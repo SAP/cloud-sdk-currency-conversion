@@ -109,7 +109,7 @@ module.exports = srv => {
     const record = req.data;
     let id;
     const affectedRows = await fetchExistingTexts(ExchangeRateTypeDescriptions, record, req);
-    if (affectedRows.length > 0) {
+    if (affectedRows.length) {
       id = affectedRows[0].ID_texts;
     }
     await validateIdInTenant(id, ExchangeRateTypes, req, affectedRows);
@@ -144,7 +144,7 @@ async function validateIdInTenant(id, ExchangeRateTypes, req, affectedRows) {
     const tx2 = cds.transaction(req);
     const affectedRows2 = await tx2.run(query2);
 
-    if (affectedRows2.length > 0) {
+    if (affectedRows2.length) {
       const record2 = affectedRows[0];
       if (req.user.tenant !== record2.tenantID) {
         logger.error('Invalid ID was accessed. It is not related to the current tenant.');
@@ -177,7 +177,7 @@ async function fetchExistingRateTypeDesc(ExchangeRateTypeDescriptions, record, r
 }
 
 function checkForDuplicateRateTypeObjects(affectedRows, req) {
-  if (affectedRows.length > 0) {
+  if (affectedRows.length) {
     if (req.event === Constants.CREATE_EVENT) {
       logger.error('Record found in an Active entity for CREATE event. The primary keys are not unique.');
       throw new ValidationError(
