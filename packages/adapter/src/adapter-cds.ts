@@ -7,13 +7,11 @@ import {
   ExchangeRateTypeDetail,
   ConversionParameterForNonFixedRate,
   ExchangeRate,
-  logAndGetError,
-  logger as log,
   ExchangeRateValue,
   buildExchangeRate,
   buildExchangeRateTypeDetail
 } from '@sap-cloud-sdk/currency-conversion-models';
-import { isNullish } from '@sap-cloud-sdk/util';
+import { isNullish, createLogger } from '@sap-cloud-sdk/util';
 import {
   buildPredicateForDefaultTenantSettings,
   buildPredicateForExchangeRates,
@@ -23,6 +21,8 @@ import { AdapterError } from './constants/adapter-error';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const cds = require('@sap/cds');
 const { SELECT } = cds.ql;
+const logger = createLogger('adapter');
+logger.info('Simple Inregration Objects Adapter');
 
 /**
  * Data Adapter provides the implementation of {@link DataAdapter} specific to the integration object provided for
@@ -57,7 +57,7 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
   ): Promise<ExchangeRate[]> {
     try {
       if (isNullish(conversionParameters) || conversionParameters.length === 0) {
-        throw logAndGetError(AdapterError.NULL_CONVERSION_PARAMETERS);
+        throw new Error(AdapterError.NULL_CONVERSION_PARAMETERS);
       }
       const exchangeRateTypes = conversionParameters.map((param: any) => param.exchangeRateType);
       const exchangeRateTypeDetailMap = await this.getExchangeRateTypeDetailsForTenant(tenant, exchangeRateTypes);
@@ -65,12 +65,12 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
       const exchangeRateQuery = SELECT.from(CurrencyExchangeRates)
         .where(buildPredicateForExchangeRates(conversionParameters, tenant, tenantSettings, exchangeRateTypeDetailMap))
         .orderBy('validFromDateTime', 'desc');
-      log.debug(`CDS Query generated: ${exchangeRateQuery}`);
+      logger.debug(`CDS Query generated: ${exchangeRateQuery}`);
       const resultSet = await exchangeRateQuery;
 
       return this.buildExchangeRates(resultSet);
     } catch (error) {
-      throw logAndGetError(AdapterError.EXCHANGE_RATE_CONNECTION_ERROR);
+      throw new Error(AdapterError.EXCHANGE_RATE_CONNECTION_ERROR);
     }
   }
 
@@ -95,7 +95,7 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
       );
       return this.buildDefaultSettingsForTenant(defaultTenantSettingsResult);
     } catch (error) {
-      throw logAndGetError(AdapterError.TENANT_SETTING_CONNECTION_ERROR);
+      throw new Error(AdapterError.TENANT_SETTING_CONNECTION_ERROR);
     }
   }
 
@@ -126,7 +126,7 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
       );
       return this.buildExchangeRateTypeDetails(exchangeRateTypeDetailsResults);
     } catch (error) {
-      throw logAndGetError(AdapterError.EXCHANGE_RATE_DETAIL_CONNECTION_ERROR);
+      throw new Error(AdapterError.EXCHANGE_RATE_DETAIL_CONNECTION_ERROR);
     }
   }
 
@@ -146,8 +146,8 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
         parseFloat(result.toCurrencyFactor)
       )
     );
-    log.debug(`Number of exchange rates returned from query is: ${exchangeRateResults.length}`);
-    log.debug(`Exchange rates returned from query is: ${exchangeRateList}`);
+    logger.debug(`Number of exchange rates returned from query is: ${exchangeRateResults.length}`);
+    logger.debug(`Exchange rates returned from query is: ${exchangeRateList}`);
     return exchangeRateList;
   }
 
@@ -165,7 +165,7 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
         ),
       new Map()
     );
-    log.debug(
+    logger.debug(
       `Map(\n${Array.from(exchangeRateTypeDetailMap)
         .map(([key, value]) => `  ${key}: ${JSON.stringify(value, null, 2)}`)
         .join(',\n')}\n)`
@@ -180,7 +180,7 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
       ratesDataProviderCode: defaultTenantSetting.defaultDataProviderCode,
       ratesDataSource: defaultTenantSetting.defaultDataSource
     };
-    log.debug(`Tenant settings returned from query is: ${tenantSettings}`);
+    logger.debug(`Tenant settings returned from query is: ${tenantSettings}`);
     return tenantSettings;
   }
 }

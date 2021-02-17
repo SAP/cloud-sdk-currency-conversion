@@ -19,7 +19,8 @@ import {
   BulkConversionResult,
   SingleNonFixedRateConversionResult,
   ConversionParameterForNonFixedRate,
-  TenantSettings
+  TenantSettings,
+  buildConversionParameterForNonFixedRate
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { SimpleIntegrationObjectsAdapter } from '@sap-cloud-sdk/currency-conversion-data-adapter';
 import { CurrencyConverter } from '@sap-cloud-sdk/currency-conversion-core';
@@ -30,7 +31,7 @@ const currConverter = new CurrencyConverter();
 const dataAdapter = new SimpleIntegrationObjectsAdapter();
 
 // Prepare the parameter for your conversion request.
-const eurUsdMidParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
+const eurUsdMidParam: ConversionParameterForNonFixedRate = buildConversionParameterForNonFixedRate(
   'EUR',
   'USD',
   '500.123',
@@ -61,7 +62,7 @@ try {
 ```js
 // Or... if you would like to perform bulk conversions, use the following...
 
-const jpyUsdMidParam: ConversionParameterForNonFixedRate = new ConversionParameterForNonFixedRate(
+const jpyUsdMidParam: ConversionParameterForNonFixedRate = buildConversionParameterForNonFixedRate(
   'JPY',
   'USD',
   '485.324',
@@ -75,11 +76,14 @@ const paramList = [eurUsdMidParam, jpyUsdMidParam];
 
 // Call the conversion library for bulk conversion.
 
+let bulkConversionResult: BulkConversionResult<ConversionParameterForNonFixedRate, SingleNonFixedRateConversionResult>;
 try {
-  const bulkConversionResult: BulkConversionResult<
-    ConversionParameterForNonFixedRate,
-    SingleNonFixedRateConversionResult
-  > = await currConverter.convertCurrenciesWithNonFixedRate(paramList, dataAdapter, TENANT_ID, overrideTenantSetting);
+  bulkConversionResult = await currConverter.convertCurrenciesWithNonFixedRate(
+    paramList,
+    dataAdapter,
+    { id: 'TenantID' },
+    overrideTenantSetting
+  );
 } catch (error) {
   // Exception handling here;
 }
@@ -88,7 +92,8 @@ try {
 
 paramList.forEach((param: ConversionParameterForNonFixedRate) => {
   if (bulkConversionResult.get(param) instanceof SingleNonFixedRateConversionResult) {
-    const convertedAmount = bulkConversionresult.get(param).convertedAmount.decimalValue;
+    const convertedAmount = (bulkConversionResult.get(param) as SingleNonFixedRateConversionResult).convertedAmount
+      .decimalValue;
   } else {
     // Handle specific failures.
   }

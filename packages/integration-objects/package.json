@@ -1,0 +1,48 @@
+{
+  "name": "@sap-cloud-sdk/currency-conversion-integration-objects",
+  "version": "1.0.0",
+  "description": "Currency conversion library for Integeration Objects",
+  "dependencies": {
+    "@sap/audit-logging": "latest",
+    "@sap/cds": "4.4.9",
+    "@sap/cds-dk": "^3.2.0",
+    "@sap/hana-client": "^2",
+    "@sap/hdi-deploy": "^3",
+    "@sap/xsenv": "3.1.0",
+    "@sap/xssec": "^2",
+    "express": "^4",
+    "passport": "latest",
+    "@sap-cloud-sdk/util": "^1.32.1"
+  },
+  "devDependencies": {
+    "jest": "^26.5.3",
+    "eslint": "^7.9.0",
+    "lint": "^0.7.0"
+  },
+  "scripts": {
+    "compile": "exit 0 || cds build/all --clean && cds compile srv/ --to xsuaa  > cds-security.json",
+    "prepare": "yarn compile",
+    "test": "yarn jest --coverage",
+    "test:local": "yarn jest",
+    "coverage": "yarn jest --coverage",
+    "start": "yarn cds run",
+    "lint": "yarn eslint --ext .ts .",
+    "lint:fix": "yarn lint --fix",
+    "lint:fix-cached": "yarn lint:fix --cache"
+  },
+  "cds": {
+    "requires": {
+      "uaa": {
+        "kind": "xsuaa"
+      },
+      "db": {
+        "kind": "hana"
+      }
+    }
+  },
+  "keywords": [
+    "currency"
+  ],
+  "author": "SAP",
+  "license": "Apache-2.0"
+}

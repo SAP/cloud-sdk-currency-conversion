@@ -11,16 +11,15 @@ import {
   SingleNonFixedRateConversionResult,
   TenantSettings,
   ExchangeRateValue,
-  buildExchangeRate,
-  logAndGetError,
-  logger as log
+  buildExchangeRate
 } from '@sap-cloud-sdk/currency-conversion-models';
-import { isNullish } from '@sap-cloud-sdk/util';
+import { isNullish, createLogger } from '@sap-cloud-sdk/util';
 import { BigNumber } from 'bignumber.js';
 import { ConversionError } from '../constants/conversion-error';
 import { ExchangeRateRecordDeterminer } from '../core/exchange-rate-record-determiner';
 import { configureBigNumber } from './configure-big-number';
 import { validateCurrencyFactor } from './validate-currency-factor';
+const logger = createLogger('core');
 
 const DEFAULT_SCALE = 14;
 export const CURR_FORMAT = {
@@ -65,11 +64,11 @@ async function fetchExchangeRate(
   const exchangeRates = await dataAdapter
     .getExchangeRatesForTenant(conversionParameters, tenant, tenantSettings)
     .catch(error => {
-      log.error(error.message);
-      throw logAndGetError(ConversionError.ERROR_FETCHING_EXCHANGE_RATES);
+      logger.error(error.message);
+      throw new CurrencyConversionError(ConversionError.ERROR_FETCHING_EXCHANGE_RATES);
     });
   if (!exchangeRates?.length) {
-    log.error(`Data Adpater returned empty list for exchange rates for tenant ${JSON.stringify(tenant)}`);
+    logger.error(`Data Adpater returned empty list for exchange rates for tenant ${JSON.stringify(tenant)}`);
     throw new CurrencyConversionError(ConversionError.EMPTY_EXCHANGE_RATE_LIST);
   }
   return exchangeRates;
@@ -84,8 +83,8 @@ async function fetchExchangeRateType(
   const exchangeRateTypeDetailMap = await dataAdapter
     .getExchangeRateTypeDetailsForTenant(tenant, rateTypes)
     .catch(error => {
-      log.error(error.message);
-      throw logAndGetError(ConversionError.ERROR_FETCHING_EXCHANGE_RATES);
+      logger.error(error.message);
+      throw new CurrencyConversionError(ConversionError.ERROR_FETCHING_EXCHANGE_RATES);
     });
   return exchangeRateTypeDetailMap;
 }
@@ -100,7 +99,7 @@ function performBulkNonFixedConversion(
       const result = performSingleNonFixedConversion(exchangeRateDeterminer, conversionParameter, tenant);
       results.set(conversionParameter, result);
     } catch (err) {
-      log.error(
+      logger.error(
         `${ConversionError.NON_FIXED_CONVERSION_FAILED} for parameter : ${JSON.stringify(
           conversionParameter
         )} with exception : ${err}`
@@ -274,17 +273,17 @@ function isRatioNaNOrInfinite(currencyFactorRatio: number): void {
    * and the conversion will fail eventually with null error message in it.
    */
   if (!Number.isFinite(currencyFactorRatio) || Number.isNaN(currencyFactorRatio)) {
-    throw logAndGetError(ConversionError.ZERO_CURRENCY_FACTOR);
+    throw new CurrencyConversionError(ConversionError.ZERO_CURRENCY_FACTOR);
   }
 }
 
 async function fetchDefaultTenantSettings(dataAdapter: DataAdapter, tenant: Tenant): Promise<TenantSettings> {
   const tenantSettingsToBeUsed = await dataAdapter.getDefaultSettingsForTenant(tenant).catch(error => {
-    log.error(error.message);
-    log.error(`Error in fetching default tenant settings for tenant ${tenant}`);
+    logger.error(error.message);
+    logger.error(`Error in fetching default tenant settings for tenant ${tenant}`);
     throw new CurrencyConversionError(ConversionError.ERROR_FETCHING_DEFAULT_SETTINGS);
   });
-  log.debug(
+  logger.debug(
     'Default Tenant settings returned from data adapter are :',
     ...(isNullish(tenantSettingsToBeUsed)
       ? [null, null]
@@ -295,7 +294,7 @@ async function fetchDefaultTenantSettings(dataAdapter: DataAdapter, tenant: Tena
 
 function fetchOverrideTenantSettings(overrideSetting: TenantSettings): TenantSettings {
   if (isOverrideTenantSettingIncomplete(overrideSetting)) {
-    log.error('Override Tenant Setting can not be null');
+    logger.error('Override Tenant Setting can not be null');
     throw new CurrencyConversionError(ConversionError.EMPTY_OVERRIDE_TENANT_SETTING);
   }
   // create a TenantSettings object from overrideSetting
@@ -303,7 +302,7 @@ function fetchOverrideTenantSettings(overrideSetting: TenantSettings): TenantSet
     ratesDataProviderCode: overrideSetting.ratesDataProviderCode,
     ratesDataSource: overrideSetting.ratesDataSource
   };
-  log.debug(
+  logger.debug(
     `Override settings is used for conversion : 
     ${overrideSetting.ratesDataProviderCode}, ${overrideSetting.ratesDataSource}`
   );
