@@ -45,7 +45,7 @@ The currency conversion library requires:
 Install the currency conversion library using npm:
 
 ```bash
-npm install @sap-cloud-sdk/currency-conversion-core, @sap-cloud-sdk/currency-conversion-data-adapter, @sap-cloud-sdk/currency-conversion-models
+npm install @sap-cloud-sdk/currency-conversion-core, @sap-cloud-sdk/currency-conversion-data-adapter, @sap-cloud-sdk/currency-conversion-models, @sap-cloud-sdk/currency-conversion-integration-objects
 ```
 
 ## Usage
