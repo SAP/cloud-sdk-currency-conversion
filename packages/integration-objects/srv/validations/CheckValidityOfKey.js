@@ -10,7 +10,7 @@ async function checkForValidityOfKey(req, ExchangeRateTypes) {
   const tx = cds.transaction(req);
   const affectedRows = await tx.run(query);
 
-  if (affectedRows.length > 0) {
+  if (affectedRows.length) {
     const record = affectedRows[0];
     if (req.user.tenant !== record.tenantID) {
       logger.error('Invalid ID was accessed. It is not related to the current tenant.');
