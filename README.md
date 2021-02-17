@@ -26,7 +26,7 @@ Get currency exchange rates converted from a source currency to a target currenc
 
 #### Get Bulk Conversions
 
-Get multiple currency pairs converted through a single call. You can use the library methods to get more than one currency pair converted simultaneously.
+Multiple currency pairs can be converted through a single call. You can use the library methods to get more than one currency pair converted simultaneously.
 
 #### Get Direct and Indirect Conversions
 
