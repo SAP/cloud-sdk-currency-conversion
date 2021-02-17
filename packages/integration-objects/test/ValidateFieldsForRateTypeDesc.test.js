@@ -1,11 +1,10 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
-const { ValidationError } = require('../srv/exceptions/validation-error');
 const { validateFieldsForExchangeRateTypeDescription } = require('../srv/validations/ValidateFieldsForRateTypeDesc');
-const ErrorStatuses = require('../srv/utils/ErrorStatuses');
 const RateTypeExtensionConstants = require('../srv/utils/RateTypeExtensionConstants');
+const ErrorStatuses = require('../srv/utils/ErrorStatuses');
 
 describe('validate fields of rate type description', function () {
-  it('does not return any error', function () {
+  it('does not throw any error', function () {
     const reqObj = {
       locale: 'en',
       exchangeRateTypeDescription: 'sample'
@@ -13,10 +12,10 @@ describe('validate fields of rate type description', function () {
     const params = {
       ID: 'id'
     };
-    expect(() => validateFieldsForExchangeRateTypeDescription(reqObj, params));
+    expect(validateFieldsForExchangeRateTypeDescription(reqObj, params)).toBeUndefined();
   });
 
-  it('locale empty check', async () => {
+  it('locale empty check', () => {
     const reqObj = {
       locale: null,
       exchangeRateTypeDescription: 'sample'
@@ -24,12 +23,14 @@ describe('validate fields of rate type description', function () {
     const params = {
       ID: 'id'
     };
-    await expect(validateFieldsForExchangeRateTypeDescription(reqObj, params)).rejects.toThrow(
-      'Provide a valid value for locale. The value must be 1 - 14 characters long.'
-    );
+    try {
+      validateFieldsForExchangeRateTypeDescription(reqObj, params);
+    } catch (err) {
+      expect(err.message).toBe('Provide a valid value for locale. The value must be 1 - 14 characters long.');
+    }
   });
 
-  it('locale undefined check', async () => {
+  it('locale undefined check', () => {
     const reqObj = {
       locale: undefined,
       exchangeRateTypeDescription: 'sample'
@@ -37,12 +38,14 @@ describe('validate fields of rate type description', function () {
     const params = {
       ID: 'id'
     };
-    await expect(validateFieldsForExchangeRateTypeDescription(reqObj, params)).rejects.toThrow(
-      'Provide a valid value for locale. The value must be 1 - 14 characters long.'
-    );
+    try {
+      validateFieldsForExchangeRateTypeDescription(reqObj, params);
+    } catch (err) {
+      expect(err.message).toBe('Provide a valid value for locale. The value must be 1 - 14 characters long.');
+    }
   });
 
-  it('locale greater than 14 check', async () => {
+  it('locale greater than 14 check', () => {
     const reqObj = {
       locale: 'abcdefghijklmno',
       exchangeRateTypeDescription: 'sample'
@@ -50,26 +53,28 @@ describe('validate fields of rate type description', function () {
     const params = {
       ID: 'id'
     };
-    await expect(validateFieldsForExchangeRateTypeDescription(reqObj, params)).rejects.toThrow(
-      'Provide a valid value for locale. The value must be 1 - 14 characters long.'
-    );
+    try {
+      validateFieldsForExchangeRateTypeDescription(reqObj, params);
+    } catch (err) {
+      expect(err.message).toBe('Provide a valid value for locale. The value must be 1 - 14 characters long.');
+    }
   });
 
-  it('id empty check', async () => {
+  it('id empty check', () => {
     const data = {
       locale: 'en',
       exchangeRateTypeDescription: 'sample'
     };
     const params = null;
-    await expect(validateFieldsForExchangeRateTypeDescription(data, params)).rejects.toThrow(
-      new ValidationError(
-        RateTypeExtensionConstants.INVALID_ID_PROVIDED_FOR_EXCHANGE_RATE_TYPE_DESCRIPTION,
-        ErrorStatuses.BAD_REQUEST
-      )
-    );
+    try {
+      validateFieldsForExchangeRateTypeDescription(data, params);
+    } catch (err) {
+      expect(err.message).toBe(RateTypeExtensionConstants.INVALID_ID_PROVIDED_FOR_EXCHANGE_RATE_TYPE_DESCRIPTION);
+      expect(err.code).toBe(ErrorStatuses.BAD_REQUEST);
+    }
   });
 
-  it('exchangeRateTypeDescription value null', async () => {
+  it('exchangeRateTypeDescription value null', () => {
     const reqObj = {
       locale: 'en',
       exchangeRateTypeDescription: null
@@ -77,12 +82,16 @@ describe('validate fields of rate type description', function () {
     const params = {
       ID: 'id'
     };
-    await expect(validateFieldsForExchangeRateTypeDescription(reqObj, params)).rejects.toThrow(
-      'Provide a valid value for exchangeRateTypeDescription. The value must be 1 - 30 characters long.'
-    );
+    try {
+      validateFieldsForExchangeRateTypeDescription(reqObj, params);
+    } catch (err) {
+      expect(err.message).toBe(
+        'Provide a valid value for exchangeRateTypeDescription. The value must be 1 - 30 characters long.'
+      );
+    }
   });
 
-  it('exchangeRateTypeDescription value greater than 30', async () => {
+  it('exchangeRateTypeDescription value greater than 30', () => {
     const reqObj = {
       locale: 'en',
       exchangeRateTypeDescription: 'This is a description greater than thirty characters'
@@ -90,8 +99,12 @@ describe('validate fields of rate type description', function () {
     const params = {
       ID: 'id'
     };
-    await expect(validateFieldsForExchangeRateTypeDescription(reqObj, params)).rejects.toThrow(
-      'Provide a valid value for exchangeRateTypeDescription. The value must be 1 - 30 characters long.'
-    );
+    try {
+      validateFieldsForExchangeRateTypeDescription(reqObj, params);
+    } catch (err) {
+      expect(err.message).toBe(
+        'Provide a valid value for exchangeRateTypeDescription. The value must be 1 - 30 characters long.'
+      );
+    }
   });
 });

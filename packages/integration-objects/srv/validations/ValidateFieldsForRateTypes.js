@@ -11,7 +11,7 @@ const MAX_REF_CURRENCY_LENGTH = 3;
 const referenceCurrencyField = 'referenceCurrencyThreeLetterISOCode';
 const exchangeRateTypeField = 'exchangeRateType';
 
-async function validateFieldsForExchangeRateTypes(data) {
+function validateFieldsForExchangeRateTypes(data) {
   validateRateTypePattern(data.exchangeRateType);
   validateReferencCurrencyInversionAllowed(data.isInversionAllowed, data.referenceCurrencyThreeLetterISOCode);
   setInversionAllowedWhenNull(data);

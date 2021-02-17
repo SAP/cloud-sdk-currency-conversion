@@ -9,7 +9,7 @@ const localeField = 'locale';
 const MAX_VALUE_LOCALE = 14;
 const MAX_VALUE_EXCHANGE_RATE_TYPE_DESCRIPTION = 30;
 
-async function validateFieldsForExchangeRateTypeDescription(data, params) {
+function validateFieldsForExchangeRateTypeDescription(data, params) {
   validateLocale(data);
   validateTextID(params);
   validateTextDescription(data);

@@ -33,9 +33,9 @@ module.exports = srv => {
 
   const { ExchangeRateTypes, ExchangeRateTypeDescriptions } = srv.entities;
 
-  async function beforeRead(req) {
+  function beforeRead(req) {
     try {
-      await checkAndAppendTenantIdFilterForReadEvent(req);
+      checkAndAppendTenantIdFilterForReadEvent(req);
     } catch (err) {
       throw new ValidationError(err.message, err.code);
     }
@@ -58,14 +58,14 @@ module.exports = srv => {
   }
 
   async function validatePayload(req) {
-    await validateTenantIdInPayload(req);
-    await validateFieldsForExchangeRateTypes(req.data);
+    validateTenantIdInPayload(req);
+    validateFieldsForExchangeRateTypes(req.data);
     await checkUniquenessForPrimaryKeys(req);
   }
 
-  async function beforeDelete(req) {
+  function beforeDelete(req) {
     try {
-      await validateDelete(req);
+      validateDelete(req);
     } catch (err) {
       throw new ValidationError(err.message, err.code);
     }
@@ -88,7 +88,7 @@ module.exports = srv => {
   }
 
   async function validateDescPayload(req) {
-    await validateFieldsForExchangeRateTypeDescription(req.data, req.params);
+    validateFieldsForExchangeRateTypeDescription(req.data, req.params);
     await checkForValidityOfKey(req, ExchangeRateTypes);
     await checkUniquenessForPrimaryKeysForExchangeRateTypeDescForUpdate(req);
   }
