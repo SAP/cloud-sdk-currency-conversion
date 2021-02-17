@@ -9,7 +9,7 @@ const defaultDataProviderCodeField = 'defaultDataProviderCode';
 const MAX_DESTINATION_NAME_LENGTH = 200;
 const MAX_VALUE_DATA_SOURCE_DATA_PROVIDER = 15;
 
-async function validatePrimaryCompositeKeysForTenantConfig(data) {
+function validatePrimaryCompositeKeysForTenantConfig(data) {
   validateDefaultDataProviderCode(data.defaultDataProviderCode);
   validateDefaultDataSource(data.defaultDataSource);
   setIsConfigurationActiveIfNull(data);

@@ -10,64 +10,80 @@ describe('validate fields for tenant config', function () {
       defaultDataProviderCode: 'TW',
       defaultDataSource: 'THR'
     };
-    expect(() => validatePrimaryCompositeKeysForTenantConfig(reqObj));
+    expect(validatePrimaryCompositeKeysForTenantConfig(reqObj)).toBeUndefined();
   });
 
-  it('defaultDataProviderCode null check', async () => {
+  it('defaultDataProviderCode null check', () => {
     const reqObj = {
       tenantID: 'tenant1',
       defaultDataProviderCode: null,
       defaultDataSource: 'THR'
     };
-    await expect(validatePrimaryCompositeKeysForTenantConfig(reqObj)).rejects.toThrow(
-      'Provide a valid value for defaultDataProviderCode. The value must be 1 - 15 characters long.'
-    );
+    try {
+      validatePrimaryCompositeKeysForTenantConfig(reqObj);
+    } catch (err) {
+      expect(err.message).toBe(
+        'Provide a valid value for defaultDataProviderCode. The value must be 1 - 15 characters long.'
+      );
+    }
   });
 
-  it('defaultDataProviderCode exceeds 15 characters check', async () => {
+  it('defaultDataProviderCode exceeds 15 characters check', () => {
     const reqObj = {
       tenantID: 'tenant1',
       defaultDataProviderCode: 'abcdefghijklmnop',
       defaultDataSource: 'THR'
     };
-    await expect(validatePrimaryCompositeKeysForTenantConfig(reqObj)).rejects.toThrow(
-      'Provide a valid value for defaultDataProviderCode. The value must be 1 - 15 characters long.'
-    );
+    try {
+      validatePrimaryCompositeKeysForTenantConfig(reqObj);
+    } catch (err) {
+      expect(err.message).toBe(
+        'Provide a valid value for defaultDataProviderCode. The value must be 1 - 15 characters long.'
+      );
+    }
   });
 
-  it('defaultDataSource null check', async () => {
+  it('defaultDataSource null check', () => {
     const reqObj = {
       tenantID: 'tenant1',
       defaultDataProviderCode: 'THR',
       defaultDataSource: null
     };
-    await expect(validatePrimaryCompositeKeysForTenantConfig(reqObj)).rejects.toThrow(
-      'Provide a valid value for defaultDataSource. The value must be 1 - 15 characters long.'
-    );
+    try {
+      validatePrimaryCompositeKeysForTenantConfig(reqObj);
+    } catch (err) {
+      expect(err.message).toBe(
+        'Provide a valid value for defaultDataSource. The value must be 1 - 15 characters long.'
+      );
+    }
   });
 
-  it('defaultDataSource exceeds 15 characters check', async () => {
+  it('defaultDataSource exceeds 15 characters check', () => {
     const reqObj = {
       tenantID: 'tenant1',
       defaultDataProviderCode: 'TW',
       defaultDataSource: 'abcdefghijklmnop'
     };
-    await expect(validatePrimaryCompositeKeysForTenantConfig(reqObj)).rejects.toThrow(
-      'Provide a valid value for defaultDataSource. The value must be 1 - 15 characters long.'
-    );
+    try {
+      validatePrimaryCompositeKeysForTenantConfig(reqObj);
+    } catch (err) {
+      expect(err.message).toBe(
+        'Provide a valid value for defaultDataSource. The value must be 1 - 15 characters long.'
+      );
+    }
   });
 
-  it('isConfigurationActiveCheck when not set in the payload', async () => {
+  it('isConfigurationActiveCheck when not set in the payload', () => {
     const reqObj = {
       tenantID: 'tenant1',
       defaultDataProviderCode: 'TW',
       defaultDataSource: 'abc'
     };
-    await validatePrimaryCompositeKeysForTenantConfig(reqObj);
+    validatePrimaryCompositeKeysForTenantConfig(reqObj);
     expect(reqObj.isConfigurationActive).toBeFalsy();
   });
 
-  it('connectToSAPMarketRatesManagement wrong pattern check', async () => {
+  it('connectToSAPMarketRatesManagement wrong pattern check', () => {
     const reqObj = {
       tenantID: 'tenant1',
       defaultDataProviderCode: 'TW',
@@ -75,8 +91,10 @@ describe('validate fields for tenant config', function () {
       connectToSAPMarketRatesManagement: 'mrm',
       destinationName: '*ABc'
     };
-    await expect(validatePrimaryCompositeKeysForTenantConfig(reqObj)).rejects.toThrow(
-      'Provide a valid value for destinationName. The value must be 1 - 200 characters long.'
-    );
+    try {
+      validatePrimaryCompositeKeysForTenantConfig(reqObj);
+    } catch (err) {
+      expect(err.message).toBe('Provide a valid value for destinationName. The value must be 1 - 200 characters long.');
+    }
   });
 });

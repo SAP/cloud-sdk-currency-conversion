@@ -27,9 +27,9 @@ module.exports = srv => {
 
   const { TenantConfigForConversions } = srv.entities;
 
-  async function beforeRead(req) {
+  function beforeRead(req) {
     try {
-      await checkAndAppendTenantIdFilterForReadEvent(req);
+      checkAndAppendTenantIdFilterForReadEvent(req);
     } catch (err) {
       throw new ValidationError(err.message, err.code);
     }
@@ -37,8 +37,8 @@ module.exports = srv => {
 
   async function beforeCreate(req) {
     try {
-      await validateTenantIdInPayload(req);
-      await validatePrimaryCompositeKeysForTenantConfig(req.data);
+      validateTenantIdInPayload(req);
+      validatePrimaryCompositeKeysForTenantConfig(req.data);
       await checkUniquenessForPrimaryKeys(req);
       await restrictMultipleCreationWithActiveConfiguration(req);
     } catch (err) {
@@ -48,16 +48,16 @@ module.exports = srv => {
 
   async function beforeUpdate(req) {
     try {
-      await validateTenantIdInPayload(req);
+      validateTenantIdInPayload(req);
     } catch (err) {
       throw new ValidationError(err.message, err.code);
     }
     await checkUniquenessForPrimaryKeys(req);
   }
 
-  async function beforeDelete(req) {
+  function beforeDelete(req) {
     try {
-      await validateDelete(req);
+      validateDelete(req);
     } catch (err) {
       throw new ValidationError(err.message, err.code);
     }
@@ -99,7 +99,7 @@ module.exports = srv => {
 };
 
 function checkForUniqueConstraintViolation(affectedRows, req) {
-  if (affectedRows.length > 0) {
+  if (affectedRows.length) {
     if (req.event === Constants.CREATE_EVENT) {
       logger.error('Record found in an Active entity for CREATE event. The primary keys are not unique.');
       throw new ValidationError(
@@ -133,11 +133,11 @@ async function fetchExistingTenantConfigurations(TenantConfigForConversions, rec
 }
 
 function checkForDuplicateConfigurations(affectedRows, req) {
-  if (affectedRows.length > 0) {
+  if (affectedRows.length) {
     logger.error('Record found in Active Entity: ', affectedRows);
     const tenantConfigID = req.ID;
 
-    if (tenantConfigID == null || !affectedRows[0].ID === tenantConfigID) {
+    if (util.isNullish(tenantConfigID) || !affectedRows[0].ID === tenantConfigID) {
       logger.error('More than one configuration was activated.');
       throw new ValidationError(
         TenantConfigExtensionConstants.UNAUTHORIZED_TO_CREATE_NEW_RECORD,
