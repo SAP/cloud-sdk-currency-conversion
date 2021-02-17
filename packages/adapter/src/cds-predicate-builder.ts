@@ -4,11 +4,12 @@ import {
   TenantSettings,
   ConversionParameterForNonFixedRate,
   ExchangeRateTypeDetail,
-  Currency,
-  logAndGetError
+  Currency
 } from '@sap-cloud-sdk/currency-conversion-models';
-import { isNullish, unique } from '@sap-cloud-sdk/util';
+import { isNullish, unique, createLogger } from '@sap-cloud-sdk/util';
 import { AdapterError } from './constants/adapter-error';
+const logger = createLogger('adapter');
+logger.info('Simple Inregration Objects Adapter');
 
 export function buildPredicateForDefaultTenantSettings(tenant: Tenant): string {
   return `${getTenantIdPredicate(tenant)} and isConfigurationActive = true`;
@@ -94,6 +95,6 @@ function getCurrencyPair(fromCurrency: Currency | undefined, toCurrency: Currenc
 
 function validateExchangeRates(rateTypes: string[]): void {
   if (isNullish(rateTypes)) {
-    throw logAndGetError(AdapterError.EMPTY_RATE_TYPE_LIST);
+    throw new Error(AdapterError.EMPTY_RATE_TYPE_LIST);
   }
 }

@@ -23,7 +23,7 @@ A currency conversion can be performed by using a reference or intermediate curr
 ```js
 import {
   SingleFixedRateConversionResult,
-  ConversionParameterForFixedRate
+  buildConversionParameterForFixedRate
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { CurrencyConverter } from '@sap-cloud-sdk/currency-conversion-core';
 // Initialize the Currency Conversion Library.
@@ -31,7 +31,7 @@ const currConverter = new CurrencyConverter();
 
 try {
   const result: SingleFixedRateConversionResult = currConverter.convertCurrencyWithFixedRate(
-    new ConversionParameterForFixedRate('INR', 'USD', '10.00', '70.23')
+    buildConversionParameterForFixedRate('INR', 'USD', '10.00', '70.23')
   );
 } catch (error) {
   // Exception handling here

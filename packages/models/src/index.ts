@@ -1,4 +1,10 @@
 /* Copyright (c) 2021 SAP SE or an SAP affiliate company. All rights reserved. */
+/**
+ * [[include:models/README.md]]
+ * @packageDocumentation
+ * @module @sap-cloud-sdk/currency-conversion-models
+ */
+
 export * from './bulk-conversion-result';
 export * from './conversion-parameter-for-non-fixed-rate';
 export * from './currency-amount';
