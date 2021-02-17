@@ -15,3 +15,6 @@ The OData services provided are as follows:
 * Simple Exchange Rate Type
 
 * Simple Tenant Configuration
+
+> NOTE:
+To consume integration objects, the project must contain libraries relevant to [SAP Cloud Application Programming Model](https://cap.cloud.sap/docs/) or CAP.
