@@ -94,26 +94,29 @@ module.exports = srv => {
   }
 
   async function checkUniquenessForPrimaryKeys(req) {
-    const record = req.data;
-    const affectedRows = await fetchExistingRateTypes(ExchangeRateTypes, record, req);
-    checkForDuplicateRateTypeObjects(affectedRows, req);
+    const affectedRows = await fetchExistingRateTypes(ExchangeRateTypes, req);
+    if (affectedRows.length) {
+      checkForDuplicateRateTypeObjects(affectedRows, req);
+    }
   }
 
   async function checkUniquenessForPrimaryKeysForExchangeRateTypeDescForUpdate(req) {
     const affectedRows = await fetchExistingRateTypeDesc(ExchangeRateTypeDescriptions, req);
-    checkForDuplicateRateTypeObjects(affectedRows, req);
+    if (affectedRows.length) {
+      checkForDuplicateRateTypeObjects(affectedRows, req);
+    }
   }
 
   async function beforeActiveDeleteForExchangeRateTypeDescription(req) {
     const record = req.data;
     const affectedRows = await fetchExistingTexts(ExchangeRateTypeDescriptions, record, req);
-    if (affectedRows.length) {
+    if (affectedRows.length && !util.isNullish(affectedRows[0].ID_texts)) {
       await validateIdInTenant(affectedRows[0].ID_texts, ExchangeRateTypes, req, affectedRows);
     }
-    
   }
 
   async function writeAuditLogForRateTypes(req, next) {
+    let currentValues;
     const data = req.data;
     const type = 'exchange-rate-type';
     const auditParams = {
@@ -121,12 +124,15 @@ module.exports = srv => {
       exchangeRateTypeDescription: data.exchangeRateTypeDescription,
       referenceCurrencyThreeLetterISOCode: data.referenceCurrencyThreeLetterISOCode
     };
+    let currentValuesIsNotEmpty = true;
 
     if (Constants.CREATE_EVENT !== req.event) {
-      const currentValues = await fetchCurrentAttributeValues(req, req.user.tenant, ExchangeRateTypes);
-      if (!util.isNullish(currentValues)) {
-        await writeAuditLog(req, auditParams, currentValues, type);
-      }
+      currentValues = await fetchCurrentAttributeValues(req, req.user.tenant, ExchangeRateTypes);
+      currentValuesIsNotEmpty = !util.isNullish(currentValues);
+    }
+
+    if (currentValuesIsNotEmpty) {
+      await writeAuditLog(req, auditParams, currentValues, type);
     }
 
     await next();
@@ -134,17 +140,15 @@ module.exports = srv => {
 };
 
 async function validateIdInTenant(id, ExchangeRateTypes, req, affectedRows) {
-  if (id != null) {
-    const query = SELECT.from(ExchangeRateTypes).where({ ID: id }).limit(1, 0);
-    const tx = cds.transaction(req);
-    const firstRowForId = await tx.run(query);
+  const query = SELECT.from(ExchangeRateTypes).where({ ID: id }).limit(1, 0);
+  const tx = cds.transaction(req);
+  const firstRowForId = await tx.run(query);
 
-    if (firstRowForId.length) {
-      const [record] = affectedRows;
-      if (req.user.tenant !== record.tenantID) {
-        logger.error('Invalid ID was accessed. It is not related to the current tenant.');
-        throw new ValidationError(RateTypeExtensionConstants.GUID_NOT_FOUND_FOR_READ, ErrorStatuses.BAD_REQUEST);
-      }
+  if (firstRowForId.length) {
+    const [record] = affectedRows;
+    if (req.user.tenant !== record.tenantID) {
+      logger.error('Invalid ID was accessed. It is not related to the current tenant.');
+      throw new ValidationError(RateTypeExtensionConstants.GUID_NOT_FOUND_FOR_READ, ErrorStatuses.BAD_REQUEST);
     }
   }
 }
@@ -159,10 +163,10 @@ async function fetchExistingTexts(ExchangeRateTypeDescriptions, record, req) {
   return tx.run(query);
 }
 
-async function fetchExistingRateTypeDesc(ExchangeRateTypeDescriptions, record, req) {
+async function fetchExistingRateTypeDesc(ExchangeRateTypeDescriptions, req) {
   const query = SELECT.from(ExchangeRateTypeDescriptions)
-    .where({ locale: record.locale })
-    .and({ ID: record.ID })
+    .where({ locale: req.data.locale })
+    .and({ ID: req.data.ID })
     .limit(1, 0);
 
   const tx = cds.transaction(req);
@@ -170,30 +174,28 @@ async function fetchExistingRateTypeDesc(ExchangeRateTypeDescriptions, record, r
 }
 
 function checkForDuplicateRateTypeObjects(affectedRows, req) {
-  if (affectedRows.length) {
-    if (req.event === Constants.CREATE_EVENT) {
-      logger.error('Record found in an Active entity for CREATE event. The primary keys are not unique.');
-      throw new ValidationError(
-        RateTypeExtensionConstants.UNIQUE_CONSTRAINT_FOR_SEMANTIC_KEYS_EX_RATE_TYPE,
-        ErrorStatuses.BAD_REQUEST
-      );
-    }
-    const payloadId = req.data.ID;
-    const recordId = affectedRows[0].ID;
-    if (payloadId !== recordId) {
-      logger.error('Record found in Active Entity for UPDATE. The primary keys are not unique.');
-      throw new ValidationError(
-        RateTypeExtensionConstants.UNIQUE_CONSTRAINT_FOR_SEMANTIC_KEYS_EX_RATE_TYPE,
-        ErrorStatuses.BAD_REQUEST
-      );
-    }
+  if (req.event === Constants.CREATE_EVENT) {
+    logger.error('Record found in an Active entity for CREATE event. The primary keys are not unique.');
+    throw new ValidationError(
+      RateTypeExtensionConstants.UNIQUE_CONSTRAINT_FOR_SEMANTIC_KEYS_EX_RATE_TYPE,
+      ErrorStatuses.BAD_REQUEST
+    );
+  }
+  const payloadId = req.data.ID;
+  const recordId = affectedRows[0].ID;
+  if (payloadId !== recordId) {
+    logger.error('Record found in Active Entity for UPDATE. The primary keys are not unique.');
+    throw new ValidationError(
+      RateTypeExtensionConstants.UNIQUE_CONSTRAINT_FOR_SEMANTIC_KEYS_EX_RATE_TYPE,
+      ErrorStatuses.BAD_REQUEST
+    );
   }
 }
 
-async function fetchExistingRateTypes(ExchangeRateTypes, record, req) {
+async function fetchExistingRateTypes(ExchangeRateTypes, req) {
   const query = SELECT.from(ExchangeRateTypes)
-    .where({ tenantID: record.tenantID })
-    .and({ exchangeRateType: record.exchangeRateType })
+    .where({ tenantID: req.data.tenantID })
+    .and({ exchangeRateType: req.data.exchangeRateType })
     .limit(1, 0);
 
   const tx = cds.transaction(req);
