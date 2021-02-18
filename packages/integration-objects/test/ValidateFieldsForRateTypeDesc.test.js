@@ -23,11 +23,9 @@ describe('validate fields of rate type description', function () {
     const params = {
       ID: 'id'
     };
-    try {
-      validateFieldsForExchangeRateTypeDescription(reqObj, params);
-    } catch (err) {
-      expect(err.message).toBe('Provide a valid value for locale. The value must be 1 - 14 characters long.');
-    }
+    expect(() => validateFieldsForExchangeRateTypeDescription(reqObj, params)).toThrowErrorMatchingInlineSnapshot(
+      '"Provide a valid value for locale. The value must be 1 - 14 characters long."'
+    );
   });
 
   it('locale undefined check', () => {
