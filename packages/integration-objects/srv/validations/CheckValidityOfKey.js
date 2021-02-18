@@ -11,7 +11,7 @@ async function checkForValidityOfKey(req, ExchangeRateTypes) {
   const affectedRows = await tx.run(query);
 
   if (affectedRows.length) {
-    const record = affectedRows[0];
+    const [record] = affectedRows;
     if (req.user.tenant !== record.tenantID) {
       logger.error('Invalid ID was accessed. It is not related to the current tenant.');
       throw new ValidationError(RateTypeExtensionConstants.GUID_NOT_FOUND_FOR_READ, ErrorStatuses.BAD_REQUEST);
