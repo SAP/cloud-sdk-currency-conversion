@@ -20,7 +20,7 @@
     "lint": "^0.7.0"
   },
   "scripts": {
-    "compile": "cds build/all --clean && cds compile srv/ --to xsuaa  > cds-security.json",
+    "compile": "exit 0 || cds build/all --clean && cds compile srv/ --to xsuaa  > cds-security.json",
     "prepare": "yarn compile",
     "test": "yarn jest --coverage",
     "test:local": "yarn jest",
@@ -44,5 +44,5 @@
     "currency"
   ],
   "author": "SAP",
-  "license": "ISC"
+  "license": "Apache-2.0"
 }

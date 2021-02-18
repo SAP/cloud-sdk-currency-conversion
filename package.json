@@ -30,7 +30,8 @@
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-unused-imports": "^0.1.2",
-    "prettier": "^2.0.2"
+    "prettier": "^2.0.2",
+    "typedoc": "^0.20.24"
   },
   "scripts": {
     "test": "yarn workspaces run test",
@@ -48,7 +49,9 @@
     "adapter:lint:fix": "yarn adapter lint --fix",
     "lint": "yarn eslint --ext .ts .",
     "lint:fix": "yarn lint --fix",
-    "lint:fix-cached": "yarn lint:fix --cache"
+    "lint:fix-cached": "yarn lint:fix --cache",
+    "doc": "yarn typedoc --options typedoc.json"
   },
-  "name": "currency-conversion-library"
+  "name": "currency-conversion-library",
+  "version": "1.0.0"
 }

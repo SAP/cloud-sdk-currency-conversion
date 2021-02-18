@@ -1,0 +1,16 @@
+{
+
+    "entryPoints": [
+        "packages/core/src/index.ts",
+        "packages/models/src/index.ts"
+      ],
+    "out": "docs/api/1.0.0",
+    "name": "currency-conversion-library",
+    "readme": "README.md",
+    "theme": "default",
+    "includeVersion": true,
+    "hideGenerator": true,
+    "listInvalidSymbolLinks": true,
+    "excludePrivate": true,
+    "includes": "packages"
+  }
