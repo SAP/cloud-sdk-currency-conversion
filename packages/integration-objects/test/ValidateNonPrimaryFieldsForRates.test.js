@@ -2,8 +2,6 @@
 const {
   validateNonPrimaryKeyFieldsForCurrencyExchangeRate
 } = require('../srv/validations/ValidateNonPrimaryFieldsForRates');
-const ErrorStatuses = require('../srv/utils/ErrorStatuses');
-const RateExtensionConstants = require('../srv/utils/RateExtensionConstants');
 
 describe('validate valid fields among non-primary keys', function () {
   it('does not throw any error', function () {
@@ -27,17 +25,14 @@ describe('validate valid fields among non-primary keys', function () {
       dataSource: 'THR',
       exchangeRateType: 'aA',
       fromCurrencyThreeLetterISOCode: 'INR',
-      toCurrencyThreeLetterISOCode: 'INR',
+      toCurrencyThreeLetterISOCode: 'CND',
       validFromDateTime: '2020-02-28T06:38:29Z',
       exchangeRateValue: '80.00',
       toCurrencyFactor: '-2'
     };
-    try {
-      validateNonPrimaryKeyFieldsForCurrencyExchangeRate(reqObj);
-    } catch (err) {
-      expect(err.message).toBe(RateExtensionConstants.INVALID_TO_CURRENCY_FACTOR_VALUE_FIELD);
-      expect(err.code).toBe(ErrorStatuses.BAD_REQUEST);
-    }
+    expect(() => validateNonPrimaryKeyFieldsForCurrencyExchangeRate(reqObj)).toThrowErrorMatchingInlineSnapshot(
+      '"Provide a valid value for \'To Currency Factor\'. The value must be greater than zero."'
+    );
   });
 
   it('fromCurrencyFactor negative check', () => {
@@ -52,12 +47,9 @@ describe('validate valid fields among non-primary keys', function () {
       exchangeRateValue: '80.00',
       fromCurrencyFactor: '-2'
     };
-    try {
-      validateNonPrimaryKeyFieldsForCurrencyExchangeRate(reqObj);
-    } catch (err) {
-      expect(err.message).toBe(RateExtensionConstants.INVALID_FROM_CURRENCY_FACTOR_VALUE_FIELD);
-      expect(err.code).toBe(ErrorStatuses.BAD_REQUEST);
-    }
+    expect(() => validateNonPrimaryKeyFieldsForCurrencyExchangeRate(reqObj)).toThrowErrorMatchingInlineSnapshot(
+      '"Provide a valid value for \'From Currency Factor\'. The value must be greater than zero."'
+    );
   });
 
   it('fromCurrencyFactor null check', () => {
@@ -103,12 +95,9 @@ describe('validate valid fields among non-primary keys', function () {
       validFromDateTime: '2020-02-28T06:38:29Z',
       exchangeRateValue: '-80.00'
     };
-    try {
-      validateNonPrimaryKeyFieldsForCurrencyExchangeRate(reqObj);
-    } catch (err) {
-      expect(err.message).toBe(RateExtensionConstants.INVALID_EXCHANGE_RATE_VALUE_FIELD);
-      expect(err.code).toBe(ErrorStatuses.BAD_REQUEST);
-    }
+    expect(() => validateNonPrimaryKeyFieldsForCurrencyExchangeRate(reqObj)).toThrowErrorMatchingInlineSnapshot(
+      '"Provide a valid value for \'Exchange Rate Value\'. The value must be greater than equal to zero."'
+    );
   });
 
   it('exchange rate value null check', () => {
@@ -122,12 +111,9 @@ describe('validate valid fields among non-primary keys', function () {
       validFromDateTime: '2020-02-28T06:38:29Z',
       exchangeRateValue: null
     };
-    try {
-      validateNonPrimaryKeyFieldsForCurrencyExchangeRate(reqObj);
-    } catch (err) {
-      expect(err.message).toBe(RateExtensionConstants.INVALID_EXCHANGE_RATE_VALUE_FIELD);
-      expect(err.code).toBe(ErrorStatuses.BAD_REQUEST);
-    }
+    expect(() => validateNonPrimaryKeyFieldsForCurrencyExchangeRate(reqObj)).toThrowErrorMatchingInlineSnapshot(
+      '"Provide a valid value for \'Exchange Rate Value\'. The value must be greater than equal to zero."'
+    );
   });
 
   it('rateValueIndirect null check', () => {

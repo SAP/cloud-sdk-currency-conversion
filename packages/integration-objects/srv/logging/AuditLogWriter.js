@@ -6,7 +6,7 @@ const Constants = require('../utils/Constants');
 const { logger } = require('./Logger');
 const uaaData = xsenv.getServices({ xsuaa: { tag: 'xsuaa' } }).xsuaa;
 
-async function writeAuditLog(req, auditParams, currentValues, objectType) {
+function writeAuditLog(req, auditParams, currentValues, objectType) {
   try {
     const entityType = `${req.event} ${objectType}`;
     const clientId = uaaData.clientid;
@@ -19,7 +19,7 @@ async function writeAuditLog(req, auditParams, currentValues, objectType) {
     const configChangeMessage = auditLog.configurationChange(accessedObject);
     setConfigMessage(req, auditParams, configChangeMessage, currentValues);
     configChangeMessage.by(logonUser);
-    await auditLog.logPrepare(configChangeMessage);
+    auditLog.logPrepare(configChangeMessage);
   } catch (e) {
     logger.error(e);
     return Promise.reject(e);
@@ -48,12 +48,7 @@ const deletionAuditAttributes = (auditParams, currentValues) =>
     new: ''
   }));
 
-function setConfigMessage(
-  req,
-  auditParams,
-  configChangeMessage,
-  currentValues
-) {
+function setConfigMessage(req, auditParams, configChangeMessage, currentValues) {
   switch (req.event) {
     case Constants.CREATE_EVENT: {
       creationAuditAttributes(auditParams).forEach(attribute => {
@@ -78,9 +73,7 @@ function setConfigMessage(
 }
 
 function replaceNullValues(currentValues, auditKey) {
-  return util.isNullish(currentValues[auditKey])
-    ? 'null'
-    : currentValues[auditKey].toString();
+  return util.isNullish(currentValues[auditKey]) ? 'null' : currentValues[auditKey].toString();
 }
 
 module.exports = {

@@ -9,16 +9,20 @@ function validateTenantIdInPayload(req) {
   const tId = req.user.tenant;
   if (!util.isNullish(req.data.tenantID) && tId !== req.data.tenantID) {
     throw new ValidationError(ExtensionConstants.INVALID_TENANTID, ErrorStatuses.BAD_REQUEST);
-  } else if (util.isNullish(req.data.tenantID)) {
-    req.data.tenantID = tId;
+  } else {
+    setTenantId(req, tId);
   }
+}
+
+function setTenantId(req, tId) {
+  req.data.tenantID = tId;
 }
 
 function checkAndAppendTenantIdFilterForReadEvent(req) {
   setTenantIdPredicate(req);
 }
 
-function validateDelete(req) {
+function setTenantIdForDelete(req) {
   setTenantIdPredicate(req);
 }
 
@@ -34,5 +38,5 @@ function setTenantIdPredicate(req) {
 module.exports = {
   checkAndAppendTenantIdFilterForReadEvent,
   validateTenantIdInPayload,
-  validateDelete
+  setTenantIdForDelete
 };
