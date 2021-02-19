@@ -77,7 +77,6 @@ module.exports = srv => {
   }
 
   async function writeAuditLogForRates(req, next) {
-    let currentValues;
     const data = req.data;
     const type = 'currency-exchange-rates';
     const auditParams = {
@@ -89,13 +88,13 @@ module.exports = srv => {
       exchangeRateValue: data.exchangeRateValue
     };
 
-    let currentValuesIsNotEmpty = true;
-    if (Constants.CREATE_EVENT !== req.event) {
-      currentValues = await fetchCurrentAttributeValues(req, req.user.tenant, CurrencyExchangeRates);
-      currentValuesIsNotEmpty = !util.isNullish(currentValues);
-    }
-    if (currentValuesIsNotEmpty) {
-      writeAuditLog(req, auditParams, currentValues, type);
+    if (req.event === Constants.CREATE_EVENT) {
+      writeAuditLog(req, auditParams, undefined, type);
+    } else {
+      const currentValues = await fetchCurrentAttributeValues(req, req.user.tenant, CurrencyExchangeRates);
+      if (!util.isNullish(currentValues)) {
+        writeAuditLog(req, auditParams, currentValues, type);
+      }
     }
     await next();
   }
