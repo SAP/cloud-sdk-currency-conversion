@@ -76,7 +76,6 @@ module.exports = srv => {
   }
 
   async function writeAuditLogForTenantConfig(req, next) {
-    let currentValues;
     const data = req.data;
     const type = 'tenant-config-for-conversions';
     const auditParams = {
@@ -85,14 +84,13 @@ module.exports = srv => {
       isConfigurationActive: data.isConfigurationActive
     };
 
-    let currentValuesIsNotEmpty = true;
-    if (Constants.CREATE_EVENT !== req.event) {
-      currentValues = await fetchCurrentAttributeValues(req, req.user.tenant, TenantConfigForConversions);
-      currentValuesIsNotEmpty = !util.isNullish(currentValues);
-    }
-
-    if (currentValuesIsNotEmpty) {
-      writeAuditLog(req, auditParams, currentValues, type);
+    if (req.event === Constants.CREATE_EVENT) {
+      writeAuditLog(req, auditParams, undefined, type);
+    } else {
+      const currentValues = await fetchCurrentAttributeValues(req, req.user.tenant, TenantConfigForConversions);
+      if (!util.isNullish(currentValues)) {
+        writeAuditLog(req, auditParams, currentValues, type);
+      }
     }
     await next();
   }
