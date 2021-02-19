@@ -19,13 +19,9 @@ describe('validate fields for tenant config', function () {
       defaultDataProviderCode: null,
       defaultDataSource: 'THR'
     };
-    try {
-      validatePrimaryCompositeKeysForTenantConfig(reqObj);
-    } catch (err) {
-      expect(err.message).toBe(
-        'Provide a valid value for defaultDataProviderCode. The value must be 1 - 15 characters long.'
-      );
-    }
+    expect(() => validatePrimaryCompositeKeysForTenantConfig(reqObj)).toThrowErrorMatchingInlineSnapshot(
+      '"Provide a valid value for defaultDataProviderCode. The value must be 1 - 15 characters long."'
+    );
   });
 
   it('defaultDataProviderCode exceeds 15 characters check', () => {
@@ -34,13 +30,9 @@ describe('validate fields for tenant config', function () {
       defaultDataProviderCode: 'abcdefghijklmnop',
       defaultDataSource: 'THR'
     };
-    try {
-      validatePrimaryCompositeKeysForTenantConfig(reqObj);
-    } catch (err) {
-      expect(err.message).toBe(
-        'Provide a valid value for defaultDataProviderCode. The value must be 1 - 15 characters long.'
-      );
-    }
+    expect(() => validatePrimaryCompositeKeysForTenantConfig(reqObj)).toThrowErrorMatchingInlineSnapshot(
+      '"Provide a valid value for defaultDataProviderCode. The value must be 1 - 15 characters long."'
+    );
   });
 
   it('defaultDataSource null check', () => {
@@ -49,13 +41,9 @@ describe('validate fields for tenant config', function () {
       defaultDataProviderCode: 'THR',
       defaultDataSource: null
     };
-    try {
-      validatePrimaryCompositeKeysForTenantConfig(reqObj);
-    } catch (err) {
-      expect(err.message).toBe(
-        'Provide a valid value for defaultDataSource. The value must be 1 - 15 characters long.'
-      );
-    }
+    expect(() => validatePrimaryCompositeKeysForTenantConfig(reqObj)).toThrowErrorMatchingInlineSnapshot(
+      '"Provide a valid value for defaultDataSource. The value must be 1 - 15 characters long."'
+    );
   });
 
   it('defaultDataSource exceeds 15 characters check', () => {
@@ -64,13 +52,9 @@ describe('validate fields for tenant config', function () {
       defaultDataProviderCode: 'TW',
       defaultDataSource: 'abcdefghijklmnop'
     };
-    try {
-      validatePrimaryCompositeKeysForTenantConfig(reqObj);
-    } catch (err) {
-      expect(err.message).toBe(
-        'Provide a valid value for defaultDataSource. The value must be 1 - 15 characters long.'
-      );
-    }
+    expect(() => validatePrimaryCompositeKeysForTenantConfig(reqObj)).toThrowErrorMatchingInlineSnapshot(
+      '"Provide a valid value for defaultDataSource. The value must be 1 - 15 characters long."'
+    );
   });
 
   it('isConfigurationActiveCheck when not set in the payload', () => {
@@ -91,10 +75,8 @@ describe('validate fields for tenant config', function () {
       connectToSAPMarketRatesManagement: 'mrm',
       destinationName: '*ABc'
     };
-    try {
-      validatePrimaryCompositeKeysForTenantConfig(reqObj);
-    } catch (err) {
-      expect(err.message).toBe('Provide a valid value for destinationName. The value must be 1 - 200 characters long.');
-    }
+    expect(() => validatePrimaryCompositeKeysForTenantConfig(reqObj)).toThrowErrorMatchingInlineSnapshot(
+      '"Provide a valid value for destinationName. The value must be 1 - 200 characters long."'
+    );
   });
 });
