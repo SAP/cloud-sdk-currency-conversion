@@ -1,7 +1,5 @@
 /* Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. */
 const { validateFieldsForExchangeRateTypeDescription } = require('../srv/validations/ValidateFieldsForRateTypeDesc');
-const RateTypeExtensionConstants = require('../srv/utils/RateTypeExtensionConstants');
-const ErrorStatuses = require('../srv/utils/ErrorStatuses');
 
 describe('validate fields of rate type description', function () {
   it('does not throw any error', function () {
@@ -23,11 +21,9 @@ describe('validate fields of rate type description', function () {
     const params = {
       ID: 'id'
     };
-    try {
-      validateFieldsForExchangeRateTypeDescription(reqObj, params);
-    } catch (err) {
-      expect(err.message).toBe('Provide a valid value for locale. The value must be 1 - 14 characters long.');
-    }
+    expect(() => validateFieldsForExchangeRateTypeDescription(reqObj, params)).toThrowErrorMatchingInlineSnapshot(
+      '"Provide a valid value for locale. The value must be 1 - 14 characters long."'
+    );
   });
 
   it('locale undefined check', () => {
@@ -38,11 +34,9 @@ describe('validate fields of rate type description', function () {
     const params = {
       ID: 'id'
     };
-    try {
-      validateFieldsForExchangeRateTypeDescription(reqObj, params);
-    } catch (err) {
-      expect(err.message).toBe('Provide a valid value for locale. The value must be 1 - 14 characters long.');
-    }
+    expect(() => validateFieldsForExchangeRateTypeDescription(reqObj, params)).toThrowErrorMatchingInlineSnapshot(
+      '"Provide a valid value for locale. The value must be 1 - 14 characters long."'
+    );
   });
 
   it('locale greater than 14 check', () => {
@@ -53,11 +47,9 @@ describe('validate fields of rate type description', function () {
     const params = {
       ID: 'id'
     };
-    try {
-      validateFieldsForExchangeRateTypeDescription(reqObj, params);
-    } catch (err) {
-      expect(err.message).toBe('Provide a valid value for locale. The value must be 1 - 14 characters long.');
-    }
+    expect(() => validateFieldsForExchangeRateTypeDescription(reqObj, params)).toThrowErrorMatchingInlineSnapshot(
+      '"Provide a valid value for locale. The value must be 1 - 14 characters long."'
+    );
   });
 
   it('id empty check', () => {
@@ -66,12 +58,9 @@ describe('validate fields of rate type description', function () {
       exchangeRateTypeDescription: 'sample'
     };
     const params = null;
-    try {
-      validateFieldsForExchangeRateTypeDescription(data, params);
-    } catch (err) {
-      expect(err.message).toBe(RateTypeExtensionConstants.INVALID_ID_PROVIDED_FOR_EXCHANGE_RATE_TYPE_DESCRIPTION);
-      expect(err.code).toBe(ErrorStatuses.BAD_REQUEST);
-    }
+    expect(() => validateFieldsForExchangeRateTypeDescription(data, params)).toThrowErrorMatchingInlineSnapshot(
+      '"Please provide a valid value for \'ID\'. It must be associated with exchange rate type of your tenant."'
+    );
   });
 
   it('exchangeRateTypeDescription value null', () => {
@@ -82,13 +71,9 @@ describe('validate fields of rate type description', function () {
     const params = {
       ID: 'id'
     };
-    try {
-      validateFieldsForExchangeRateTypeDescription(reqObj, params);
-    } catch (err) {
-      expect(err.message).toBe(
-        'Provide a valid value for exchangeRateTypeDescription. The value must be 1 - 30 characters long.'
-      );
-    }
+    expect(() => validateFieldsForExchangeRateTypeDescription(reqObj, params)).toThrowErrorMatchingInlineSnapshot(
+      '"Provide a valid value for exchangeRateTypeDescription. The value must be 1 - 30 characters long."'
+    );
   });
 
   it('exchangeRateTypeDescription value greater than 30', () => {
@@ -99,12 +84,8 @@ describe('validate fields of rate type description', function () {
     const params = {
       ID: 'id'
     };
-    try {
-      validateFieldsForExchangeRateTypeDescription(reqObj, params);
-    } catch (err) {
-      expect(err.message).toBe(
-        'Provide a valid value for exchangeRateTypeDescription. The value must be 1 - 30 characters long.'
-      );
-    }
+    expect(() => validateFieldsForExchangeRateTypeDescription(reqObj, params)).toThrowErrorMatchingInlineSnapshot(
+      '"Provide a valid value for exchangeRateTypeDescription. The value must be 1 - 30 characters long."'
+    );
   });
 });

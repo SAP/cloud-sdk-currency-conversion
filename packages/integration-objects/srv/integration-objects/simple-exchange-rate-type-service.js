@@ -6,7 +6,7 @@ const { ValidationError } = require('../exceptions/validation-error');
 const { logger } = require('../logging/Logger');
 const {
   validateTenantIdInPayload,
-  validateDelete,
+  setTenantIdForDelete,
   checkAndAppendTenantIdFilterForReadEvent
 } = require('../validations/Validations');
 const ErrorStatuses = require('../utils/ErrorStatuses');
@@ -65,7 +65,7 @@ module.exports = srv => {
 
   function beforeDelete(req) {
     try {
-      validateDelete(req);
+      setTenantIdForDelete(req);
     } catch (err) {
       throw new ValidationError(err.message, err.code);
     }
@@ -132,7 +132,7 @@ module.exports = srv => {
     }
 
     if (currentValuesIsNotEmpty) {
-      await writeAuditLog(req, auditParams, currentValues, type);
+      writeAuditLog(req, auditParams, currentValues, type);
     }
 
     await next();

@@ -7,6 +7,20 @@ describe('validate pattern', function () {
     const reqObj = {
       fromCurrencyThreeLetterISOCode: 'INR'
     };
+    expect(
+      validatePattern(
+        Constants.CURRENCY_CODE_PATTERN,
+        'fromCurrencyThreeLetterISOCode',
+        reqObj.fromCurrencyThreeLetterISOCode,
+        3
+      )
+    ).toBeUndefined();
+  });
+
+  it('validate fromCurrency value null- returns error', function () {
+    const reqObj = {
+      fromCurrencyThreeLetterISOCode: null
+    };
     expect(() =>
       validatePattern(
         Constants.CURRENCY_CODE_PATTERN,
@@ -14,42 +28,24 @@ describe('validate pattern', function () {
         reqObj.fromCurrencyThreeLetterISOCode,
         3
       )
+    ).toThrowErrorMatchingInlineSnapshot(
+      '"Provide a valid value for fromCurrencyThreeLetterISOCode. The value must be 1 - 3 characters long."'
     );
-  });
-
-  it('validate fromCurrency value null- returns error', function () {
-    const reqObj = {
-      fromCurrencyThreeLetterISOCode: null
-    };
-    try {
-      validatePattern(
-        Constants.CURRENCY_CODE_PATTERN,
-        'fromCurrencyThreeLetterISOCode',
-        reqObj.fromCurrencyThreeLetterISOCode,
-        3
-      );
-    } catch (err) {
-      expect(err.message).toBe(
-        'Provide a valid value for fromCurrencyThreeLetterISOCode. The value must be 1 - 3 characters long.'
-      );
-    }
   });
 
   it('validate fromCurrency value invalid- returns error', function () {
     const reqObj = {
       fromCurrencyThreeLetterISOCode: '@12'
     };
-    try {
+    expect(() =>
       validatePattern(
         Constants.CURRENCY_CODE_PATTERN,
         'fromCurrencyThreeLetterISOCode',
         reqObj.fromCurrencyThreeLetterISOCode,
         3
-      );
-    } catch (err) {
-      expect(err.message).toBe(
-        'Provide a valid value for fromCurrencyThreeLetterISOCode. The value must be 1 - 3 characters long.'
-      );
-    }
+      )
+    ).toThrowErrorMatchingInlineSnapshot(
+      '"Provide a valid value for fromCurrencyThreeLetterISOCode. The value must be 1 - 3 characters long."'
+    );
   });
 });
