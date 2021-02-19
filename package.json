@@ -43,7 +43,7 @@
     "core": "yarn workspace @sap-cloud-sdk/currency-conversion-core",
     "models": "yarn workspace @sap-cloud-sdk/currency-conversion-models",
     "adapter": "yarn workspace @sap-cloud-sdk/currency-conversion-data-adapter",
-    "integration-objects": "yarn workspace @sap-cloud-sdk/integration-objects",
+    "integration-objects": "yarn workspace @sap-cloud-sdk/currency-conversion-integration-objects",
     "compile": "yarn lerna run compile",
     "adapter:lint": "yarn adapter lint",
     "adapter:lint:fix": "yarn adapter lint --fix",
