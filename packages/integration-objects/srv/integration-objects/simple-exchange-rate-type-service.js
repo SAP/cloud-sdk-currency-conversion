@@ -116,7 +116,6 @@ module.exports = srv => {
   }
 
   async function writeAuditLogForRateTypes(req, next) {
-    let currentValues;
     const data = req.data;
     const type = 'exchange-rate-type';
     const auditParams = {
@@ -124,17 +123,14 @@ module.exports = srv => {
       exchangeRateTypeDescription: data.exchangeRateTypeDescription,
       referenceCurrencyThreeLetterISOCode: data.referenceCurrencyThreeLetterISOCode
     };
-    let currentValuesIsNotEmpty = true;
-
-    if (Constants.CREATE_EVENT !== req.event) {
-      currentValues = await fetchCurrentAttributeValues(req, req.user.tenant, ExchangeRateTypes);
-      currentValuesIsNotEmpty = !util.isNullish(currentValues);
+    if (req.event === Constants.CREATE_EVENT) {
+      writeAuditLog(req, auditParams, undefined, type);
+    } else {
+      const currentValues = await fetchCurrentAttributeValues(req, req.user.tenant, ExchangeRateTypes);
+      if (!util.isNullish(currentValues)) {
+        writeAuditLog(req, auditParams, currentValues, type);
+      }
     }
-
-    if (currentValuesIsNotEmpty) {
-      writeAuditLog(req, auditParams, currentValues, type);
-    }
-
     await next();
   }
 };
