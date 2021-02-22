@@ -25,10 +25,10 @@ class AuditLog {
     return this.auditLog;
   }
 
-  dataModificationMessage() {
+  dataModificationMessage(...args) {
     if (this.auditLog) {
       return this.auditLog
-        .update(...arguments)
+        .update(...args)
         .dataSubject({ type: 'system', id: { key: this.getSelfTenantId() } })
         .by('system')
         .tenant(this.getSelfTenantId());
@@ -36,20 +36,20 @@ class AuditLog {
     return null;
   }
 
-  configurationChange() {
+  configurationChange(...args) {
     if (this.auditLog) {
       return this.auditLog
-        .configurationChange(...arguments)
+        .configurationChange(...args)
         .by('system')
         .tenant(this.getSelfTenantId());
     }
     return null;
   }
 
-  securityMessage() {
+  securityMessage(...args) {
     if (this.auditLog) {
       return this.auditLog
-        .securityMessage(...arguments)
+        .securityMessage(...args)
         .by('system')
         .tenant(this.getSelfTenantId());
     }
