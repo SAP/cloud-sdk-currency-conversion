@@ -10,8 +10,7 @@ module.exports = {
         '**/*.d.ts',
         '**/build/**/*',
         '**/node_modules/**/*',
-        'test-packages/test-services-e2e/**/*',
-        'packages/core/test/test-util/test-services/**/*'
+        'packages/integration-objects/**/*'
       ]
     },
     sourceType: 'module'
@@ -20,8 +19,7 @@ module.exports = {
     'build',
     'node_modules',
     'packages/core/test/test-util/test-services',
-    'test-packages/test-services',
-    'test-packages/test-services-e2e'
+    'packages/integration-objects'
   ],
   plugins: ['@typescript-eslint', 'header', 'import', 'prettier', 'unused-imports'],
   overrides: [
