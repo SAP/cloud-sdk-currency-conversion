@@ -1,6 +1,6 @@
 {
   "name": "@sap-cloud-sdk/currency-conversion-models",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Models for currency conversion",
   "main": "./build/index.js",
   "scripts": {

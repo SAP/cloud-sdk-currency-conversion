@@ -1,6 +1,6 @@
 {
   "name": "@sap-cloud-sdk/currency-conversion-core",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Currency conversion library for converting currency rates",
   "main": "./build/index.js",
   "scripts": {
@@ -17,6 +17,6 @@
   "license": "Apache-2.0",
   "types": "build/index.d.ts",
   "dependencies": {
-    "@sap-cloud-sdk/currency-conversion-models": "1.0.0"
+    "@sap-cloud-sdk/currency-conversion-models": "0.0.1"
   }
 }

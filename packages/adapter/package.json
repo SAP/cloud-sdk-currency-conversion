@@ -1,6 +1,6 @@
 {
   "name": "@sap-cloud-sdk/currency-conversion-data-adapter",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Data adapter for the SAP Cloud SDK currency conversion library.",
   "main": "./build/index.js",
   "scripts": {
@@ -37,7 +37,7 @@
     "@sap/cds": "4.3.0",
     "@sap/hana-client": "^2.6.58",
     "@sap-cloud-sdk/core": "^1.32.1",
-    "@sap-cloud-sdk/currency-conversion-models": "^1.0.0",
+    "@sap-cloud-sdk/currency-conversion-models": "0.0.1",
     "@sap-cloud-sdk/util": "^1.32.1",
     "sqlite3": "5.0.0"
   }

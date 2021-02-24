@@ -1,6 +1,6 @@
 {
   "name": "@sap-cloud-sdk/currency-conversion-integration-objects",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Currency conversion library for Integeration Objects",
   "dependencies": {
     "@sap/audit-logging": "latest",

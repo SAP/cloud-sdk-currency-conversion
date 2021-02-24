@@ -4,7 +4,7 @@
         "packages/core/src/index.ts",
         "packages/models/src/index.ts"
       ],
-    "out": "docs/api/1.0.0",
+    "out": "docs/api/0.0.1",
     "name": "currency-conversion-library",
     "readme": "README.md",
     "theme": "default",
