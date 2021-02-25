@@ -1584,53 +1584,38 @@
     request "=2.88.0"
     xml-js "=1.6.8"
 
-"@sap/hana-client@2.4.202":
-  version "2.4.202"
-  resolved "https://registry.yarnpkg.com/@sap/hana-client/-/hana-client-2.4.202.tgz#d54506400ab0018aff7b78112af46918744d89a9"
-  integrity sha512-HPVCHKnghU2t9ni6Eut0iwNMVqPIcJlTPe/QtRSgtc4ZBlAXrSbOD4CmztfSQa0o7Pinu3UyQX9EpoX4G7/+8A==
+"@sap/hana-client@2.7.21":
+  version "2.7.21"
+  resolved "https://registry.yarnpkg.com/@sap/hana-client/-/hana-client-2.7.21.tgz#13a11ca241c4b088587cf699b7f6b24072549791"
+  integrity sha512-rIDNN4RlrOEmhWnYyq+pLH3E4tTDHOncq/q4jp0v5FqOnCzmgBsGQptqR2JpM/3upFAnHlvVXZ2N7nHy6YKYPg==
   dependencies:
     debug "3.1.0"
 
-"@sap/hana-client@^2":
+"@sap/hana-client@^2", "@sap/hana-client@^2.6.58":
   version "2.7.23"
   resolved "https://registry.yarnpkg.com/@sap/hana-client/-/hana-client-2.7.23.tgz#a918b29ffadfea14dc29595f0299166999e4afbd"
   integrity sha512-r3Oa74kabm9SqYCdl1/Wh8Cysa+6+cpA6D6+OYT2eT92tZumMpo2VV0Ykf4WX3cawqSVyy/lr6Gi7Utpos4Vtw==
   dependencies:
     debug "3.1.0"
 
-"@sap/hana-client@^2.6.58":
-  version "2.7.16"
-  resolved "https://registry.yarnpkg.com/@sap/hana-client/-/hana-client-2.7.16.tgz#b16750f1dff5e9f00d0b60172b29d937a2c98807"
-  integrity sha512-v1aD2FixLOKSk+5w4lJFUOJ7oREW582X1Y8MZcu5Dei12NmB/EAVbfzgmdV0TsWq1+KEMwlwQ5dzEwRCxfAjUA==
+"@sap/hdi-deploy@^4":
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/@sap/hdi-deploy/-/hdi-deploy-4.0.2.tgz#17cf8114d701e2ffec90c14b93b49719efc6ff02"
+  integrity sha512-EZ6q6rz25GcRYZMKWy9ANvlibFIONgzMdO8EqbZuq1o0RK2VzIeygctMm8kwNlE6t+q0x2a8yVQ9hAi+c7mP5g==
   dependencies:
-    debug "3.1.0"
-
-"@sap/hdi-deploy@^3":
-  version "3.11.15"
-  resolved "https://registry.yarnpkg.com/@sap/hdi-deploy/-/hdi-deploy-3.11.15.tgz#5ef94185b8cd653528cc01d70b945fab883f76ff"
-  integrity sha512-Nb6+b/XJReoYnGORpu0T1L2fZHgH23W29UGqOP/yTSZqCbCnklGpHy2GEsPHGOo5vVT6reSck70KwSMMUPPsrA==
-  dependencies:
-    "@sap/hana-client" "2.4.202"
-    "@sap/hdi" "2.2.7"
-    "@sap/xsenv" "2.2.0"
+    "@sap/hana-client" "2.7.21"
+    "@sap/hdi" "3.0.2"
+    "@sap/xsenv" "3.1.0"
     async "3.1.0"
     handlebars "4.7.6"
 
-"@sap/hdi@2.2.7":
-  version "2.2.7"
-  resolved "https://registry.yarnpkg.com/@sap/hdi/-/hdi-2.2.7.tgz#9d0a74d5c8497ce19adc14ab1b46723d79302925"
-  integrity sha512-++dGRinBAbkV+lbU/fWogyrcUVp5xRzMIK/25yK9MqXCEDzTtd8ZKTIuevfQF+yFpQiEPPNNDOC/DYZNTHjF2A==
+"@sap/hdi@3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@sap/hdi/-/hdi-3.0.2.tgz#be7866c66cb2da183a3e1f982f68423c5f9f9649"
+  integrity sha512-w9/6kPjz85Z+kmEHu0Z9lsngGS12TqbPzM/KsdRXSR3OyZbaHLO4alsG6h4L8UkCMTUX6okBEC2PEgb6WOWwvw==
   dependencies:
-    "@sap/hana-client" "2.4.202"
+    "@sap/hana-client" "2.7.21"
     async "3.1.0"
-
-"@sap/xsenv@2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@sap/xsenv/-/xsenv-2.2.0.tgz#37ff82f403ff4b756ae8c85add8288c81ff51c6a"
-  integrity sha512-NtxbAZ2I957OWRVdlT16C3qan1TZ9Cfs9ephEDH03gPwbTm8nRtd1uZ8tqOMj/p1CVt0IAoUnkt985btYhhzkg==
-  dependencies:
-    debug "3.1.0"
-    verror "1.10.0"
 
 "@sap/xsenv@3.1.0", "@sap/xsenv@^3.0.0":
   version "3.1.0"
@@ -4883,10 +4868,22 @@ growly@^1.3.0:
   resolved "https://registry.yarnpkg.com/growly/-/growly-1.3.0.tgz#f10748cbe76af964b7c96c93c6bcc28af120c081"
   integrity sha1-8QdIy+dq+WS3yWyTxrzCivEgwIE=
 
-handlebars@4.7.6, handlebars@^4.7.6:
+handlebars@4.7.6:
   version "4.7.6"
   resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.7.6.tgz#d4c05c1baf90e9945f77aa68a7a219aa4a7df74e"
   integrity sha512-1f2BACcBfiwAfStCKZNrUCgqNZkGsAT7UM3kkYtXuLo0KnaVfjKOyf7PRzB6++aK9STyT1Pd2ZCPe3EGOXleXA==
+  dependencies:
+    minimist "^1.2.5"
+    neo-async "^2.6.0"
+    source-map "^0.6.1"
+    wordwrap "^1.0.0"
+  optionalDependencies:
+    uglify-js "^3.1.4"
+
+handlebars@^4.7.6, handlebars@^4.7.7:
+  version "4.7.7"
+  resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.7.7.tgz#9ce33416aad02dbd6c8fafa8240d5d98004945a1"
+  integrity sha512-aAcXm5OAfE/8IXkcZvCepKU3VzW1/39Fb5ZuqMtgI/hT8X2YgoMvBY5dLhq/cpOvw7Lk1nK/UF71aLG/ZnVYRA==
   dependencies:
     minimist "^1.2.5"
     neo-async "^2.6.0"
@@ -9673,14 +9670,14 @@ typedoc-default-themes@^0.12.7:
   integrity sha512-0XAuGEqID+gon1+fhi4LycOEFM+5Mvm2PjwaiVZNAzU7pn3G2DEpsoXnFOPlLDnHY6ZW0BY0nO7ur9fHOFkBLQ==
 
 typedoc@^0.20.24:
-  version "0.20.24"
-  resolved "https://registry.yarnpkg.com/typedoc/-/typedoc-0.20.24.tgz#9dd1cb32e44823a5ebbeb54c9b84af85286c5941"
-  integrity sha512-TadOYtcw8agrk7WTZlXUcct4jLZZcGcYe3xbmARkI+rBpXI6Mw+0P8oUo13+9oFreQvK5zZgMem4YEi7lCXLIw==
+  version "0.20.28"
+  resolved "https://registry.yarnpkg.com/typedoc/-/typedoc-0.20.28.tgz#6c454904d864dd43a2de9228c44b91e3c53d98ce"
+  integrity sha512-8j0T8u9FuyDkoe+M/3cyoaGJSVgXCY9KwVoo7TLUnmQuzXwqH+wkScY530ZEdK6G39UZ2LFTYPIrL5eykWjx6A==
   dependencies:
     colors "^1.4.0"
     fs-extra "^9.1.0"
-    handlebars "^4.7.6"
-    lodash "^4.17.20"
+    handlebars "^4.7.7"
+    lodash "^4.17.21"
     lunr "^2.3.9"
     marked "^2.0.0"
     minimatch "^3.0.0"
