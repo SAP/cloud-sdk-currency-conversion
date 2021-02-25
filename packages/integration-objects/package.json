@@ -9,7 +9,7 @@
     "@sap/hana-client": "^2",
     "@sap/hdi-deploy": "^3",
     "@sap/xsenv": "3.1.0",
-    "@sap/xssec": "^2",
+    "@sap/xssec": "^3",
     "express": "^4",
     "passport": "latest",
     "@sap-cloud-sdk/util": "^1.32.1"

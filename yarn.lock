@@ -1398,21 +1398,21 @@
     "@octokit/openapi-types" "^2.3.0"
     "@types/node" ">= 8"
 
-"@sap-cloud-sdk/analytics@^1.36.1":
-  version "1.36.1"
-  resolved "https://registry.yarnpkg.com/@sap-cloud-sdk/analytics/-/analytics-1.36.1.tgz#53b4d40d2bee22fde70069d2026d46b8a57e91d7"
-  integrity sha512-af6T+LFxATFv+jI30GrM+aCG86dtVa4jTVJvpt/2ksTDuTN7N9WGLpePchr+byUYwr+nr1KrreYwajeqp0uh7A==
+"@sap-cloud-sdk/analytics@^1.38.0":
+  version "1.38.0"
+  resolved "https://registry.yarnpkg.com/@sap-cloud-sdk/analytics/-/analytics-1.38.0.tgz#b712c4e3575902838f5badd1bfc7db3136ed9b19"
+  integrity sha512-4EtgyrlBUXPr07PfC7gyW00hBHAcFpOEuD5Vh3lAW1bX8VPTcIEEMJISPvF8pXpRolsaMU82wFJdy5QxUfoviQ==
   dependencies:
-    "@sap-cloud-sdk/util" "^1.36.1"
+    "@sap-cloud-sdk/util" "^1.38.0"
     axios "^0.21.1"
 
 "@sap-cloud-sdk/core@^1.18.1", "@sap-cloud-sdk/core@^1.32.1":
-  version "1.36.1"
-  resolved "https://registry.yarnpkg.com/@sap-cloud-sdk/core/-/core-1.36.1.tgz#dd580f9930e1975c18c9a20048f3376cb7b553f1"
-  integrity sha512-mEXTWugVCPmTgGiECGEgN4A+zArQxgO7+z0ziWeSG8hNP7XzAlC+0TeF39AwEA+HifIuQldc5hqChaGFkonPqg==
+  version "1.38.0"
+  resolved "https://registry.yarnpkg.com/@sap-cloud-sdk/core/-/core-1.38.0.tgz#2443f0bb98b867a047586975378265d88f8dcc12"
+  integrity sha512-LsIw0YNbflnUMR5ZuxNFpt3cYc1UPrrrfXQiMQAvqLEVCkkEZP/Miesm5MHpVesZ8arC8FwL66bwUIrM3djS1A==
   dependencies:
-    "@sap-cloud-sdk/analytics" "^1.36.1"
-    "@sap-cloud-sdk/util" "^1.36.1"
+    "@sap-cloud-sdk/analytics" "^1.38.0"
+    "@sap-cloud-sdk/util" "^1.38.0"
     "@sap/xsenv" "^3.0.0"
     axios "^0.21.1"
     bignumber.js "^9.0.0"
@@ -1424,10 +1424,10 @@
     uuid "^8.2.0"
     voca "^1.4.0"
 
-"@sap-cloud-sdk/util@^1.18.1", "@sap-cloud-sdk/util@^1.32.1", "@sap-cloud-sdk/util@^1.36.1":
-  version "1.36.1"
-  resolved "https://registry.yarnpkg.com/@sap-cloud-sdk/util/-/util-1.36.1.tgz#be9c012b414164eaf5c658e261b6d5354cd46541"
-  integrity sha512-IBp+1WE66R6GhS0IE9N6GMH1OccdNsckYjp7jvrq4fxmdlqv8J2EK4qnR8SF5Br+V+LyB7GcoCgDcLznjXdxaA==
+"@sap-cloud-sdk/util@^1.18.1", "@sap-cloud-sdk/util@^1.32.1", "@sap-cloud-sdk/util@^1.38.0":
+  version "1.38.0"
+  resolved "https://registry.yarnpkg.com/@sap-cloud-sdk/util/-/util-1.38.0.tgz#47bff1d40953f077772c6f6e950bc939bf128d75"
+  integrity sha512-hhcI4CiDd7LasfzdqtKlz7crpWXd/R2xIejxeV76ifeW8x+C6wod8W9W53HN08D1tD4mv/tcsyP8igU9jLQ1pw==
   dependencies:
     chalk "^4.1.0"
     logform "^2.2.0"
@@ -1624,11 +1624,6 @@
     "@sap/hana-client" "2.4.202"
     async "3.1.0"
 
-"@sap/node-jwt@^1.6.6":
-  version "1.6.14"
-  resolved "https://registry.yarnpkg.com/@sap/node-jwt/-/node-jwt-1.6.14.tgz#b35f2914323d17099d6afe68bdce32533c5298c3"
-  integrity sha512-mlIOxm3b5T1cI9i+KCpFRIx6GAVIPehc4qkzNEwG2Fy2V4jOyglZO1ByKeW+WdPIkvD0tZ2h7ZqKaGGRVQSgeA==
-
 "@sap/xsenv@2.2.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@sap/xsenv/-/xsenv-2.2.0.tgz#37ff82f403ff4b756ae8c85add8288c81ff51c6a"
@@ -1645,15 +1640,15 @@
     debug "3.1.0"
     verror "1.10.0"
 
-"@sap/xssec@^2":
-  version "2.2.5"
-  resolved "https://registry.yarnpkg.com/@sap/xssec/-/xssec-2.2.5.tgz#e605da853147f05b44254c12018b2f41ad43c1be"
-  integrity sha512-P6CWC9Lz6Gy9iqpKOAeUa3b03T/+L9I7FvadFVKEYzl/eod/D2a+HemXWM/81U/cnEHMpOn3iVFycq8o3MHM4Q==
+"@sap/xssec@^3":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@sap/xssec/-/xssec-3.1.1.tgz#37f81a16657f4abed9e42d5d34cc73c3e2a5decb"
+  integrity sha512-4Z56fJJF0Y8c9PtCKIrr5T4V5MM0MztUKWlXbWvaN8BOYlZKBK58JacINAGnKZ1wMvnt483pAtRXImG5SGx5aA==
   dependencies:
-    "@sap/node-jwt" "^1.6.6"
     debug "4.1.1"
+    jsonwebtoken "^8.5.1"
     lru-cache "5.1.1"
-    request "2.88.0"
+    request "^2.88.2"
     requestretry "4.0.0"
     valid-url "1.0.9"
 
@@ -3910,9 +3905,9 @@ eslint-module-utils@^2.6.0:
     pkg-dir "^2.0.0"
 
 eslint-plugin-header@^3.0.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-header/-/eslint-plugin-header-3.1.0.tgz#5e6819489a7722ae0c5c237387f78350d755c1d5"
-  integrity sha512-jKKcwMsB0/ftBv3UVmuQir1f8AmXzTS9rdzPkileW8/Nz9ivdea8vOU1ZrMbX+WH6CpwnHEo3403baSHk40Mag==
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-header/-/eslint-plugin-header-3.1.1.tgz#6ce512432d57675265fac47292b50d1eff11acd6"
+  integrity sha512-9vlKxuJ4qf793CmeeSrZUvVClw6amtpghq3CuWcB5cUNnWHQhgcqy5eF8oVKFk1G3Y/CbchGfEaw3wiIJaNmVg==
 
 eslint-plugin-import@^2.20.2:
   version "2.22.1"
@@ -6473,11 +6468,6 @@ lodash.isstring@^4.0.1:
   resolved "https://registry.yarnpkg.com/lodash.isstring/-/lodash.isstring-4.0.1.tgz#d527dfb5456eca7cc9bb95d5daeaf88ba54a5451"
   integrity sha1-1SfftUVuynzJu5XV2ur4i6VKVFE=
 
-lodash.memoize@4.x:
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
-  integrity sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4=
-
 lodash.once@^4.0.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/lodash.once/-/lodash.once-4.1.1.tgz#0dd3971213c7c56df880977d504c88fb471a97ac"
@@ -8337,32 +8327,6 @@ request-promise-native@^1.0.8:
     stealthy-require "^1.1.1"
     tough-cookie "^2.3.3"
 
-request@2.88.0, request@=2.88.0:
-  version "2.88.0"
-  resolved "https://registry.yarnpkg.com/request/-/request-2.88.0.tgz#9c2fca4f7d35b592efe57c7f0a55e81052124fef"
-  integrity sha512-NAqBSrijGLZdM0WZNsInLJpkJokL72XYjUpnB0iwsRgxh7dB6COrHnTBNwN0E+lHDAJzu7kLAkDeY08z2/A0hg==
-  dependencies:
-    aws-sign2 "~0.7.0"
-    aws4 "^1.8.0"
-    caseless "~0.12.0"
-    combined-stream "~1.0.6"
-    extend "~3.0.2"
-    forever-agent "~0.6.1"
-    form-data "~2.3.2"
-    har-validator "~5.1.0"
-    http-signature "~1.2.0"
-    is-typedarray "~1.0.0"
-    isstream "~0.1.2"
-    json-stringify-safe "~5.0.1"
-    mime-types "~2.1.19"
-    oauth-sign "~0.9.0"
-    performance-now "^2.1.0"
-    qs "~6.5.2"
-    safe-buffer "^5.1.2"
-    tough-cookie "~2.4.3"
-    tunnel-agent "^0.6.0"
-    uuid "^3.3.2"
-
 request@2.88.2, request@^2.87.0, request@^2.88.0, request@^2.88.2:
   version "2.88.2"
   resolved "https://registry.yarnpkg.com/request/-/request-2.88.2.tgz#d73c918731cb5a87da047e207234146f664d12b3"
@@ -8386,6 +8350,32 @@ request@2.88.2, request@^2.87.0, request@^2.88.0, request@^2.88.2:
     qs "~6.5.2"
     safe-buffer "^5.1.2"
     tough-cookie "~2.5.0"
+    tunnel-agent "^0.6.0"
+    uuid "^3.3.2"
+
+request@=2.88.0:
+  version "2.88.0"
+  resolved "https://registry.yarnpkg.com/request/-/request-2.88.0.tgz#9c2fca4f7d35b592efe57c7f0a55e81052124fef"
+  integrity sha512-NAqBSrijGLZdM0WZNsInLJpkJokL72XYjUpnB0iwsRgxh7dB6COrHnTBNwN0E+lHDAJzu7kLAkDeY08z2/A0hg==
+  dependencies:
+    aws-sign2 "~0.7.0"
+    aws4 "^1.8.0"
+    caseless "~0.12.0"
+    combined-stream "~1.0.6"
+    extend "~3.0.2"
+    forever-agent "~0.6.1"
+    form-data "~2.3.2"
+    har-validator "~5.1.0"
+    http-signature "~1.2.0"
+    is-typedarray "~1.0.0"
+    isstream "~0.1.2"
+    json-stringify-safe "~5.0.1"
+    mime-types "~2.1.19"
+    oauth-sign "~0.9.0"
+    performance-now "^2.1.0"
+    qs "~6.5.2"
+    safe-buffer "^5.1.2"
+    tough-cookie "~2.4.3"
     tunnel-agent "^0.6.0"
     uuid "^3.3.2"
 
@@ -9532,9 +9522,9 @@ triple-beam@^1.2.0, triple-beam@^1.3.0:
   integrity sha512-XrHUvV5HpdLmIj4uVMxHggLbFSZYIn7HEWsqePZcI50pco+MPqJ50wMGY794X7AOOhxOBAjbkqfAbEe/QMp2Lw==
 
 ts-jest@^26.3.0:
-  version "26.4.4"
-  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-26.4.4.tgz#61f13fb21ab400853c532270e52cc0ed7e502c49"
-  integrity sha512-3lFWKbLxJm34QxyVNNCgXX1u4o/RV0myvA2y2Bxm46iGIjKlaY0own9gIckbjZJPn+WaJEnfPPJ20HHGpoq4yg==
+  version "26.5.2"
+  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-26.5.2.tgz#5281d6b44c2f94f71205728a389edc3d7995b0c4"
+  integrity sha512-bwyJ2zJieSugf7RB+o8fgkMeoMVMM2KPDE0UklRLuACxjwJsOrZNo6chrcScmK33YavPSwhARffy8dZx5LJdUQ==
   dependencies:
     "@types/jest" "26.x"
     bs-logger "0.x"
@@ -9542,7 +9532,7 @@ ts-jest@^26.3.0:
     fast-json-stable-stringify "2.x"
     jest-util "^26.1.0"
     json5 "2.x"
-    lodash.memoize "4.x"
+    lodash "4.x"
     make-error "1.x"
     mkdirp "1.x"
     semver "7.x"
