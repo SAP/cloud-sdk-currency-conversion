@@ -1398,21 +1398,21 @@
     "@octokit/openapi-types" "^2.3.0"
     "@types/node" ">= 8"
 
-"@sap-cloud-sdk/analytics@^1.36.1":
-  version "1.36.1"
-  resolved "https://registry.yarnpkg.com/@sap-cloud-sdk/analytics/-/analytics-1.36.1.tgz#53b4d40d2bee22fde70069d2026d46b8a57e91d7"
-  integrity sha512-af6T+LFxATFv+jI30GrM+aCG86dtVa4jTVJvpt/2ksTDuTN7N9WGLpePchr+byUYwr+nr1KrreYwajeqp0uh7A==
+"@sap-cloud-sdk/analytics@^1.38.0":
+  version "1.38.0"
+  resolved "https://registry.yarnpkg.com/@sap-cloud-sdk/analytics/-/analytics-1.38.0.tgz#b712c4e3575902838f5badd1bfc7db3136ed9b19"
+  integrity sha512-4EtgyrlBUXPr07PfC7gyW00hBHAcFpOEuD5Vh3lAW1bX8VPTcIEEMJISPvF8pXpRolsaMU82wFJdy5QxUfoviQ==
   dependencies:
-    "@sap-cloud-sdk/util" "^1.36.1"
+    "@sap-cloud-sdk/util" "^1.38.0"
     axios "^0.21.1"
 
 "@sap-cloud-sdk/core@^1.18.1", "@sap-cloud-sdk/core@^1.32.1":
-  version "1.36.1"
-  resolved "https://registry.yarnpkg.com/@sap-cloud-sdk/core/-/core-1.36.1.tgz#dd580f9930e1975c18c9a20048f3376cb7b553f1"
-  integrity sha512-mEXTWugVCPmTgGiECGEgN4A+zArQxgO7+z0ziWeSG8hNP7XzAlC+0TeF39AwEA+HifIuQldc5hqChaGFkonPqg==
+  version "1.38.0"
+  resolved "https://registry.yarnpkg.com/@sap-cloud-sdk/core/-/core-1.38.0.tgz#2443f0bb98b867a047586975378265d88f8dcc12"
+  integrity sha512-LsIw0YNbflnUMR5ZuxNFpt3cYc1UPrrrfXQiMQAvqLEVCkkEZP/Miesm5MHpVesZ8arC8FwL66bwUIrM3djS1A==
   dependencies:
-    "@sap-cloud-sdk/analytics" "^1.36.1"
-    "@sap-cloud-sdk/util" "^1.36.1"
+    "@sap-cloud-sdk/analytics" "^1.38.0"
+    "@sap-cloud-sdk/util" "^1.38.0"
     "@sap/xsenv" "^3.0.0"
     axios "^0.21.1"
     bignumber.js "^9.0.0"
@@ -1424,10 +1424,10 @@
     uuid "^8.2.0"
     voca "^1.4.0"
 
-"@sap-cloud-sdk/util@^1.18.1", "@sap-cloud-sdk/util@^1.32.1", "@sap-cloud-sdk/util@^1.36.1":
-  version "1.36.1"
-  resolved "https://registry.yarnpkg.com/@sap-cloud-sdk/util/-/util-1.36.1.tgz#be9c012b414164eaf5c658e261b6d5354cd46541"
-  integrity sha512-IBp+1WE66R6GhS0IE9N6GMH1OccdNsckYjp7jvrq4fxmdlqv8J2EK4qnR8SF5Br+V+LyB7GcoCgDcLznjXdxaA==
+"@sap-cloud-sdk/util@^1.18.1", "@sap-cloud-sdk/util@^1.32.1", "@sap-cloud-sdk/util@^1.38.0":
+  version "1.38.0"
+  resolved "https://registry.yarnpkg.com/@sap-cloud-sdk/util/-/util-1.38.0.tgz#47bff1d40953f077772c6f6e950bc939bf128d75"
+  integrity sha512-hhcI4CiDd7LasfzdqtKlz7crpWXd/R2xIejxeV76ifeW8x+C6wod8W9W53HN08D1tD4mv/tcsyP8igU9jLQ1pw==
   dependencies:
     chalk "^4.1.0"
     logform "^2.2.0"
@@ -3910,9 +3910,9 @@ eslint-module-utils@^2.6.0:
     pkg-dir "^2.0.0"
 
 eslint-plugin-header@^3.0.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-header/-/eslint-plugin-header-3.1.0.tgz#5e6819489a7722ae0c5c237387f78350d755c1d5"
-  integrity sha512-jKKcwMsB0/ftBv3UVmuQir1f8AmXzTS9rdzPkileW8/Nz9ivdea8vOU1ZrMbX+WH6CpwnHEo3403baSHk40Mag==
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-header/-/eslint-plugin-header-3.1.1.tgz#6ce512432d57675265fac47292b50d1eff11acd6"
+  integrity sha512-9vlKxuJ4qf793CmeeSrZUvVClw6amtpghq3CuWcB5cUNnWHQhgcqy5eF8oVKFk1G3Y/CbchGfEaw3wiIJaNmVg==
 
 eslint-plugin-import@^2.20.2:
   version "2.22.1"
@@ -9700,9 +9700,9 @@ typescript@^3.6.3:
   integrity sha512-BLbiRkiBzAwsjut4x/dsibSTB6yWpwT5qWmC2OfuCg3GgVQCSgMs4vEctYPhsaGtd0AeuuHMkjZ2h2WG8MSzRw==
 
 typescript@^4.0.2:
-  version "4.1.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.1.3.tgz#519d582bd94cba0cf8934c7d8e8467e473f53bb7"
-  integrity sha512-B3ZIOf1IKeH2ixgHhj6la6xdwR9QrLC5d1VKeCSY4tvkqhF2eqd9O7txNlS0PO3GrBAFIdr3L1ndNwteUbZLYg==
+  version "4.1.5"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.1.5.tgz#123a3b214aaff3be32926f0d8f1f6e704eb89a72"
+  integrity sha512-6OSu9PTIzmn9TCDiovULTnET6BgXtDYL4Gg4szY+cGsc3JP1dQL8qvE8kShTRx1NIw4Q9IBHlwODjkjWEtMUyA==
 
 uglify-js@^3.1.4:
   version "3.12.4"
