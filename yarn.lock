@@ -1624,11 +1624,6 @@
     "@sap/hana-client" "2.4.202"
     async "3.1.0"
 
-"@sap/node-jwt@^1.6.6":
-  version "1.6.14"
-  resolved "https://registry.yarnpkg.com/@sap/node-jwt/-/node-jwt-1.6.14.tgz#b35f2914323d17099d6afe68bdce32533c5298c3"
-  integrity sha512-mlIOxm3b5T1cI9i+KCpFRIx6GAVIPehc4qkzNEwG2Fy2V4jOyglZO1ByKeW+WdPIkvD0tZ2h7ZqKaGGRVQSgeA==
-
 "@sap/xsenv@2.2.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@sap/xsenv/-/xsenv-2.2.0.tgz#37ff82f403ff4b756ae8c85add8288c81ff51c6a"
@@ -1645,15 +1640,15 @@
     debug "3.1.0"
     verror "1.10.0"
 
-"@sap/xssec@^2":
-  version "2.2.5"
-  resolved "https://registry.yarnpkg.com/@sap/xssec/-/xssec-2.2.5.tgz#e605da853147f05b44254c12018b2f41ad43c1be"
-  integrity sha512-P6CWC9Lz6Gy9iqpKOAeUa3b03T/+L9I7FvadFVKEYzl/eod/D2a+HemXWM/81U/cnEHMpOn3iVFycq8o3MHM4Q==
+"@sap/xssec@^3":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@sap/xssec/-/xssec-3.1.1.tgz#37f81a16657f4abed9e42d5d34cc73c3e2a5decb"
+  integrity sha512-4Z56fJJF0Y8c9PtCKIrr5T4V5MM0MztUKWlXbWvaN8BOYlZKBK58JacINAGnKZ1wMvnt483pAtRXImG5SGx5aA==
   dependencies:
-    "@sap/node-jwt" "^1.6.6"
     debug "4.1.1"
+    jsonwebtoken "^8.5.1"
     lru-cache "5.1.1"
-    request "2.88.0"
+    request "^2.88.2"
     requestretry "4.0.0"
     valid-url "1.0.9"
 
@@ -8330,32 +8325,6 @@ request-promise-native@^1.0.8:
     stealthy-require "^1.1.1"
     tough-cookie "^2.3.3"
 
-request@2.88.0, request@=2.88.0:
-  version "2.88.0"
-  resolved "https://registry.yarnpkg.com/request/-/request-2.88.0.tgz#9c2fca4f7d35b592efe57c7f0a55e81052124fef"
-  integrity sha512-NAqBSrijGLZdM0WZNsInLJpkJokL72XYjUpnB0iwsRgxh7dB6COrHnTBNwN0E+lHDAJzu7kLAkDeY08z2/A0hg==
-  dependencies:
-    aws-sign2 "~0.7.0"
-    aws4 "^1.8.0"
-    caseless "~0.12.0"
-    combined-stream "~1.0.6"
-    extend "~3.0.2"
-    forever-agent "~0.6.1"
-    form-data "~2.3.2"
-    har-validator "~5.1.0"
-    http-signature "~1.2.0"
-    is-typedarray "~1.0.0"
-    isstream "~0.1.2"
-    json-stringify-safe "~5.0.1"
-    mime-types "~2.1.19"
-    oauth-sign "~0.9.0"
-    performance-now "^2.1.0"
-    qs "~6.5.2"
-    safe-buffer "^5.1.2"
-    tough-cookie "~2.4.3"
-    tunnel-agent "^0.6.0"
-    uuid "^3.3.2"
-
 request@2.88.2, request@^2.87.0, request@^2.88.0, request@^2.88.2:
   version "2.88.2"
   resolved "https://registry.yarnpkg.com/request/-/request-2.88.2.tgz#d73c918731cb5a87da047e207234146f664d12b3"
@@ -8379,6 +8348,32 @@ request@2.88.2, request@^2.87.0, request@^2.88.0, request@^2.88.2:
     qs "~6.5.2"
     safe-buffer "^5.1.2"
     tough-cookie "~2.5.0"
+    tunnel-agent "^0.6.0"
+    uuid "^3.3.2"
+
+request@=2.88.0:
+  version "2.88.0"
+  resolved "https://registry.yarnpkg.com/request/-/request-2.88.0.tgz#9c2fca4f7d35b592efe57c7f0a55e81052124fef"
+  integrity sha512-NAqBSrijGLZdM0WZNsInLJpkJokL72XYjUpnB0iwsRgxh7dB6COrHnTBNwN0E+lHDAJzu7kLAkDeY08z2/A0hg==
+  dependencies:
+    aws-sign2 "~0.7.0"
+    aws4 "^1.8.0"
+    caseless "~0.12.0"
+    combined-stream "~1.0.6"
+    extend "~3.0.2"
+    forever-agent "~0.6.1"
+    form-data "~2.3.2"
+    har-validator "~5.1.0"
+    http-signature "~1.2.0"
+    is-typedarray "~1.0.0"
+    isstream "~0.1.2"
+    json-stringify-safe "~5.0.1"
+    mime-types "~2.1.19"
+    oauth-sign "~0.9.0"
+    performance-now "^2.1.0"
+    qs "~6.5.2"
+    safe-buffer "^5.1.2"
+    tough-cookie "~2.4.3"
     tunnel-agent "^0.6.0"
     uuid "^3.3.2"
 
