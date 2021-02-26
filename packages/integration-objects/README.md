@@ -18,7 +18,7 @@ The following OData services are provided:
 To consume integration objects, the project must contain libraries relevant to [SAP Cloud Application Programming Model](https://cap.cloud.sap/docs/) or CAP.
 
 In reference application, a typical package.json to consume Integration Objects would be as below:
-> {
+``` {
   "name": "integration-objects-refapp",
   "version": "1.0.0",
   "description": "",
@@ -49,6 +49,7 @@ In reference application, a typical package.json to consume Integration Objects 
   }
 }
 
+```
 The following steps need to be done beforehand: 
 1. Create srv and db folders in your project as a typical CDS project should look like.
 	
