@@ -42,12 +42,12 @@ In reference application, a typical package.json to consume Integration Objects 
     }
   },
   "author": "",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "dependencies": {
-    "@sap-cloud-sdk/currency-conversion-core": "0.0.2-3e22957",
-    "@sap-cloud-sdk/currency-conversion-models": "0.0.2-3e22957",
-    "@sap-cloud-sdk/currency-conversion-data-adapter": "0.0.2-3e22957",
-    "@sap-cloud-sdk/currency-conversion-integration-objects": "0.0.2-3e22957"
+    "@sap-cloud-sdk/currency-conversion-core": "0.0.1",
+    "@sap-cloud-sdk/currency-conversion-models": "0.0.1",
+    "@sap-cloud-sdk/currency-conversion-data-adapter": "0.0.1",
+    "@sap-cloud-sdk/currency-conversion-integration-objects": "0.0.1"
   }
 }
 
