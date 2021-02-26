@@ -23,13 +23,6 @@
     "coverage": "yarn jest --coverage",
     "start": "yarn cds run"
   },
-  "cds": {
-    "requires": {
-      "uaa": {
-        "kind": "xsuaa"
-      }
-    }
-  },
   "keywords": [
     "currency"
   ],
