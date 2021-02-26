@@ -17,6 +17,8 @@ The following OData services are provided:
 > NOTE:
 To consume integration objects, the project must contain libraries relevant to [SAP Cloud Application Programming Model](https://cap.cloud.sap/docs/) or CAP.
 
+## Usage
+
 In reference application, a typical package.json to consume Integration Objects would be as below:
 ``` {
   "name": "integration-objects-refapp",
@@ -59,4 +61,4 @@ The following steps need to be done beforehand:
 	
 4. The DB kind would need to be specified based on the DB being used. The above example shows hana being used. This configuration would generate native artifacts. 
 
-6. To build this entire project, you'd need to run the build script from the package.json. This step generates all the corresponding native artifacts for db and srv and also generates the manifest.yml files in case you'd need to deploy the modules individually.
+5. To build this entire project, you'd need to run the build script from the package.json. This step generates all the corresponding native artifacts for db and srv and also generates the manifest.yml files in case you'd need to deploy the modules individually.
