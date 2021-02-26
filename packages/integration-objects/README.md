@@ -18,7 +18,7 @@ The following OData services are provided:
 To consume integration objects, the project must contain libraries relevant to [SAP Cloud Application Programming Model](https://cap.cloud.sap/docs/) or CAP.
 
 In reference application, a typical package.json to consume Integration Objects would be as below:
-{
+> {
   "name": "integration-objects-refapp",
   "version": "1.0.0",
   "description": "",
