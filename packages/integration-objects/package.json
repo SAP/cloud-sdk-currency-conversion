@@ -35,6 +35,10 @@
   "keywords": [
     "currency"
   ],
+  "files": [
+    "build/**/*",
+    "cds-security.json"
+  ],
   "author": "SAP",
   "license": "Apache-2.0"
 }

@@ -13,6 +13,11 @@
   "keywords": [
     "currency"
   ],
+  "files": [
+    "build/**/*.js",
+    "build/**/*.json",
+    "build/**/*.ts"
+  ],
   "author": "SAP",
   "license": "Apache-2.0",
   "types": "build/index.d.ts",
