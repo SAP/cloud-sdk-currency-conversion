@@ -18,19 +18,10 @@
     "jest": "^26.5.3"
   },
   "scripts": {
-    "compile": "cds build/all",
-    "prepare": "yarn compile",
     "test": "yarn jest --coverage",
     "test:local": "yarn jest",
     "coverage": "yarn jest --coverage",
     "start": "yarn cds run"
-  },
-  "cds": {
-    "requires": {
-      "uaa": {
-        "kind": "xsuaa"
-      }
-    }
   },
   "keywords": [
     "currency"
