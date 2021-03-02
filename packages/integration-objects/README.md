@@ -56,9 +56,16 @@ Following are the prerequisites:
 1. Create *srv* and *db* folders in your project as a typical CDS project would look like.
 	
 2. Ensure that the *postinstall* hook in the package.json is present as above. The folders named *srv* and *db* into which you would be copying the downloaded artifacts should be the same as the ones created in step 1. This step also copies the *cds-security.json* to the parent directory.
+
+3. To bind roles to the xsuaa service, one would need to bind the role definition provided in the cds-security.json to the xsuaa service in the deployment descriptor under the resources section. A typical configuration in the mta.yaml file would look like the below:
+```parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./cds-security.json
+```
+
+4. To run the APIs, the user would need to be assigned the roles *CurrencyConversionDisplay* or *CurrencyConversionConfigure* that have been generated after follwing step 3. The *xsuaa* section under the *cds* in the package.json takes care of this. If step 3 was skipped, all users would be able to access the APIs.
 	
-3. To run the APIs, the user would need to be assigned the roles *CurrencyConversionDisplay* or *CurrencyConversionConfigure* depending on what roles the user would need as the token generation would require this step to have been done in prior. The *xsuaa* section under the *cds* in the package.json takes care of this.
-	
-4. The DB kind would need to be specified based on the DB being used. The above example shows hana being used. This configuration would generate native artifacts. 
+5. The DB kind would need to be specified based on the DB being used. The above example shows hana being used. This configuration would generate native artifacts. 
 
 5. To build this entire project, you need to run the *build* script from the package.json. This step generates all the corresponding native artifacts for *db* and *srv*. It generates the *manifest.yml* files too in case you need to deploy the modules individually.
