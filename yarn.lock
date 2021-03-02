@@ -1451,15 +1451,6 @@
     request "2.88.2"
     requestretry "4.1.1"
 
-"@sap/cds-compiler@^1.43.1":
-  version "1.46.6"
-  resolved "https://registry.yarnpkg.com/@sap/cds-compiler/-/cds-compiler-1.46.6.tgz#aa01abe181fd22498319b5f9c9b365b1c05a5f79"
-  integrity sha512-NyXMyJkCWTlXzVvgGxM9O59xrGnklExApE5EWqCI5jQLmWNOi6TPtWxh4+AsneWuRn1gZPr3EMHnqC4tjab9tw==
-  dependencies:
-    antlr4 "4.8.0"
-    resolve "1.8.1"
-    sax "^1.2.4"
-
 "@sap/cds-compiler@~1.49.0":
   version "1.49.2"
   resolved "https://registry.yarnpkg.com/@sap/cds-compiler/-/cds-compiler-1.49.2.tgz#ec211d3c23eef2bbb01e74afe6ce8b123e7fa16c"
@@ -1489,19 +1480,7 @@
   optionalDependencies:
     sqlite3 "5.0.0"
 
-"@sap/cds-foss@^2":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@sap/cds-foss/-/cds-foss-2.2.0.tgz#cf795f3c2bf0cb9eee9b4b3f5e8023511b1957cc"
-  integrity sha512-tOudlvY+YQ7cc5W2srUPEkpoz5syJHw5oezkRWd2PF9TMuIXXEFUTAsRPsPDIBgb9kxG9sFPFvAQSBr7c66DNQ==
-  dependencies:
-    big.js "5.2.2"
-    fs-extra "9.0.1"
-    generic-pool "3.7.1"
-    uuid "8.3.0"
-    xmlbuilder "15.1.1"
-    yaml "1.10.0"
-
-"@sap/cds-foss@^2.2.0":
+"@sap/cds-foss@^2", "@sap/cds-foss@^2.2.0":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@sap/cds-foss/-/cds-foss-2.2.1.tgz#46d9288216febbcc07b36fe2482c1be4ef4e79be"
   integrity sha512-I+zEyvt+YWznIxKw/Ygd8ZeyG02egCAqbT85kcz/DMyTQ6aCcq/0h1fsEb73f+p0U4M8oEt3ZN90hKs/F8ZAIw==
@@ -1512,29 +1491,6 @@
     uuid "8.3.0"
     xmlbuilder "15.1.1"
     yaml "1.10.0"
-
-"@sap/cds-reflect@^2.13.0":
-  version "2.13.4"
-  resolved "https://registry.yarnpkg.com/@sap/cds-reflect/-/cds-reflect-2.13.4.tgz#bb1ca29c957c6336e3be88a053f4afeb29853fdb"
-  integrity sha512-auxaDeQhY1tMcjHxtS3W6vhN11o+hKZEgi8Mw8wKiKby6g+IHu0TjqS9jK2vIj3BGFaAmV7g4OrTlbw3PvedpA==
-
-"@sap/cds-runtime@^2.5.0":
-  version "2.7.8"
-  resolved "https://registry.yarnpkg.com/@sap/cds-runtime/-/cds-runtime-2.7.8.tgz#bd83da3448b695ac5a9b221d9960d986ef2efcad"
-  integrity sha512-MNioDOg/Gfjg8j3/5IatlihSCnODwHr1+byWWwqaevnBju1Kt6Wh4Upu6LkasPURp+0F9joW03LBeXgWFRsLIg==
-  dependencies:
-    "@sap-cloud-sdk/core" "^1.18.1"
-    "@sap-cloud-sdk/util" "^1.18.1"
-    "@sap/cds-foss" "^2"
-
-"@sap/cds-runtime@~2.7.0":
-  version "2.7.10"
-  resolved "https://registry.yarnpkg.com/@sap/cds-runtime/-/cds-runtime-2.7.10.tgz#784489262785b3926dde7ce427df65389237d292"
-  integrity sha512-Zr7wDklogfNrqnsiyaitB/RCuFP8VauIlyctIx+RI1zSSSLvBf6AuXicTlUzdcRrcet3F9djW3oLXmyJPaXqIQ==
-  dependencies:
-    "@sap-cloud-sdk/core" "^1.18.1"
-    "@sap-cloud-sdk/util" "^1.18.1"
-    "@sap/cds-foss" "^2"
 
 "@sap/cds-runtime@~2.8.0":
   version "2.8.6"
@@ -1553,27 +1509,7 @@
     fs-extra "9.0.1"
     got "10.7.0"
 
-"@sap/cds@4.3.0":
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/@sap/cds/-/cds-4.3.0.tgz#932422ef73f26c9d93fe948f5f460d87146fb8d9"
-  integrity sha512-KdWY8+KbL81jIOQ5Th24jeWdJIgF7y+ySR1ORmM2//p0JR1MbUw+ceBclInbp7nPg2Gy5tmgy9YNMTEt2/1ekg==
-  dependencies:
-    "@sap/cds-compiler" "^1.43.1"
-    "@sap/cds-foss" "^2"
-    "@sap/cds-reflect" "^2.13.0"
-    "@sap/cds-runtime" "^2.5.0"
-
-"@sap/cds@4.4.9":
-  version "4.4.9"
-  resolved "https://registry.yarnpkg.com/@sap/cds/-/cds-4.4.9.tgz#4243c0752d951b7c4f910dda5feac7c643517be1"
-  integrity sha512-5lEJM435KbJjDejLuptoWUbC+CSUmXDphlfUH7zF5tGIAYO4QXSmFAP4FVRti0FC3ravEk80w20mBjJ21sVLkA==
-  dependencies:
-    "@sap/cds-compiler" "^1.43.1"
-    "@sap/cds-foss" "^2"
-    "@sap/cds-reflect" "^2.13.0"
-    "@sap/cds-runtime" "~2.7.0"
-
-"@sap/cds@^4.2.2":
+"@sap/cds@4.5.3", "@sap/cds@^4.2.2":
   version "4.5.3"
   resolved "https://registry.yarnpkg.com/@sap/cds/-/cds-4.5.3.tgz#7785a4227bb2ba107a8bb292cb2281cbc46b6399"
   integrity sha512-BCX/hj2Gc0HTLX0fK8UeIAhOch43lAQNbjY4M9aDEob2Mjtn9pVPuq/KIB0ogXTvoc9OpDUdEkA4Xs42GSL8aQ==
