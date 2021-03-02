@@ -68,4 +68,4 @@ Following are the prerequisites:
 	
 5. The DB kind would need to be specified based on the DB being used. The above example shows hana being used. This configuration would generate native artifacts. 
 
-5. To build this entire project, you need to run the *build* script from the package.json. This step generates all the corresponding native artifacts for *db* and *srv*. It generates the *manifest.yml* files too in case you need to deploy the modules individually.
+6. To build this entire project, you need to run the *build* script from the package.json. This step generates all the corresponding native artifacts for *db* and *srv*. It generates the *manifest.yml* files too in case you need to deploy the modules individually.
