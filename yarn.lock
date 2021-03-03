@@ -1634,9 +1634,9 @@
     verror "1.10.0"
 
 "@sap/xssec@^3":
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/@sap/xssec/-/xssec-3.1.1.tgz#37f81a16657f4abed9e42d5d34cc73c3e2a5decb"
-  integrity sha512-4Z56fJJF0Y8c9PtCKIrr5T4V5MM0MztUKWlXbWvaN8BOYlZKBK58JacINAGnKZ1wMvnt483pAtRXImG5SGx5aA==
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/@sap/xssec/-/xssec-3.1.2.tgz#28e7e97e8b30a70792887f6a3bba825d87ba9325"
+  integrity sha512-96rRCm2f0rCO+1FllqaQqnh+Fu0BT/JKonUqHMnu3Rf/ps8PQRATul1FBABKeNbIbhxHyFT57x8uYiWihROowQ==
   dependencies:
     debug "4.1.1"
     jsonwebtoken "^8.5.1"
