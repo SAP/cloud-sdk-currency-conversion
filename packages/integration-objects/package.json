@@ -27,7 +27,8 @@
     "currency"
   ],
   "files": [
-    "build/**/*",
+    "db/",
+    "srv/",
     "cds-security.json"
   ],
   "publishConfig": {
