@@ -5,7 +5,7 @@
   "dependencies": {
     "@sap-cloud-sdk/util": "^1.32.1",
     "@sap/audit-logging": "latest",
-    "@sap/cds": "4.4.9",
+    "@sap/cds": "4.6.5",
     "@sap/cds-dk": "^3.2.0",
     "@sap/hana-client": "^2",
     "@sap/hdi-deploy": "^4",
