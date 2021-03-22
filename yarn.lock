@@ -1406,21 +1406,21 @@
     "@octokit/openapi-types" "^2.3.0"
     "@types/node" ">= 8"
 
-"@sap-cloud-sdk/analytics@^1.38.0":
-  version "1.38.0"
-  resolved "https://registry.yarnpkg.com/@sap-cloud-sdk/analytics/-/analytics-1.38.0.tgz#b712c4e3575902838f5badd1bfc7db3136ed9b19"
-  integrity sha512-4EtgyrlBUXPr07PfC7gyW00hBHAcFpOEuD5Vh3lAW1bX8VPTcIEEMJISPvF8pXpRolsaMU82wFJdy5QxUfoviQ==
+"@sap-cloud-sdk/analytics@^1.40.0":
+  version "1.40.0"
+  resolved "https://registry.yarnpkg.com/@sap-cloud-sdk/analytics/-/analytics-1.40.0.tgz#8a1083704781e4052608dee4176067b20df4bbf4"
+  integrity sha512-NU+7oNGGTQpaHiskNdBDDA9Hn1Vu4MtL830HZj46uVina17kAS+EU/NwtLOVJg/s4aC7gGqMgbqpAfiPSPtiuQ==
   dependencies:
-    "@sap-cloud-sdk/util" "^1.38.0"
+    "@sap-cloud-sdk/util" "^1.40.0"
     axios "^0.21.1"
 
 "@sap-cloud-sdk/core@^1.18.1", "@sap-cloud-sdk/core@^1.32.1":
-  version "1.38.0"
-  resolved "https://registry.yarnpkg.com/@sap-cloud-sdk/core/-/core-1.38.0.tgz#2443f0bb98b867a047586975378265d88f8dcc12"
-  integrity sha512-LsIw0YNbflnUMR5ZuxNFpt3cYc1UPrrrfXQiMQAvqLEVCkkEZP/Miesm5MHpVesZ8arC8FwL66bwUIrM3djS1A==
+  version "1.40.0"
+  resolved "https://registry.yarnpkg.com/@sap-cloud-sdk/core/-/core-1.40.0.tgz#fab68fe8e84a7ec3d97edcdc1084d34b60d0dff1"
+  integrity sha512-Slk6/u3LX0UECDn96BqBYWEfesN7YbYDjx8iBdIWDw0Uj22ihvpYhCNAGCJrgkb8H5xt9W9wPQntV5CSaHuJSQ==
   dependencies:
-    "@sap-cloud-sdk/analytics" "^1.38.0"
-    "@sap-cloud-sdk/util" "^1.38.0"
+    "@sap-cloud-sdk/analytics" "^1.40.0"
+    "@sap-cloud-sdk/util" "^1.40.0"
     "@sap/xsenv" "^3.0.0"
     axios "^0.21.1"
     bignumber.js "^9.0.0"
@@ -1432,10 +1432,10 @@
     uuid "^8.2.0"
     voca "^1.4.0"
 
-"@sap-cloud-sdk/util@^1.18.1", "@sap-cloud-sdk/util@^1.32.1", "@sap-cloud-sdk/util@^1.38.0":
-  version "1.38.0"
-  resolved "https://registry.yarnpkg.com/@sap-cloud-sdk/util/-/util-1.38.0.tgz#47bff1d40953f077772c6f6e950bc939bf128d75"
-  integrity sha512-hhcI4CiDd7LasfzdqtKlz7crpWXd/R2xIejxeV76ifeW8x+C6wod8W9W53HN08D1tD4mv/tcsyP8igU9jLQ1pw==
+"@sap-cloud-sdk/util@^1.18.1", "@sap-cloud-sdk/util@^1.32.1", "@sap-cloud-sdk/util@^1.40.0":
+  version "1.40.0"
+  resolved "https://registry.yarnpkg.com/@sap-cloud-sdk/util/-/util-1.40.0.tgz#23fb86b59e8e0cbe4998086c0f1735ee97b8a85c"
+  integrity sha512-NJMu8y4MJQ2C/0AXp/uEiKnlMPkeRhxvucfi+bOWdp4rOXUjN08EyXif69I1GkDe4E0v76EuOjP5dLyN59rnoA==
   dependencies:
     chalk "^4.1.0"
     logform "^2.2.0"
