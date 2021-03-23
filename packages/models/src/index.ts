@@ -13,7 +13,7 @@ export * from './conversion-parameter-for-fixed-rate';
 export * from './currency';
 export * from './data-adapter';
 export * from './exchange-rate-type-detail';
-export * from './exchange-rate-value';
+export * from './value';
 export * from './exchange-rate';
 export * from './single-fixed-rate-conversion-result';
 export * from './single-non-fixed-rate-conversion-result';

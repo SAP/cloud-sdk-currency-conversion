@@ -10,7 +10,7 @@ import {
   CurrencyAmount,
   TenantSettings,
   SingleNonFixedRateConversionResult,
-  ExchangeRateValue,
+  Value,
   CurrencyConversionError,
   BulkConversionResult,
   buildConversionParameterForNonFixedRate,
@@ -37,10 +37,10 @@ const EUR: Currency = buildCurrency('EUR');
 const USD: Currency = buildCurrency('USD');
 const BHD: Currency = buildCurrency('BHD');
 
-const S_0_300623: ExchangeRateValue = new ExchangeRateValue('0.300623');
-const S_123_123: ExchangeRateValue = new ExchangeRateValue('123.123');
-const S_100: ExchangeRateValue = new ExchangeRateValue('100');
-const S_1: ExchangeRateValue = new ExchangeRateValue('1');
+const S_0_300623: Value = new Value('0.300623');
+const S_123_123: Value = new Value('123.123');
+const S_100: Value = new Value('100');
+const S_1: Value = new Value('1');
 
 const S_0_5: CurrencyAmount = new CurrencyAmount('0.5');
 const S_2: CurrencyAmount = new CurrencyAmount('2');

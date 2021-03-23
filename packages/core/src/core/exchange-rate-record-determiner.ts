@@ -8,8 +8,8 @@ import {
   ExchangeRateTypeDetail,
   TenantSettings,
   ConversionModelError,
-  buildExchangeRate,
-  ExchangeRateValue
+  setDefaultSettings,
+  Value
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { BigNumber } from 'bignumber.js';
 import { ConversionError } from '../constants/conversion-error';
@@ -48,8 +48,8 @@ export class ExchangeRateRecordDeterminer {
         conversionParameter.toCurrency
       )} - ${conversionParameter.conversionAsOfDateTime} exchange rate information to be used is valid date ${
         firstItemFromList.validFromDateTime
-      } - rate value as ${JSON.stringify(firstItemFromList.exchangeRateValue)} - inverted entry as ${
-        firstItemFromList.isIndirect
+      } - rate value as ${JSON.stringify(firstItemFromList.value)} - inverted entry as ${
+        firstItemFromList.settings.isIndirect
       }`
     );
     return firstItemFromList;
@@ -169,26 +169,29 @@ export class ExchangeRateRecordDeterminer {
       toReferenceCurrencyPair
     );
     const derivedExchangeRateList: ExchangeRate[] = [];
-    const derivedExchangeRate: ExchangeRate = buildExchangeRate(
-      this._tenant,
-      this._isTenantSettingNull ? null : fromReferenceCurrencyPair.ratesDataProviderCode,
-      this._isTenantSettingNull ? null : fromReferenceCurrencyPair.ratesDataSource,
-      fromReferenceCurrencyPair.exchangeRateType,
-      new ExchangeRateValue(derivedExchangeRateValue),
-      fromReferenceCurrencyPair.fromCurrency,
-      toReferenceCurrencyPair.fromCurrency,
-      fromReferenceCurrencyPair.validFromDateTime.getTime() < toReferenceCurrencyPair.validFromDateTime.getTime()
-        ? fromReferenceCurrencyPair.validFromDateTime
-        : toReferenceCurrencyPair.validFromDateTime
-    );
+    const derivedExchangeRate: ExchangeRate = {
+      settings: setDefaultSettings(this._tenant),
+      data: {
+        ratesDataProviderCode: this._isTenantSettingNull ? null : fromReferenceCurrencyPair.data.ratesDataProviderCode,
+        ratesDataSource: this._isTenantSettingNull ? null : fromReferenceCurrencyPair.data.ratesDataSource,
+        exchangeRateType: fromReferenceCurrencyPair.data.exchangeRateType
+      },
+      value: new Value(derivedExchangeRateValue),
+      fromCurrency: fromReferenceCurrencyPair.fromCurrency,
+      toCurrency: toReferenceCurrencyPair.fromCurrency,
+      validFromDateTime:
+        fromReferenceCurrencyPair.validFromDateTime.getTime() < toReferenceCurrencyPair.validFromDateTime.getTime()
+          ? fromReferenceCurrencyPair.validFromDateTime
+          : toReferenceCurrencyPair.validFromDateTime
+    };
     logger.debug(
       `The derived exchange rate based on reference currency has : rates data provider as ${
-        derivedExchangeRate.ratesDataProviderCode
-      } data source as ${derivedExchangeRate.ratesDataSource} rate type as ${
-        derivedExchangeRate.exchangeRateType
-      } exchange rate value as ${JSON.stringify(
-        derivedExchangeRate.exchangeRateValue.decimalValue
-      )} valid from date time as ${derivedExchangeRate.validFromDateTime}`
+        derivedExchangeRate.data.ratesDataProviderCode
+      } data source as ${derivedExchangeRate.data.ratesDataSource} rate type as ${
+        derivedExchangeRate.data.exchangeRateType
+      } exchange rate value as ${JSON.stringify(derivedExchangeRate.value.decimalValue)} valid from date time as ${
+        derivedExchangeRate.validFromDateTime
+      }`
     );
     derivedExchangeRateList.push(derivedExchangeRate);
     return derivedExchangeRateList;
@@ -204,15 +207,15 @@ export class ExchangeRateRecordDeterminer {
      * Considering from and to currency factors, the formula will be =
      * (x*(tox/fromx))/(y*(toy/fromy) or (x/y)*(tox/fromx)/(toy/fromy)
      */
-    const isFromReferenecPairIndirect: boolean = fromReferenceCurrencyPair.isIndirect;
-    const fromExchangeRateValue: BigNumber = fromReferenceCurrencyPair.exchangeRateValue.decimalValue;
+    const isFromReferenecPairIndirect: boolean = fromReferenceCurrencyPair.settings.isIndirect;
+    const fromExchangeRateValue: BigNumber = fromReferenceCurrencyPair.value.decimalValue;
     /* zero scale results in exception in division hence we will take the
      * default value of scale as 1.
      */
     const fromExchangeRateValueScale: number = fromExchangeRateValue.dp() === 0 ? 1 : fromExchangeRateValue.dp();
 
-    const isToReferenecPairIndirect: boolean = toReferenceCurrencyPair.isIndirect;
-    const toExchangeRateValue: BigNumber = toReferenceCurrencyPair.exchangeRateValue.decimalValue;
+    const isToReferenecPairIndirect: boolean = toReferenceCurrencyPair.settings.isIndirect;
+    const toExchangeRateValue: BigNumber = toReferenceCurrencyPair.value.decimalValue;
     /* zero scale results in exception in division hence we will take the
      * default value of scale as 1.
      */
@@ -278,9 +281,10 @@ export class ExchangeRateRecordDeterminer {
   }
 
   private getCurrencyFactorRatio(exchangeRate: ExchangeRate): number {
-    validateCurrencyFactor(exchangeRate.toCurrencyfactor);
-    validateCurrencyFactor(exchangeRate.fromCurrencyfactor);
-    const currencyFactorRatio: number = exchangeRate.toCurrencyfactor / exchangeRate.fromCurrencyfactor;
+    validateCurrencyFactor(exchangeRate.settings.toCurrencyfactor);
+    validateCurrencyFactor(exchangeRate.settings.fromCurrencyfactor);
+    const currencyFactorRatio: number =
+      exchangeRate.settings.toCurrencyfactor / exchangeRate.settings.fromCurrencyfactor;
     this.isRatioNaNOrInfinite(currencyFactorRatio);
     return currencyFactorRatio;
   }
@@ -503,15 +507,15 @@ export class ExchangeRateRecordDeterminer {
       const exchangeRateRecordWithSameTimeStamp = filteredExchangeRates.filter(
         exchangeRate =>
           exchangeRate.validFromDateTime === firstItemFromList.validFromDateTime &&
-          this.ifRatesDataProviderMatchesOrHasNullValue(exchangeRate, firstItemFromList.ratesDataProviderCode) &&
-          this.ifRatesDataSourceMatchesOrHasNullValue(exchangeRate, firstItemFromList.ratesDataSource)
+          this.ifRatesDataProviderMatchesOrHasNullValue(exchangeRate, firstItemFromList.data.ratesDataProviderCode) &&
+          this.ifRatesDataSourceMatchesOrHasNullValue(exchangeRate, firstItemFromList.data.ratesDataSource)
       );
       if (exchangeRateRecordWithSameTimeStamp.length !== 1) {
         const errorMessage: string =
           'Exchange Rate record to be used has Rates Data Provider Code : ' +
-          JSON.stringify(firstItemFromList.ratesDataProviderCode) +
+          JSON.stringify(firstItemFromList.data.ratesDataProviderCode) +
           ' Rates Data Source : ' +
-          JSON.stringify(firstItemFromList.ratesDataSource) +
+          JSON.stringify(firstItemFromList.data.ratesDataSource) +
           ' Time stamp : ' +
           firstItemFromList.validFromDateTime;
         logger.debug(errorMessage);
@@ -538,13 +542,13 @@ export class ExchangeRateRecordDeterminer {
         if (this.multipleDataProviderOrSourceExists(exchangeRate, firstItemFromList)) {
           const errorMessage: string =
             'Exchange Rate record to be used has Rates Data Provider Code : ' +
-            JSON.stringify(firstItemFromList.ratesDataProviderCode) +
+            JSON.stringify(firstItemFromList.data.ratesDataProviderCode) +
             ' Rates Data Source : ' +
-            JSON.stringify(firstItemFromList.ratesDataSource) +
+            JSON.stringify(firstItemFromList.data.ratesDataSource) +
             ' Exchange Rate record found with different Data Provider Code : ' +
-            JSON.stringify(exchangeRate.ratesDataProviderCode) +
+            JSON.stringify(exchangeRate.data.ratesDataProviderCode) +
             ' Data Source : ' +
-            JSON.stringify(exchangeRate.ratesDataSource);
+            JSON.stringify(exchangeRate.data.ratesDataSource);
           logger.debug(errorMessage);
           throw new CurrencyConversionError(ConversionError.MULTIPLE_CONVERSION_RECORD_FOUND);
         }
@@ -593,7 +597,7 @@ export class ExchangeRateRecordDeterminer {
   }
 
   private ifTenantMatches(exchangeRate: ExchangeRate): boolean {
-    return exchangeRate.tenantIdentifier?.id === this._tenant.id;
+    return exchangeRate.settings.tenantIdentifier?.id === this._tenant.id;
   }
 
   private isDateOnOrBeforeConversion(
@@ -610,8 +614,8 @@ export class ExchangeRateRecordDeterminer {
     exchangeRate: ExchangeRate,
     conversionParameter: ConversionParameterForNonFixedRate
   ): boolean {
-    this.validateString(exchangeRate.exchangeRateType, ConversionModelError.NULL_RATE_TYPE);
-    return exchangeRate.exchangeRateType === conversionParameter.exchangeRateType;
+    this.validateString(exchangeRate.data.exchangeRateType, ConversionModelError.NULL_RATE_TYPE);
+    return exchangeRate.data.exchangeRateType === conversionParameter.exchangeRateType;
   }
 
   private ifRateFromCurrencyMatchesParamFromCurrency(
@@ -719,24 +723,24 @@ export class ExchangeRateRecordDeterminer {
   }
 
   private ifRatesDataProviderCodeMatches(exchangeRate: ExchangeRate, ratesDataProviderCode: string): boolean {
-    if (!isNullish(exchangeRate.ratesDataProviderCode)) {
-      this.validateString(exchangeRate.ratesDataProviderCode, ConversionModelError.NULL_RATES_DATA_PROVIDER_CODE);
+    if (!isNullish(exchangeRate.data.ratesDataProviderCode)) {
+      this.validateString(exchangeRate.data.ratesDataProviderCode, ConversionModelError.NULL_RATES_DATA_PROVIDER_CODE);
     }
     return (
-      !isNullish(exchangeRate.ratesDataProviderCode) &&
+      !isNullish(exchangeRate.data.ratesDataProviderCode) &&
       !isNullish(ratesDataProviderCode) &&
-      exchangeRate.ratesDataProviderCode === ratesDataProviderCode
+      exchangeRate.data.ratesDataProviderCode === ratesDataProviderCode
     );
   }
 
   private ifRatesDataSourceMatches(exchangeRate: ExchangeRate, ratesDataSource: string): boolean {
-    if (!isNullish(exchangeRate.ratesDataSource)) {
-      this.validateString(exchangeRate.ratesDataSource, ConversionModelError.NULL_RATES_DATA_SOURCE);
+    if (!isNullish(exchangeRate.data.ratesDataSource)) {
+      this.validateString(exchangeRate.data.ratesDataSource, ConversionModelError.NULL_RATES_DATA_SOURCE);
     }
     return (
-      !isNullish(exchangeRate.ratesDataSource) &&
+      !isNullish(exchangeRate.data.ratesDataSource) &&
       !isNullish(ratesDataSource) &&
-      exchangeRate.ratesDataSource === ratesDataSource
+      exchangeRate.data.ratesDataSource === ratesDataSource
     );
   }
 
@@ -745,7 +749,7 @@ export class ExchangeRateRecordDeterminer {
     ratesDataProviderCode: string | null
   ): boolean {
     return (
-      isNullish(exchangeRate.ratesDataProviderCode) ||
+      isNullish(exchangeRate.data.ratesDataProviderCode) ||
       isNullish(ratesDataProviderCode) ||
       this.ifRatesDataProviderCodeMatches(exchangeRate, ratesDataProviderCode)
     );
@@ -753,7 +757,7 @@ export class ExchangeRateRecordDeterminer {
 
   private ifRatesDataSourceMatchesOrHasNullValue(exchangeRate: ExchangeRate, ratesDataSource: string | null): boolean {
     return (
-      isNullish(exchangeRate.ratesDataSource) ||
+      isNullish(exchangeRate.data.ratesDataSource) ||
       isNullish(ratesDataSource) ||
       this.ifRatesDataSourceMatches(exchangeRate, ratesDataSource)
     );
@@ -776,15 +780,18 @@ export class ExchangeRateRecordDeterminer {
   }
 
   private multipleDataProviderOrSourceExists(exchangeRate: ExchangeRate, firstItemFromList: ExchangeRate): boolean {
-    if (!isNullish(firstItemFromList.ratesDataProviderCode)) {
-      this.validateString(firstItemFromList.ratesDataProviderCode, ConversionModelError.NULL_RATES_DATA_PROVIDER_CODE);
+    if (!isNullish(firstItemFromList.data.ratesDataProviderCode)) {
+      this.validateString(
+        firstItemFromList.data.ratesDataProviderCode,
+        ConversionModelError.NULL_RATES_DATA_PROVIDER_CODE
+      );
     }
-    if (!isNullish(firstItemFromList.ratesDataSource)) {
-      this.validateString(firstItemFromList.ratesDataSource, ConversionModelError.NULL_RATES_DATA_SOURCE);
+    if (!isNullish(firstItemFromList.data.ratesDataSource)) {
+      this.validateString(firstItemFromList.data.ratesDataSource, ConversionModelError.NULL_RATES_DATA_SOURCE);
     }
     return (
-      !this.ifRatesDataProviderMatchesOrHasNullValue(exchangeRate, firstItemFromList.ratesDataProviderCode) ||
-      !this.ifRatesDataSourceMatchesOrHasNullValue(exchangeRate, firstItemFromList.ratesDataSource)
+      !this.ifRatesDataProviderMatchesOrHasNullValue(exchangeRate, firstItemFromList.data.ratesDataProviderCode) ||
+      !this.ifRatesDataSourceMatchesOrHasNullValue(exchangeRate, firstItemFromList.data.ratesDataSource)
     );
   }
 

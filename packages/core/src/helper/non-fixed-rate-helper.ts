@@ -10,8 +10,8 @@ import {
   ExchangeRateTypeDetail,
   SingleNonFixedRateConversionResult,
   TenantSettings,
-  ExchangeRateValue,
-  buildExchangeRate
+  Value,
+  setDefaultSettings
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { isNullish, createLogger } from '@sap-cloud-sdk/util';
 import { BigNumber } from 'bignumber.js';
@@ -120,16 +120,18 @@ function performSingleNonFixedConversion(
   let exchangeRateUsed: ExchangeRate;
   if (conversionParameters.fromCurrency.currencyCode === conversionParameters.toCurrency.currencyCode) {
     convertedValue = new CurrencyAmount(conversionParameters.fromAmount.decimalValue.toFormat(CURR_FORMAT));
-    exchangeRateUsed = buildExchangeRate(
-      tenant,
-      null,
-      null,
-      conversionParameters.exchangeRateType,
-      new ExchangeRateValue('1'),
-      conversionParameters.fromCurrency,
-      conversionParameters.toCurrency,
-      conversionParameters.conversionAsOfDateTime
-    );
+    exchangeRateUsed = {
+      settings: setDefaultSettings(tenant),
+      data: {
+        ratesDataProviderCode: null,
+        ratesDataSource: null,
+        exchangeRateType: conversionParameters.exchangeRateType
+      },
+      value: new Value('1'),
+      fromCurrency: conversionParameters.fromCurrency,
+      toCurrency: conversionParameters.toCurrency,
+      validFromDateTime: conversionParameters.conversionAsOfDateTime
+    };
   } else {
     exchangeRateUsed = exchangeRateDeterminer.getBestMatchedExchangeRateRecord(conversionParameters);
     convertedValue = doConversionWithThePickedRateRecord(conversionParameters, exchangeRateUsed);
@@ -180,8 +182,8 @@ function getEffectiveExchangeRateValue(
   exchangeRateToBeUsed: ExchangeRate
 ): BigNumber {
   let effectiveExchangeRateVal: BigNumber;
-  const isIndirect: boolean = exchangeRateToBeUsed.isIndirect;
-  const exchangeRateValue: BigNumber = exchangeRateToBeUsed.exchangeRateValue.decimalValue;
+  const isIndirect: boolean = exchangeRateToBeUsed.settings.isIndirect;
+  const exchangeRateValue: BigNumber = exchangeRateToBeUsed.value.decimalValue;
   const currencyFactorRatio: BigNumber = getCurrencyFactorRatio(exchangeRateToBeUsed);
 
   const additionOfScales = conversionParameters.fromAmount.decimalValue.dp() + exchangeRateValue.decimalPlaces();
@@ -261,9 +263,9 @@ function getEffecttiveRateForInvertedCurrencyPair(
  * (also foreign or source currency).
  */
 function getCurrencyFactorRatio(exchangeRate: ExchangeRate): BigNumber {
-  validateCurrencyFactor(exchangeRate.toCurrencyfactor);
-  validateCurrencyFactor(exchangeRate.fromCurrencyfactor);
-  const currencyFactorRatio: number = exchangeRate.toCurrencyfactor / exchangeRate.fromCurrencyfactor;
+  validateCurrencyFactor(exchangeRate.settings.toCurrencyfactor);
+  validateCurrencyFactor(exchangeRate.settings.fromCurrencyfactor);
+  const currencyFactorRatio: number = exchangeRate.settings.toCurrencyfactor / exchangeRate.settings.fromCurrencyfactor;
   isRatioNaNOrInfinite(currencyFactorRatio);
   return new BigNumber(currencyFactorRatio);
 }

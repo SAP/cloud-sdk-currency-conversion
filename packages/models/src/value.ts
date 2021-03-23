@@ -4,7 +4,7 @@ import { CurrencyConversionError } from './currency-conversion-error';
 import { ConversionModelError } from './constants/conversion-model-error';
 import { StringDecimalValue } from './string-decimal-value';
 
-export class ExchangeRateValue extends StringDecimalValue {
+export class Value extends StringDecimalValue {
   constructor(valueString: string) {
     super(valueString);
     if (this.decimalValue < new BigNumber(0)) {

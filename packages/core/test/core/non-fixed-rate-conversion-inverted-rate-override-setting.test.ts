@@ -8,7 +8,7 @@ import {
   CurrencyAmount,
   DataAdapter,
   ExchangeRate,
-  ExchangeRateValue,
+  Value,
   SingleNonFixedRateConversionResult,
   TenantSettings,
   ExchangeRateTypeDetail,
@@ -33,9 +33,9 @@ const ABC = 'ABC';
 const EUR: Currency = buildCurrency('EUR');
 const USD: Currency = buildCurrency('USD');
 
-const S_20: ExchangeRateValue = new ExchangeRateValue('20');
-const S_30: ExchangeRateValue = new ExchangeRateValue('30');
-const S_100: ExchangeRateValue = new ExchangeRateValue('100');
+const S_20: Value = new Value('20');
+const S_30: Value = new Value('30');
+const S_100: Value = new Value('100');
 
 const S_1: CurrencyAmount = new CurrencyAmount('1');
 const S_10000: CurrencyAmount = new CurrencyAmount('10000');

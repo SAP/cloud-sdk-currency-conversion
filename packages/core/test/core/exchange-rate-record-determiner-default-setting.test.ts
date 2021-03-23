@@ -5,12 +5,12 @@ import {
   ConversionParameterForNonFixedRate,
   ExchangeRateTypeDetail,
   ExchangeRate,
-  ExchangeRateValue,
+  Value,
   Currency,
   TenantSettings,
   buildConversionParameterForNonFixedRate,
-  buildExchangeRate,
-  buildExchangeRateTypeDetail
+  buildExchangeRateTypeDetail,
+  setDefaultSettings
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { ExchangeRateRecordDeterminer } from '../../src/core/exchange-rate-record-determiner';
 import { ConversionError } from '../../src/constants/conversion-error';
@@ -31,24 +31,24 @@ const INR: Currency = buildCurrency('INR');
 const EUR: Currency = buildCurrency('EUR');
 const USD: Currency = buildCurrency('USD');
 
-const S_0: ExchangeRateValue = new ExchangeRateValue('0');
-const S_0_5: ExchangeRateValue = new ExchangeRateValue('0.5');
-const S_1: ExchangeRateValue = new ExchangeRateValue('1');
-const S_2: ExchangeRateValue = new ExchangeRateValue('2');
-const S_3: ExchangeRateValue = new ExchangeRateValue('3');
-const S_50: ExchangeRateValue = new ExchangeRateValue('50');
-const S_5: ExchangeRateValue = new ExchangeRateValue('5');
-const S_8: ExchangeRateValue = new ExchangeRateValue('8');
-const S_10: ExchangeRateValue = new ExchangeRateValue('10');
-const S_0_02: ExchangeRateValue = new ExchangeRateValue('0.02');
-const S_0_08: ExchangeRateValue = new ExchangeRateValue('0.08');
-const S_7_00000001: ExchangeRateValue = new ExchangeRateValue('7.00000001');
-const S_21_00000001: ExchangeRateValue = new ExchangeRateValue('21.00000001');
-const S_100: ExchangeRateValue = new ExchangeRateValue('100');
-const S_200: ExchangeRateValue = new ExchangeRateValue('200');
-const S_7_0: ExchangeRateValue = new ExchangeRateValue('7.0');
-const S_21_0: ExchangeRateValue = new ExchangeRateValue('21.0');
-const S_0_33333333333333: ExchangeRateValue = new ExchangeRateValue('0.33333333333333');
+const S_0: Value = new Value('0');
+const S_0_5: Value = new Value('0.5');
+const S_1: Value = new Value('1');
+const S_2: Value = new Value('2');
+const S_3: Value = new Value('3');
+const S_50: Value = new Value('50');
+const S_5: Value = new Value('5');
+const S_8: Value = new Value('8');
+const S_10: Value = new Value('10');
+const S_0_02: Value = new Value('0.02');
+const S_0_08: Value = new Value('0.08');
+const S_7_00000001: Value = new Value('7.00000001');
+const S_21_00000001: Value = new Value('21.00000001');
+const S_100: Value = new Value('100');
+const S_200: Value = new Value('200');
+const S_7_0: Value = new Value('7.0');
+const S_21_0: Value = new Value('21.0');
+const S_0_33333333333333: Value = new Value('0.33333333333333');
 
 const S_2020_01_01T02_30_00Z: Date = new Date('2020-01-01T02:30:00Z');
 const S_2020_02_01T02_30_00Z: Date = new Date('2020-02-01T02:30:00Z');
@@ -114,612 +114,655 @@ const usdEurMConversionParam: ConversionParameterForNonFixedRate = buildConversi
 
 /* Exchange Rate starts*/
 
-const inrEurMrmEcbMRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_100,
-  INR,
-  EUR,
-  S_2019_09_16T02_30_00Z,
-  false,
-  1,
-  1
-);
-const inrEurMrmEcbMDuplicateRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_100,
-  INR,
-  EUR,
-  S_2019_09_16T02_30_00Z,
-  false,
-  1,
-  1
-);
+const inrEurMrmEcbMRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_100,
+  fromCurrency: INR,
+  toCurrency: EUR,
+  validFromDateTime: S_2019_09_16T02_30_00Z
+};
 
-const eurInrMrmEcbMRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_100,
-  EUR,
-  INR,
-  S_2020_01_16T02_30_00Z,
-  false,
-  1,
-  1
-);
-const eurInrMrmEcbMDuplicateRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_100,
-  EUR,
-  INR,
-  S_2019_09_16T02_30_00Z,
-  false,
-  1,
-  1
-);
+const inrEurMrmEcbMDuplicateRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_100,
+  fromCurrency: INR,
+  toCurrency: EUR,
+  validFromDateTime: S_2019_09_16T02_30_00Z
+};
 
-const eurInrMrmEcbAskIndirectTrueRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  ASK,
-  S_100,
-  EUR,
-  INR,
-  S_2020_01_01T02_30_00Z,
-  true,
-  1,
-  1
-);
-const eurInrMrmEcbAskIndirectFalseRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  ASK,
-  S_100,
-  EUR,
-  INR,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
+const eurInrMrmEcbMRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_100,
+  fromCurrency: EUR,
+  toCurrency: INR,
+  validFromDateTime: S_2020_01_16T02_30_00Z
+};
 
-const inrEurMrmEcbMDiffrentTenantRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID1,
-  MRM,
-  ECB,
-  M,
-  S_100,
-  INR,
-  EUR,
-  S_2019_09_16T02_30_00Z,
-  false,
-  1,
-  1
-);
+const eurInrMrmEcbMDuplicateRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_100,
+  fromCurrency: EUR,
+  toCurrency: INR,
+  validFromDateTime: S_2019_09_16T02_30_00Z
+};
 
-const eurUsdMrmEcbMRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_100,
-  EUR,
-  USD,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
-const usdEurMrmEcbMRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_100,
-  USD,
-  EUR,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
-const usdInrMrmEcbMRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_100,
-  USD,
-  INR,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
+const eurInrMrmEcbAskIndirectTrueRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: true,
+    fromCurrencyfactor: 1,
+    toCurrencyfactor: 1
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: ASK
+  },
+  value: S_100,
+  fromCurrency: EUR,
+  toCurrency: INR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
-const usdInrMrmEcbLastRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  LAST,
-  S_10,
-  USD,
-  INR,
-  S_2020_02_01T02_30_00Z,
-  false,
-  1,
-  1
-);
-const eurInrMrmEcbLastRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  LAST,
-  S_10,
-  EUR,
-  INR,
-  S_2020_02_01T02_30_00Z,
-  false,
-  1,
-  1
-);
+const eurInrMrmEcbAskIndirectFalseRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: ASK
+  },
+  value: S_100,
+  fromCurrency: EUR,
+  toCurrency: INR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
-const eurUsdMrmEcbIndirectTrueRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  A,
-  S_2,
-  EUR,
-  USD,
-  S_2020_01_01T02_30_00Z,
-  true,
-  1,
-  1
-);
-const eurUsdMrmEcbIndirectFalseRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  A,
-  S_2,
-  EUR,
-  USD,
-  S_2020_02_01T02_30_00Z,
-  false,
-  1,
-  1
-);
+const inrEurMrmEcbMDiffrentTenantRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID1),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_100,
+  fromCurrency: INR,
+  toCurrency: EUR,
+  validFromDateTime: S_2019_09_16T02_30_00Z
+};
 
-const eurInrMrmEcbARate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  A,
-  S_5,
-  EUR,
-  INR,
-  S_2020_02_01T02_30_00Z,
-  false,
-  1,
-  1
-);
-const eurInrMrmEcbADateBeforeRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  A,
-  S_5,
-  EUR,
-  INR,
-  S_2019_09_16T02_30_00Z,
-  false,
-  1,
-  1
-);
-const usdInrMrmEcbARate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  A,
-  S_10,
-  USD,
-  INR,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
-const eurUsdMrmEcbARate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  A,
-  S_2,
-  EUR,
-  USD,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
+const eurUsdMrmEcbMRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_100,
+  fromCurrency: EUR,
+  toCurrency: USD,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
-const eurInrMrmEcbADuplicateRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  A,
-  S_5,
-  EUR,
-  INR,
-  S_2020_02_01T02_30_00Z,
-  false,
-  1,
-  1
-);
-const usdInrMrmEcbADuplicateRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  A,
-  S_5,
-  USD,
-  INR,
-  S_2020_02_01T02_30_00Z,
-  false,
-  1,
-  1
-);
+const usdEurMrmEcbMRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_100,
+  fromCurrency: USD,
+  toCurrency: EUR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
-const eurInrMrmIndirectTrueRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  A,
-  S_5,
-  EUR,
-  INR,
-  S_2020_02_01T02_30_00Z,
-  true,
-  1,
-  1
-);
-const eurInrMrmIndirectFalseRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  A,
-  S_5,
-  EUR,
-  INR,
-  S_2020_02_01T02_30_00Z,
-  false,
-  1,
-  1
-);
+const usdInrMrmEcbMRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_100,
+  fromCurrency: USD,
+  toCurrency: INR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
-const eurInrMrmIndirectTrueFactorMoreThanOneRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  A,
-  S_5,
-  EUR,
-  INR,
-  S_2020_02_01T02_30_00Z,
-  true,
-  5,
-  10
-);
-const eurInrMrmIndirectFalseFactorMoreThanOneRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  A,
-  S_5,
-  EUR,
-  INR,
-  S_2020_02_01T02_30_00Z,
-  false,
-  5,
-  10
-);
+const usdInrMrmEcbLastRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: LAST
+  },
+  value: S_10,
+  fromCurrency: USD,
+  toCurrency: INR,
+  validFromDateTime: S_2020_02_01T02_30_00Z
+};
 
-const usdInrMrmIndirectTrueRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  A,
-  S_10,
-  USD,
-  INR,
-  S_2020_01_01T02_30_00Z,
-  true,
-  1,
-  1
-);
-const usdInrMrmIndirectFalseRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  A,
-  S_10,
-  USD,
-  INR,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
+const eurInrMrmEcbLastRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: LAST
+  },
+  value: S_10,
+  fromCurrency: EUR,
+  toCurrency: INR,
+  validFromDateTime: S_2020_02_01T02_30_00Z
+};
 
-const usdInrMrmIndirectTrueFactorMoreThanOneRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  A,
-  S_10,
-  USD,
-  INR,
-  S_2020_01_01T02_30_00Z,
-  true,
-  10,
-  5
-);
-const usdInrMrmIndirectFalseFactorMoreThanOneRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  A,
-  S_10,
-  USD,
-  INR,
-  S_2020_01_01T02_30_00Z,
-  false,
-  10,
-  5
-);
+const eurUsdMrmEcbIndirectTrueRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: true,
+    fromCurrencyfactor: 1,
+    toCurrencyfactor: 1
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: A
+  },
+  value: S_2,
+  fromCurrency: EUR,
+  toCurrency: USD,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
-const usdInrMrmEcbDuplicateDateRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  A,
-  S_10,
-  USD,
-  INR,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
+const eurUsdMrmEcbIndirectFalseRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: A
+  },
+  value: S_2,
+  fromCurrency: EUR,
+  toCurrency: USD,
+  validFromDateTime: S_2020_02_01T02_30_00Z
+};
 
-const eurInrMrmThrMRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  THR,
-  M,
-  S_100,
-  EUR,
-  INR,
-  S_2019_09_16T02_30_00Z,
-  false,
-  1,
-  1
-);
-const eurInrMrmThrAskIndirectTrueRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  THR,
-  ASK,
-  S_100,
-  EUR,
-  INR,
-  S_2020_01_01T02_30_00Z,
-  true,
-  1,
-  1
-);
+const eurInrMrmEcbARate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: A
+  },
+  value: S_5,
+  fromCurrency: EUR,
+  toCurrency: INR,
+  validFromDateTime: S_2020_02_01T02_30_00Z
+};
 
-const eurInrMrmIndirectFalseRateInfiniteDecimal: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  A,
-  S_3,
-  EUR,
-  INR,
-  S_2020_02_01T02_30_00Z,
-  false,
-  1,
-  1
-);
-const usdInrMrmIndirectFalseRateInfiniteDecimal: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  A,
-  S_3,
-  USD,
-  INR,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
+const eurInrMrmEcbADateBeforeRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: A
+  },
+  value: S_5,
+  fromCurrency: EUR,
+  toCurrency: INR,
+  validFromDateTime: S_2019_09_16T02_30_00Z
+};
 
-const eurInrMrmEcbZeroRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  A,
-  S_0,
-  EUR,
-  INR,
-  S_2020_02_01T02_30_00Z,
-  false,
-  1,
-  1
-);
-const usdInrMrmEcbZeroRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  A,
-  S_0,
-  USD,
-  INR,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
+const usdInrMrmEcbARate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: A
+  },
+  value: S_10,
+  fromCurrency: USD,
+  toCurrency: INR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
-const eurInrMrmEcbZeroFactor: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  A,
-  S_10,
-  EUR,
-  INR,
-  S_2020_02_01T02_30_00Z,
-  false,
-  0,
-  0
-);
-const usdInrMrmEcbZeroFactor: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  A,
-  S_10,
-  USD,
-  INR,
-  S_2020_01_01T02_30_00Z,
-  false,
-  0,
-  0
-);
+const eurUsdMrmEcbARate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: A
+  },
+  value: S_2,
+  fromCurrency: EUR,
+  toCurrency: USD,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
-const eurInrMrmEcbZeroFactorRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  A,
-  S_0,
-  EUR,
-  INR,
-  S_2020_02_01T02_30_00Z,
-  false,
-  0,
-  0
-);
-const usdInrMrmEcbZeroFactorRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  A,
-  S_0,
-  USD,
-  INR,
-  S_2020_01_01T02_30_00Z,
-  false,
-  0,
-  0
-);
+const eurInrMrmEcbADuplicateRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: A
+  },
+  value: S_5,
+  fromCurrency: EUR,
+  toCurrency: INR,
+  validFromDateTime: S_2020_02_01T02_30_00Z
+};
 
-const eurInrMrmEcbScaleMoreThanDefaultRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  A,
-  S_7_00000001,
-  EUR,
-  INR,
-  S_2020_02_01T02_30_00Z,
-  false,
-  1,
-  1
-);
-const usdInrMrmEcbScaleMoreThanDefaultRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  A,
-  S_21_00000001,
-  USD,
-  INR,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
+const usdInrMrmEcbADuplicateRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: A
+  },
+  value: S_5,
+  fromCurrency: USD,
+  toCurrency: INR,
+  validFromDateTime: S_2020_02_01T02_30_00Z
+};
 
-const eurInrMrmEcbScaleMoreThanZeroRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  A,
-  S_7_0,
-  EUR,
-  INR,
-  S_2020_02_01T02_30_00Z,
-  false,
-  1,
-  1
-);
-const usdInrMrmEcbScaleMoreThanZeroRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  A,
-  S_21_0,
-  USD,
-  INR,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
+const eurInrMrmIndirectTrueRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: true,
+    fromCurrencyfactor: 1,
+    toCurrencyfactor: 1
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: A
+  },
+  value: S_5,
+  fromCurrency: EUR,
+  toCurrency: INR,
+  validFromDateTime: S_2020_02_01T02_30_00Z
+};
 
-const eurUsdMrmEcbIndirectFalseInvertedTrueRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_100,
-  EUR,
-  USD,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
-const usdEurMrmEcbIndirectFalseInvertedTrueRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_100,
-  USD,
-  EUR,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
+const eurInrMrmIndirectFalseRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: A
+  },
+  value: S_5,
+  fromCurrency: EUR,
+  toCurrency: INR,
+  validFromDateTime: S_2020_02_01T02_30_00Z
+};
+
+const eurInrMrmIndirectTrueFactorMoreThanOneRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: true,
+    fromCurrencyfactor: 5,
+    toCurrencyfactor: 10
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: A
+  },
+  value: S_5,
+  fromCurrency: EUR,
+  toCurrency: INR,
+  validFromDateTime: S_2020_02_01T02_30_00Z
+};
+
+const eurInrMrmIndirectFalseFactorMoreThanOneRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: false,
+    fromCurrencyfactor: 5,
+    toCurrencyfactor: 10
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: A
+  },
+  value: S_5,
+  fromCurrency: EUR,
+  toCurrency: INR,
+  validFromDateTime: S_2020_02_01T02_30_00Z
+};
+
+const usdInrMrmIndirectTrueRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: true,
+    fromCurrencyfactor: 1,
+    toCurrencyfactor: 1
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: A
+  },
+  value: S_10,
+  fromCurrency: USD,
+  toCurrency: INR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const usdInrMrmIndirectFalseRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: A
+  },
+  value: S_10,
+  fromCurrency: USD,
+  toCurrency: INR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const usdInrMrmIndirectTrueFactorMoreThanOneRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: true,
+    fromCurrencyfactor: 10,
+    toCurrencyfactor: 5
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: A
+  },
+  value: S_10,
+  fromCurrency: USD,
+  toCurrency: INR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const usdInrMrmIndirectFalseFactorMoreThanOneRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: false,
+    fromCurrencyfactor: 10,
+    toCurrencyfactor: 5
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: A
+  },
+  value: S_10,
+  fromCurrency: USD,
+  toCurrency: INR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const usdInrMrmEcbDuplicateDateRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: A
+  },
+  value: S_10,
+  fromCurrency: USD,
+  toCurrency: INR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const eurInrMrmThrMRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: THR,
+    exchangeRateType: M
+  },
+  value: S_100,
+  fromCurrency: EUR,
+  toCurrency: INR,
+  validFromDateTime: S_2019_09_16T02_30_00Z
+};
+
+const eurInrMrmThrAskIndirectTrueRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: true,
+    fromCurrencyfactor: 1,
+    toCurrencyfactor: 1
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: THR,
+    exchangeRateType: ASK
+  },
+  value: S_100,
+  fromCurrency: EUR,
+  toCurrency: INR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const eurInrMrmIndirectFalseRateInfiniteDecimal: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: A
+  },
+  value: S_3,
+  fromCurrency: EUR,
+  toCurrency: INR,
+  validFromDateTime: S_2020_02_01T02_30_00Z
+};
+
+const usdInrMrmIndirectFalseRateInfiniteDecimal: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: A
+  },
+  value: S_3,
+  fromCurrency: USD,
+  toCurrency: INR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const eurInrMrmEcbZeroRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: A
+  },
+  value: S_0,
+  fromCurrency: EUR,
+  toCurrency: INR,
+  validFromDateTime: S_2020_02_01T02_30_00Z
+};
+
+const usdInrMrmEcbZeroRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: A
+  },
+  value: S_0,
+  fromCurrency: USD,
+  toCurrency: INR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const eurInrMrmEcbZeroFactor: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: false,
+    fromCurrencyfactor: 0,
+    toCurrencyfactor: 0
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: A
+  },
+  value: S_10,
+  fromCurrency: EUR,
+  toCurrency: INR,
+  validFromDateTime: S_2020_02_01T02_30_00Z
+};
+
+const usdInrMrmEcbZeroFactor: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: false,
+    fromCurrencyfactor: 0,
+    toCurrencyfactor: 0
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: A
+  },
+  value: S_10,
+  fromCurrency: USD,
+  toCurrency: INR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const eurInrMrmEcbZeroFactorRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: false,
+    fromCurrencyfactor: 0,
+    toCurrencyfactor: 0
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: A
+  },
+  value: S_0,
+  fromCurrency: EUR,
+  toCurrency: INR,
+  validFromDateTime: S_2020_02_01T02_30_00Z
+};
+
+const usdInrMrmEcbZeroFactorRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: false,
+    fromCurrencyfactor: 0,
+    toCurrencyfactor: 0
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: A
+  },
+  value: S_0,
+  fromCurrency: USD,
+  toCurrency: INR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const eurInrMrmEcbScaleMoreThanDefaultRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: A
+  },
+  value: S_7_00000001,
+  fromCurrency: EUR,
+  toCurrency: INR,
+  validFromDateTime: S_2020_02_01T02_30_00Z
+};
+
+const usdInrMrmEcbScaleMoreThanDefaultRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: A
+  },
+  value: S_21_00000001,
+  fromCurrency: USD,
+  toCurrency: INR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const eurInrMrmEcbScaleMoreThanZeroRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: A
+  },
+  value: S_7_0,
+  fromCurrency: EUR,
+  toCurrency: INR,
+  validFromDateTime: S_2020_02_01T02_30_00Z
+};
+
+const usdInrMrmEcbScaleMoreThanZeroRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: A
+  },
+  value: S_21_0,
+  fromCurrency: USD,
+  toCurrency: INR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const eurUsdMrmEcbIndirectFalseInvertedTrueRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_100,
+  fromCurrency: EUR,
+  toCurrency: USD,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const usdEurMrmEcbIndirectFalseInvertedTrueRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_100,
+  fromCurrency: USD,
+  toCurrency: EUR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
 /* Exchange Rate ends*/
 
@@ -1018,19 +1061,18 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
-    const expectedExchangeRate: ExchangeRate = buildExchangeRate(
-      TENANT_ID,
-      MRM,
-      ECB,
-      A,
-      S_0_5,
-      EUR,
-      USD,
-      S_2020_01_01T02_30_00Z,
-      false,
-      1,
-      1
-    );
+    const expectedExchangeRate: ExchangeRate = {
+      settings: setDefaultSettings(TENANT_ID),
+      data: {
+        ratesDataProviderCode: MRM,
+        ratesDataSource: ECB,
+        exchangeRateType: A
+      },
+      value: S_0_5,
+      fromCurrency: EUR,
+      toCurrency: USD,
+      validFromDateTime: S_2020_01_01T02_30_00Z
+    };
     const actualExchangeRateRecord: ExchangeRate = exchangeRateRecordDeterminer.getBestMatchedExchangeRateRecord(
       eurUsdAConversionParam
     );
@@ -1045,19 +1087,18 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
-    const expectedExchangeRate: ExchangeRate = buildExchangeRate(
-      TENANT_ID,
-      MRM,
-      ECB,
-      A,
-      S_0_33333333333333,
-      EUR,
-      USD,
-      S_2020_01_01T02_30_00Z,
-      false,
-      1,
-      1
-    );
+    const expectedExchangeRate: ExchangeRate = {
+      settings: setDefaultSettings(TENANT_ID),
+      data: {
+        ratesDataProviderCode: MRM,
+        ratesDataSource: ECB,
+        exchangeRateType: A
+      },
+      value: S_0_33333333333333,
+      fromCurrency: EUR,
+      toCurrency: USD,
+      validFromDateTime: S_2020_01_01T02_30_00Z
+    };
     const actualExchangeRateRecord: ExchangeRate = exchangeRateRecordDeterminer.getBestMatchedExchangeRateRecord(
       eurUsdAConversionParam
     );
@@ -1072,19 +1113,18 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
-    const expectedExchangeRate: ExchangeRate = buildExchangeRate(
-      TENANT_ID,
-      MRM,
-      ECB,
-      A,
-      new ExchangeRateValue('0.3333333336507937'),
-      EUR,
-      USD,
-      S_2020_01_01T02_30_00Z,
-      false,
-      1,
-      1
-    );
+    const expectedExchangeRate: ExchangeRate = {
+      settings: setDefaultSettings(TENANT_ID),
+      data: {
+        ratesDataProviderCode: MRM,
+        ratesDataSource: ECB,
+        exchangeRateType: A
+      },
+      value: new Value('0.3333333336507937'),
+      fromCurrency: EUR,
+      toCurrency: USD,
+      validFromDateTime: S_2020_01_01T02_30_00Z
+    };
     const actualExchangeRateRecord: ExchangeRate = exchangeRateRecordDeterminer.getBestMatchedExchangeRateRecord(
       eurUsdAConversionParam
     );
@@ -1096,19 +1136,18 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
-    const expectedExchangeRate: ExchangeRate = buildExchangeRate(
-      TENANT_ID,
-      MRM,
-      ECB,
-      A,
-      S_0_5,
-      EUR,
-      USD,
-      S_2019_09_16T02_30_00Z,
-      false,
-      1,
-      1
-    );
+    const expectedExchangeRate: ExchangeRate = {
+      settings: setDefaultSettings(TENANT_ID),
+      data: {
+        ratesDataProviderCode: MRM,
+        ratesDataSource: ECB,
+        exchangeRateType: A
+      },
+      value: S_0_5,
+      fromCurrency: EUR,
+      toCurrency: USD,
+      validFromDateTime: S_2019_09_16T02_30_00Z
+    };
     const actualExchangeRateRecord: ExchangeRate = exchangeRateRecordDeterminer.getBestMatchedExchangeRateRecord(
       eurUsdAConversionParam
     );
@@ -1294,19 +1333,18 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
-    const expectedExchangeRate: ExchangeRate = buildExchangeRate(
-      TENANT_ID,
-      MRM,
-      ECB,
-      A,
-      S_2,
-      EUR,
-      USD,
-      S_2020_01_01T02_30_00Z,
-      false,
-      1,
-      1
-    );
+    const expectedExchangeRate: ExchangeRate = {
+      settings: setDefaultSettings(TENANT_ID),
+      data: {
+        ratesDataProviderCode: MRM,
+        ratesDataSource: ECB,
+        exchangeRateType: A
+      },
+      value: S_2,
+      fromCurrency: EUR,
+      toCurrency: USD,
+      validFromDateTime: S_2020_01_01T02_30_00Z
+    };
     const actualExchangeRateRecord: ExchangeRate = exchangeRateRecordDeterminer.getBestMatchedExchangeRateRecord(
       eurUsdAConversionParam
     );
@@ -1318,19 +1356,18 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
-    const expectedExchangeRate: ExchangeRate = buildExchangeRate(
-      TENANT_ID,
-      MRM,
-      ECB,
-      A,
-      S_0_02,
-      EUR,
-      USD,
-      S_2020_01_01T02_30_00Z,
-      false,
-      1,
-      1
-    );
+    const expectedExchangeRate: ExchangeRate = {
+      settings: setDefaultSettings(TENANT_ID),
+      data: {
+        ratesDataProviderCode: MRM,
+        ratesDataSource: ECB,
+        exchangeRateType: A
+      },
+      value: S_0_02,
+      fromCurrency: EUR,
+      toCurrency: USD,
+      validFromDateTime: S_2020_01_01T02_30_00Z
+    };
     const actualExchangeRateRecord: ExchangeRate = exchangeRateRecordDeterminer.getBestMatchedExchangeRateRecord(
       eurUsdAConversionParam
     );
@@ -1342,19 +1379,18 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
-    const expectedExchangeRate: ExchangeRate = buildExchangeRate(
-      TENANT_ID,
-      MRM,
-      ECB,
-      A,
-      S_50,
-      EUR,
-      USD,
-      S_2020_01_01T02_30_00Z,
-      false,
-      1,
-      1
-    );
+    const expectedExchangeRate: ExchangeRate = {
+      settings: setDefaultSettings(TENANT_ID),
+      data: {
+        ratesDataProviderCode: MRM,
+        ratesDataSource: ECB,
+        exchangeRateType: A
+      },
+      value: S_50,
+      fromCurrency: EUR,
+      toCurrency: USD,
+      validFromDateTime: S_2020_01_01T02_30_00Z
+    };
     const actualExchangeRateRecord: ExchangeRate = exchangeRateRecordDeterminer.getBestMatchedExchangeRateRecord(
       eurUsdAConversionParam
     );
@@ -1366,19 +1402,18 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
-    const expectedExchangeRate: ExchangeRate = buildExchangeRate(
-      TENANT_ID,
-      MRM,
-      ECB,
-      A,
-      S_0_5,
-      EUR,
-      USD,
-      S_2020_01_01T02_30_00Z,
-      false,
-      1,
-      1
-    );
+    const expectedExchangeRate: ExchangeRate = {
+      settings: setDefaultSettings(TENANT_ID),
+      data: {
+        ratesDataProviderCode: MRM,
+        ratesDataSource: ECB,
+        exchangeRateType: A
+      },
+      value: S_0_5,
+      fromCurrency: EUR,
+      toCurrency: USD,
+      validFromDateTime: S_2020_01_01T02_30_00Z
+    };
     const actualExchangeRateRecord: ExchangeRate = exchangeRateRecordDeterminer.getBestMatchedExchangeRateRecord(
       eurUsdAConversionParam
     );
@@ -1393,19 +1428,18 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
-    const expectedExchangeRate: ExchangeRate = buildExchangeRate(
-      TENANT_ID,
-      MRM,
-      ECB,
-      A,
-      S_1,
-      EUR,
-      USD,
-      S_2020_01_01T02_30_00Z,
-      false,
-      1,
-      1
-    );
+    const expectedExchangeRate: ExchangeRate = {
+      settings: setDefaultSettings(TENANT_ID),
+      data: {
+        ratesDataProviderCode: MRM,
+        ratesDataSource: ECB,
+        exchangeRateType: A
+      },
+      value: S_1,
+      fromCurrency: EUR,
+      toCurrency: USD,
+      validFromDateTime: S_2020_01_01T02_30_00Z
+    };
     const actualExchangeRateRecord: ExchangeRate = exchangeRateRecordDeterminer.getBestMatchedExchangeRateRecord(
       eurUsdAConversionParam
     );
@@ -1420,19 +1454,18 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
-    const expectedExchangeRate: ExchangeRate = buildExchangeRate(
-      TENANT_ID,
-      MRM,
-      ECB,
-      A,
-      S_8,
-      EUR,
-      USD,
-      S_2020_01_01T02_30_00Z,
-      false,
-      1,
-      1
-    );
+    const expectedExchangeRate: ExchangeRate = {
+      settings: setDefaultSettings(TENANT_ID),
+      data: {
+        ratesDataProviderCode: MRM,
+        ratesDataSource: ECB,
+        exchangeRateType: A
+      },
+      value: S_8,
+      fromCurrency: EUR,
+      toCurrency: USD,
+      validFromDateTime: S_2020_01_01T02_30_00Z
+    };
     const actualExchangeRateRecord: ExchangeRate = exchangeRateRecordDeterminer.getBestMatchedExchangeRateRecord(
       eurUsdAConversionParam
     );
@@ -1447,19 +1480,18 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
-    const expectedExchangeRate: ExchangeRate = buildExchangeRate(
-      TENANT_ID,
-      MRM,
-      ECB,
-      A,
-      S_0_08,
-      EUR,
-      USD,
-      S_2020_01_01T02_30_00Z,
-      false,
-      1,
-      1
-    );
+    const expectedExchangeRate: ExchangeRate = {
+      settings: setDefaultSettings(TENANT_ID),
+      data: {
+        ratesDataProviderCode: MRM,
+        ratesDataSource: ECB,
+        exchangeRateType: A
+      },
+      value: S_0_08,
+      fromCurrency: EUR,
+      toCurrency: USD,
+      validFromDateTime: S_2020_01_01T02_30_00Z
+    };
     const actualExchangeRateRecord: ExchangeRate = exchangeRateRecordDeterminer.getBestMatchedExchangeRateRecord(
       eurUsdAConversionParam
     );
@@ -1474,19 +1506,18 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
-    const expectedExchangeRate: ExchangeRate = buildExchangeRate(
-      TENANT_ID,
-      MRM,
-      ECB,
-      A,
-      S_200,
-      EUR,
-      USD,
-      S_2020_01_01T02_30_00Z,
-      false,
-      1,
-      1
-    );
+    const expectedExchangeRate: ExchangeRate = {
+      settings: setDefaultSettings(TENANT_ID),
+      data: {
+        ratesDataProviderCode: MRM,
+        ratesDataSource: ECB,
+        exchangeRateType: A
+      },
+      value: S_200,
+      fromCurrency: EUR,
+      toCurrency: USD,
+      validFromDateTime: S_2020_01_01T02_30_00Z
+    };
     const actualExchangeRateRecord: ExchangeRate = exchangeRateRecordDeterminer.getBestMatchedExchangeRateRecord(
       eurUsdAConversionParam
     );
@@ -1501,19 +1532,18 @@ describe('Exchange Rate Record Determiner Default Tenant Setting', () => {
     const exchangeRateRecordDeterminer: ExchangeRateRecordDeterminer = instantiateExchangeRateRecordDeterminer(
       exchangeRateResultSet
     );
-    const expectedExchangeRate: ExchangeRate = buildExchangeRate(
-      TENANT_ID,
-      MRM,
-      ECB,
-      A,
-      S_2,
-      EUR,
-      USD,
-      S_2020_01_01T02_30_00Z,
-      false,
-      1,
-      1
-    );
+    const expectedExchangeRate: ExchangeRate = {
+      settings: setDefaultSettings(TENANT_ID),
+      data: {
+        ratesDataProviderCode: MRM,
+        ratesDataSource: ECB,
+        exchangeRateType: A
+      },
+      value: S_2,
+      fromCurrency: EUR,
+      toCurrency: USD,
+      validFromDateTime: S_2020_01_01T02_30_00Z
+    };
     const actualExchangeRateRecord: ExchangeRate = exchangeRateRecordDeterminer.getBestMatchedExchangeRateRecord(
       eurUsdAConversionParam
     );
