@@ -13,8 +13,7 @@ import {
   Value,
   CurrencyConversionError,
   BulkConversionResult,
-  buildConversionParameterForNonFixedRate,
-  buildExchangeRate
+  buildConversionParameterForNonFixedRate
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { BigNumber } from 'bignumber.js';
 import { ConversionError } from '../../src/constants/conversion-error';

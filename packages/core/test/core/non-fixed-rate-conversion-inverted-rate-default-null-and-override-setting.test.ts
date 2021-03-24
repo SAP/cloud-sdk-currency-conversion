@@ -14,7 +14,6 @@ import {
   ExchangeRateTypeDetail,
   ConversionParameterForNonFixedRate,
   buildConversionParameterForNonFixedRate,
-  buildExchangeRate,
   buildExchangeRateTypeDetail
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { ConversionError } from '../../src/constants/conversion-error';

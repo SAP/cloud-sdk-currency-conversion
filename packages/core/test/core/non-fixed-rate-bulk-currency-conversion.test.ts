@@ -12,7 +12,7 @@ import {
   ExchangeRateTypeDetail,
   ConversionParameterForNonFixedRate,
   buildConversionParameterForNonFixedRate,
-  buildExchangeRate
+  setDefaultSettings
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { ConversionError } from '../../src/constants/conversion-error';
 import { CurrencyConverter } from '../../src/core/currency-converter';
@@ -103,190 +103,208 @@ const inrEurMConversionParamPastDate: ConversionParameterForNonFixedRate = build
 
 /* MRM, THR */
 
-const eurInrMrmThrMRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  THR,
-  M,
-  S_100,
-  EUR,
-  INR,
-  S_2019_09_16T02_30_00Z,
-  false,
-  1,
-  1
-);
-const usdEurMrmThrMRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  THR,
-  M,
-  S_100,
-  USD,
-  EUR,
-  S_2019_09_16T02_30_00Z,
-  true,
-  1,
-  1
-);
+const eurInrMrmThrMRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: THR,
+    exchangeRateType: M
+  },
+  value: S_100,
+  fromCurrency: EUR,
+  toCurrency: INR,
+  validFromDateTime: S_2019_09_16T02_30_00Z
+};
+
+const usdEurMrmThrMRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: true,
+    fromCurrencyfactor: 1,
+    toCurrencyfactor: 1
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: THR,
+    exchangeRateType: M
+  },
+  value: S_100,
+  fromCurrency: USD,
+  toCurrency: EUR,
+  validFromDateTime: S_2019_09_16T02_30_00Z
+};
 
 /* MRM ECB */
-const eurInrMrmEcbDirectConversionDecimal: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  B,
-  S_123_123,
-  EUR,
-  INR,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
-const inrEurMrmEcbMRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_100,
-  INR,
-  EUR,
-  S_2019_09_16T02_30_00Z,
-  false,
-  1,
-  1
-);
-const eurInrMrmEcbMRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_100,
-  EUR,
-  INR,
-  S_2020_01_16T02_30_00Z,
-  false,
-  1,
-  1
-);
-const eurInrMrmEcbIndirectConversionRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  B,
-  S_100,
-  EUR,
-  INR,
-  S_2020_01_01T02_30_00Z,
-  true,
-  1,
-  1
-);
-const eurUsdMrmEcbAskRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  ASK,
-  S_100,
-  EUR,
-  USD,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
-const inrEurMrmEcbMDiffrentTenantRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID1,
-  MRM,
-  ECB,
-  M,
-  S_100,
-  INR,
-  EUR,
-  S_2019_09_16T02_30_00Z,
-  false,
-  1,
-  1
-);
-const eurInrMrmEcbAskIndirectFalseRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  ASK,
-  S_100,
-  EUR,
-  INR,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
-const usdBhdMrmEcbMRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_100,
-  USD,
-  BHD,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
-const usdClfMrmEcbMRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_100,
-  USD,
-  CLF,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
-const inrBhdMrmEcbMRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_0_300623,
-  INR,
-  BHD,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
-const inrEurMrmEcbMDuplicateRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_100,
-  INR,
-  EUR,
-  S_2019_09_16T02_30_00Z,
-  false,
-  10,
-  5
-);
-const eurInrMrmEcbMDuplicateRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_100,
-  EUR,
-  INR,
-  S_2019_09_16T02_30_00Z,
-  false,
-  10,
-  5
-);
+const eurInrMrmEcbDirectConversionDecimal: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: B
+  },
+  value: S_123_123,
+  fromCurrency: EUR,
+  toCurrency: INR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const inrEurMrmEcbMRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_100,
+  fromCurrency: INR,
+  toCurrency: EUR,
+  validFromDateTime: S_2019_09_16T02_30_00Z
+};
+
+const eurInrMrmEcbMRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_100,
+  fromCurrency: EUR,
+  toCurrency: INR,
+  validFromDateTime: S_2020_01_16T02_30_00Z
+};
+
+const eurInrMrmEcbIndirectConversionRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: true,
+    fromCurrencyfactor: 1,
+    toCurrencyfactor: 1
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: B
+  },
+  value: S_100,
+  fromCurrency: EUR,
+  toCurrency: INR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const eurUsdMrmEcbAskRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: ASK
+  },
+  value: S_100,
+  fromCurrency: EUR,
+  toCurrency: USD,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const inrEurMrmEcbMDiffrentTenantRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID1),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_100,
+  fromCurrency: INR,
+  toCurrency: EUR,
+  validFromDateTime: S_2019_09_16T02_30_00Z
+};
+
+const eurInrMrmEcbAskIndirectFalseRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: ASK
+  },
+  value: S_100,
+  fromCurrency: EUR,
+  toCurrency: INR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const usdBhdMrmEcbMRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_100,
+  fromCurrency: USD,
+  toCurrency: BHD,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const usdClfMrmEcbMRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_100,
+  fromCurrency: USD,
+  toCurrency: CLF,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const inrBhdMrmEcbMRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_0_300623,
+  fromCurrency: INR,
+  toCurrency: BHD,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const inrEurMrmEcbMDuplicateRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: false,
+    fromCurrencyfactor: 10,
+    toCurrencyfactor: 5
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_100,
+  fromCurrency: INR,
+  toCurrency: EUR,
+  validFromDateTime: S_2019_09_16T02_30_00Z
+};
+
+const eurInrMrmEcbMDuplicateRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: false,
+    fromCurrencyfactor: 10,
+    toCurrencyfactor: 5
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_100,
+  fromCurrency: EUR,
+  toCurrency: INR,
+  validFromDateTime: S_2019_09_16T02_30_00Z
+};
 
 const currencyConverter: CurrencyConverter = new CurrencyConverter();
 
@@ -389,7 +407,8 @@ describe('Non Fixed Rate -- Bulk Currency Conversion Tests.', () => {
         .valueString
     ).toBe('14831.11');
     expect(
-      (result.get(eurInrDecimalValueConversionParam) as SingleNonFixedRateConversionResult).exchangeRate.ratesDataSource
+      (result.get(eurInrDecimalValueConversionParam) as SingleNonFixedRateConversionResult).exchangeRate.data
+        .ratesDataSource
     ).toBe('ECB');
   });
 
@@ -406,7 +425,7 @@ describe('Non Fixed Rate -- Bulk Currency Conversion Tests.', () => {
       ) as SingleNonFixedRateConversionResult).roundedOffConvertedAmount.decimalValue.dp()
     ).toEqual(3);
     expect(
-      (result.get(usdBhdMConversionParam) as SingleNonFixedRateConversionResult).exchangeRate.ratesDataSource
+      (result.get(usdBhdMConversionParam) as SingleNonFixedRateConversionResult).exchangeRate.data.ratesDataSource
     ).toBe('ECB');
   });
 
@@ -423,7 +442,7 @@ describe('Non Fixed Rate -- Bulk Currency Conversion Tests.', () => {
       ) as SingleNonFixedRateConversionResult).roundedOffConvertedAmount.decimalValue.dp()
     ).toEqual(4);
     expect(
-      (result.get(usdClfMConversionParam) as SingleNonFixedRateConversionResult).exchangeRate.ratesDataSource
+      (result.get(usdClfMConversionParam) as SingleNonFixedRateConversionResult).exchangeRate.data.ratesDataSource
     ).toBe('ECB');
   });
 
@@ -443,7 +462,7 @@ describe('Non Fixed Rate -- Bulk Currency Conversion Tests.', () => {
     expect(
       (result.get(inrBhdMFiveParam) as SingleNonFixedRateConversionResult).roundedOffConvertedAmount.decimalValue.dp()
     ).toEqual(inrBhdMFiveParam.toCurrency.defaultFractionDigits);
-    expect((result.get(inrBhdMFiveParam) as SingleNonFixedRateConversionResult).exchangeRate.ratesDataSource).toBe(
+    expect((result.get(inrBhdMFiveParam) as SingleNonFixedRateConversionResult).exchangeRate.data.ratesDataSource).toBe(
       'ECB'
     );
   });
@@ -467,7 +486,7 @@ describe('Non Fixed Rate -- Bulk Currency Conversion Tests.', () => {
       ) as SingleNonFixedRateConversionResult).roundedOffConvertedAmount.decimalValue.dp()
     ).toEqual(1);
     expect(
-      (result.get(inrBhdMMoreThanFiveParam) as SingleNonFixedRateConversionResult).exchangeRate.ratesDataSource
+      (result.get(inrBhdMMoreThanFiveParam) as SingleNonFixedRateConversionResult).exchangeRate.data.ratesDataSource
     ).toBe('ECB');
   });
 
@@ -500,7 +519,7 @@ describe('Non Fixed Rate -- Bulk Currency Conversion Tests.', () => {
       (result.get(inrEurMConversionParam) as SingleNonFixedRateConversionResult).roundedOffConvertedAmount.valueString
     ).toBe('10000');
     expect(
-      (result.get(inrEurMConversionParam) as SingleNonFixedRateConversionResult).exchangeRate.ratesDataSource
+      (result.get(inrEurMConversionParam) as SingleNonFixedRateConversionResult).exchangeRate.data.ratesDataSource
     ).toBe('ECB');
   });
   // Non Fixed Rate -- Single Currency Conversoin Tests Negative.

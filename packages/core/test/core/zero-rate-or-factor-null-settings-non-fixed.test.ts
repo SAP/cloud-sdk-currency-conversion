@@ -11,8 +11,7 @@ import {
   Value,
   SingleNonFixedRateConversionResult,
   TenantSettings,
-  buildConversionParameterForNonFixedRate,
-  buildExchangeRate
+  buildConversionParameterForNonFixedRate
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { CurrencyConverter } from '../../src/core/currency-converter';
 import { ConversionError } from '../../src/constants/conversion-error';
