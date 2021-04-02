@@ -1433,9 +1433,9 @@
     voca "^1.4.0"
 
 "@sap-cloud-sdk/util@^1.18.1", "@sap-cloud-sdk/util@^1.32.1", "@sap-cloud-sdk/util@^1.38.0":
-  version "1.38.0"
-  resolved "https://registry.yarnpkg.com/@sap-cloud-sdk/util/-/util-1.38.0.tgz#47bff1d40953f077772c6f6e950bc939bf128d75"
-  integrity sha512-hhcI4CiDd7LasfzdqtKlz7crpWXd/R2xIejxeV76ifeW8x+C6wod8W9W53HN08D1tD4mv/tcsyP8igU9jLQ1pw==
+  version "1.41.0"
+  resolved "https://registry.yarnpkg.com/@sap-cloud-sdk/util/-/util-1.41.0.tgz#2767f6478e25969b59b522bdda6c4af8aca0adf4"
+  integrity sha512-ccRYYEalZcCKMCAxgu+AYBAZT1d6DQVZpTuP/rXwMcwK3kYq5pGwPsR4MjNZwLeZagoESCWJM8grutnqiYRV/A==
   dependencies:
     chalk "^4.1.0"
     logform "^2.2.0"
