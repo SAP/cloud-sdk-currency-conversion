@@ -14,7 +14,8 @@ import {
   ExchangeRateTypeDetail,
   ConversionParameterForNonFixedRate,
   buildConversionParameterForNonFixedRate,
-  buildExchangeRateTypeDetail
+  buildExchangeRateTypeDetail,
+  setDefaultSettings
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { ConversionError } from '../../src/constants/conversion-error';
 import { CurrencyConverter } from '../../src/core/currency-converter';
@@ -87,232 +88,287 @@ const usdEurBConversionParamPastDate: ConversionParameterForNonFixedRate = build
 /* Exchange Rate starts*/
 
 // Direct Currency Pair
-const usdEurMrmEcbIndirectTrueInvertedTrueRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_100,
-  USD,
-  EUR,
-  S_2020_01_01T02_30_00Z,
-  true,
-  1,
-  1
-);
-const usdEurMrmEcbIndirectTrueInvertedFalseRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  B,
-  S_100,
-  USD,
-  EUR,
-  S_2020_01_01T02_30_00Z,
-  true,
-  1,
-  1
-);
-const usdEurMrmEcbIndirectFalseInvertedTrueRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_100,
-  USD,
-  EUR,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
-const usdEurMrmEcbIndirectFalseInvertedFalseRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  B,
-  S_100,
-  USD,
-  EUR,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
+const usdEurMrmEcbIndirectTrueInvertedTrueRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: true,
+    fromCurrencyfactor: 1,
+    toCurrencyfactor: 1
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_100,
+  fromCurrency: USD,
+  toCurrency: EUR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
-const usdEurMrmEcbIndirectTrueInvertedTrueFactorMoreThanOneRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_20,
-  USD,
-  EUR,
-  S_2020_01_01T02_30_00Z,
-  true,
-  1,
-  10
-);
-const usdEurMrmEcbIndirectTrueInvertedFalseFactorMoreThanOneRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  B,
-  S_20,
-  USD,
-  EUR,
-  S_2020_01_01T02_30_00Z,
-  true,
-  1,
-  10
-);
-const usdEurMrmEcbIndirectFalseInvertedTrueFactorMoreThanOneRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_20,
-  USD,
-  EUR,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  10
-);
-const usdEurMrmEcbIndirectFalseInvertedFalseFactorMoreThanOneRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  B,
-  S_20,
-  USD,
-  EUR,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  10
-);
+const usdEurMrmEcbIndirectTrueInvertedFalseRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: true,
+    fromCurrencyfactor: 1,
+    toCurrencyfactor: 1
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: B
+  },
+  value: S_100,
+  fromCurrency: USD,
+  toCurrency: EUR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const usdEurMrmEcbIndirectFalseInvertedTrueRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_100,
+  fromCurrency: USD,
+  toCurrency: EUR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const usdEurMrmEcbIndirectFalseInvertedFalseRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: B
+  },
+  value: S_100,
+  fromCurrency: USD,
+  toCurrency: EUR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const usdEurMrmEcbIndirectTrueInvertedTrueFactorMoreThanOneRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: true,
+    fromCurrencyfactor: 1,
+    toCurrencyfactor: 10
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_20,
+  fromCurrency: USD,
+  toCurrency: EUR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const usdEurMrmEcbIndirectTrueInvertedFalseFactorMoreThanOneRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: true,
+    fromCurrencyfactor: 1,
+    toCurrencyfactor: 10
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: B
+  },
+  value: S_20,
+  fromCurrency: USD,
+  toCurrency: EUR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const usdEurMrmEcbIndirectFalseInvertedTrueFactorMoreThanOneRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: false,
+    fromCurrencyfactor: 1,
+    toCurrencyfactor: 10
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_20,
+  fromCurrency: USD,
+  toCurrency: EUR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const usdEurMrmEcbIndirectFalseInvertedFalseFactorMoreThanOneRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: false,
+    fromCurrencyfactor: 1,
+    toCurrencyfactor: 10
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: B
+  },
+  value: S_20,
+  fromCurrency: USD,
+  toCurrency: EUR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
 // Inverted Currency Pair
-const eurUsdMrmEcbIndirectTrueInvertedTrueRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_100,
-  EUR,
-  USD,
-  S_2020_01_01T02_30_00Z,
-  true,
-  1,
-  1
-);
-const eurUsdMrmEcbIndirectTrueInvertedFalseRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  B,
-  S_100,
-  EUR,
-  USD,
-  S_2020_01_01T02_30_00Z,
-  true,
-  1,
-  1
-);
-const eurUsdMrmEcbIndirectFalseInvertedTrueRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_100,
-  EUR,
-  USD,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
-const eurUsdMrmEcbIndirectFalseInvertedFalseRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  B,
-  S_100,
-  EUR,
-  USD,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
+const eurUsdMrmEcbIndirectTrueInvertedTrueRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: true,
+    fromCurrencyfactor: 1,
+    toCurrencyfactor: 1
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_100,
+  fromCurrency: EUR,
+  toCurrency: USD,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
-const eurUsdMrmEcbIndirectTrueInvertedTrueFactorMoreThanOneRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_30,
-  EUR,
-  USD,
-  S_2020_01_01T02_30_00Z,
-  true,
-  10,
-  100
-);
-const eurUsdMrmEcbIndirectTrueInvertedFalseFactorMoreThanOneRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  B,
-  S_30,
-  EUR,
-  USD,
-  S_2020_01_01T02_30_00Z,
-  true,
-  10,
-  100
-);
-const eurUsdMrmEcbIndirectFalseInvertedTrueFactorMoreThanOneRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_30,
-  EUR,
-  USD,
-  S_2020_01_01T02_30_00Z,
-  false,
-  10,
-  100
-);
-const eurUsdMrmEcbIndirectFalseInvertedFalseFactorMoreThanOneRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  B,
-  S_30,
-  EUR,
-  USD,
-  S_2020_01_01T02_30_00Z,
-  false,
-  10,
-  100
-);
+const eurUsdMrmEcbIndirectTrueInvertedFalseRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: true,
+    fromCurrencyfactor: 1,
+    toCurrencyfactor: 1
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: B
+  },
+  value: S_100,
+  fromCurrency: EUR,
+  toCurrency: USD,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
-const eurUsdMrmEcbNewRateType = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  ABC,
-  S_100,
-  USD,
-  EUR,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
+const eurUsdMrmEcbIndirectFalseInvertedTrueRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_100,
+  fromCurrency: EUR,
+  toCurrency: USD,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const eurUsdMrmEcbIndirectFalseInvertedFalseRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: B
+  },
+  value: S_100,
+  fromCurrency: EUR,
+  toCurrency: USD,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const eurUsdMrmEcbIndirectTrueInvertedTrueFactorMoreThanOneRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: true,
+    fromCurrencyfactor: 10,
+    toCurrencyfactor: 100
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_30,
+  fromCurrency: EUR,
+  toCurrency: USD,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const eurUsdMrmEcbIndirectTrueInvertedFalseFactorMoreThanOneRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: true,
+    fromCurrencyfactor: 10,
+    toCurrencyfactor: 100
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: B
+  },
+  value: S_30,
+  fromCurrency: EUR,
+  toCurrency: USD,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const eurUsdMrmEcbIndirectFalseInvertedTrueFactorMoreThanOneRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: false,
+    fromCurrencyfactor: 10,
+    toCurrencyfactor: 100
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_30,
+  fromCurrency: EUR,
+  toCurrency: USD,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const eurUsdMrmEcbIndirectFalseInvertedFalseFactorMoreThanOneRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: false,
+    fromCurrencyfactor: 10,
+    toCurrencyfactor: 100
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: B
+  },
+  value: S_30,
+  fromCurrency: EUR,
+  toCurrency: USD,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
+
+const eurUsdMrmEcbNewRateType = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: ABC
+  },
+  value: S_100,
+  fromCurrency: USD,
+  toCurrency: EUR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
 /* Exchange Rate ends*/
 
