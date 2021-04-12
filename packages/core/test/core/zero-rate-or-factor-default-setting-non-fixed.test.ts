@@ -11,7 +11,8 @@ import {
   Value,
   SingleNonFixedRateConversionResult,
   TenantSettings,
-  buildConversionParameterForNonFixedRate
+  buildConversionParameterForNonFixedRate,
+  setDefaultSettings
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { CurrencyConverter } from '../../src/core/currency-converter';
 import { ConversionError } from '../../src/constants/conversion-error';
@@ -46,204 +47,254 @@ const inrEurMConversionParam: ConversionParameterForNonFixedRate = buildConversi
 
 /* Exchange Rate starts*/
 
-/* MRM, THR */
+/* MRM, ECB */
 
-const inrEurMrmEcbDirectZeroRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_0,
-  INR,
-  EUR,
-  S_2019_09_16T02_30_00Z,
-  false,
-  1,
-  1
-);
+const inrEurMrmEcbDirectZeroRate: ExchangeRate = {
+  settings: setDefaultSettings(TENANT_ID),
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_0,
+  fromCurrency: INR,
+  toCurrency: EUR,
+  validFromDateTime: S_2019_09_16T02_30_00Z
+};
 
-const inrEurMrmEcbDirectZeroToFactorRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_10,
-  INR,
-  EUR,
-  S_2019_09_16T02_30_00Z,
-  false,
-  1,
-  0
-);
+const inrEurMrmEcbDirectZeroToFactorRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: false,
+    fromCurrencyfactor: 1,
+    toCurrencyfactor: 0
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_10,
+  fromCurrency: INR,
+  toCurrency: EUR,
+  validFromDateTime: S_2019_09_16T02_30_00Z
+};
 
-const inrEurMrmEcbIndirectZeroRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_0,
-  INR,
-  EUR,
-  S_2019_09_16T02_30_00Z,
-  true,
-  1,
-  1
-);
+const inrEurMrmEcbIndirectZeroRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: true,
+    fromCurrencyfactor: 1,
+    toCurrencyfactor: 1
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_0,
+  fromCurrency: INR,
+  toCurrency: EUR,
+  validFromDateTime: S_2019_09_16T02_30_00Z
+};
 
-const inrEurMrmEcbIndirectZeroFactorsZeroRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_0,
-  INR,
-  EUR,
-  S_2019_09_16T02_30_00Z,
-  true,
-  0,
-  0
-);
+const inrEurMrmEcbIndirectZeroFactorsZeroRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: true,
+    fromCurrencyfactor: 0,
+    toCurrencyfactor: 0
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_0,
+  fromCurrency: INR,
+  toCurrency: EUR,
+  validFromDateTime: S_2019_09_16T02_30_00Z
+};
 
-const inrEurMrmEcbIndirectZeroToFactorZeroRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_0,
-  INR,
-  EUR,
-  S_2019_09_16T02_30_00Z,
-  true,
-  1,
-  0
-);
+const inrEurMrmEcbIndirectZeroToFactorZeroRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: true,
+    fromCurrencyfactor: 1,
+    toCurrencyfactor: 0
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_0,
+  fromCurrency: INR,
+  toCurrency: EUR,
+  validFromDateTime: S_2019_09_16T02_30_00Z
+};
 
-const inrEurMrmEcbIndirectZeroFromFactZeroRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_0,
-  INR,
-  EUR,
-  S_2019_09_16T02_30_00Z,
-  true,
-  0,
-  1
-);
+const inrEurMrmEcbIndirectZeroFromFactZeroRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: true,
+    fromCurrencyfactor: 0,
+    toCurrencyfactor: 1
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_0,
+  fromCurrency: INR,
+  toCurrency: EUR,
+  validFromDateTime: S_2019_09_16T02_30_00Z
+};
 
-const inrEurMrmEcbDirectZeroFactorsZeroRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_0,
-  INR,
-  EUR,
-  S_2019_09_16T02_30_00Z,
-  false,
-  0,
-  0
-);
+const inrEurMrmEcbDirectZeroFactorsZeroRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: false,
+    fromCurrencyfactor: 0,
+    toCurrencyfactor: 0
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_0,
+  fromCurrency: INR,
+  toCurrency: EUR,
+  validFromDateTime: S_2019_09_16T02_30_00Z
+};
 
-const inrEurMrmEcbDirectZeroFromFactZeroRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_0,
-  INR,
-  EUR,
-  S_2019_09_16T02_30_00Z,
-  false,
-  0,
-  1
-);
+const inrEurMrmEcbDirectZeroFromFactZeroRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: false,
+    fromCurrencyfactor: 0,
+    toCurrencyfactor: 1
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_0,
+  fromCurrency: INR,
+  toCurrency: EUR,
+  validFromDateTime: S_2019_09_16T02_30_00Z
+};
 
-const inrEurMrmEcbIndirectZeroFactorsRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_10,
-  INR,
-  EUR,
-  S_2019_09_16T02_30_00Z,
-  true,
-  0,
-  0
-);
+const inrEurMrmEcbIndirectZeroFactorsRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: true,
+    fromCurrencyfactor: 0,
+    toCurrencyfactor: 0
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_10,
+  fromCurrency: INR,
+  toCurrency: EUR,
+  validFromDateTime: S_2019_09_16T02_30_00Z
+};
 
-const inrEurMrmEcbIndirectZeroFromFactorRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_10,
-  INR,
-  EUR,
-  S_2019_09_16T02_30_00Z,
-  true,
-  0,
-  1
-);
+const inrEurMrmEcbIndirectZeroFromFactorRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: true,
+    fromCurrencyfactor: 0,
+    toCurrencyfactor: 1
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_10,
+  fromCurrency: INR,
+  toCurrency: EUR,
+  validFromDateTime: S_2019_09_16T02_30_00Z
+};
 
-const inrEurMrmEcbDirectZeroFactorsRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_10,
-  INR,
-  EUR,
-  S_2019_09_16T02_30_00Z,
-  false,
-  0,
-  0
-);
+const inrEurMrmEcbDirectZeroFactorsRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: false,
+    fromCurrencyfactor: 0,
+    toCurrencyfactor: 0
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_10,
+  fromCurrency: INR,
+  toCurrency: EUR,
+  validFromDateTime: S_2019_09_16T02_30_00Z
+};
 
-const inrEurMrmEcbDirectZeroFromFactorRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_10,
-  INR,
-  EUR,
-  S_2019_09_16T02_30_00Z,
-  false,
-  0,
-  1
-);
-/* MRM ECB */
+const inrEurMrmEcbDirectZeroFromFactorRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: false,
+    fromCurrencyfactor: 0,
+    toCurrencyfactor: 1
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_10,
+  fromCurrency: INR,
+  toCurrency: EUR,
+  validFromDateTime: S_2019_09_16T02_30_00Z
+};
 
-const inrEurMrmEcbIndirectZeroToFactorRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_10,
-  INR,
-  EUR,
-  S_2019_09_16T02_30_00Z,
-  true,
-  1,
-  0
-);
+const inrEurMrmEcbIndirectZeroToFactorRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: true,
+    fromCurrencyfactor: 1,
+    toCurrencyfactor: 0
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_10,
+  fromCurrency: INR,
+  toCurrency: EUR,
+  validFromDateTime: S_2019_09_16T02_30_00Z
+};
 
-const inrEurMrmEcbDirectZeroToFactorZeroRate: ExchangeRate = buildExchangeRate(
-  TENANT_ID,
-  MRM,
-  ECB,
-  M,
-  S_0,
-  INR,
-  EUR,
-  S_2019_09_16T02_30_00Z,
-  false,
-  1,
-  0
-);
+const inrEurMrmEcbDirectZeroToFactorZeroRate: ExchangeRate = {
+  settings: {
+    tenantIdentifier: TENANT_ID,
+    isIndirect: false,
+    fromCurrencyfactor: 1,
+    toCurrencyfactor: 0
+  },
+  data: {
+    ratesDataProviderCode: MRM,
+    ratesDataSource: ECB,
+    exchangeRateType: M
+  },
+  value: S_0,
+  fromCurrency: INR,
+  toCurrency: EUR,
+  validFromDateTime: S_2019_09_16T02_30_00Z
+};
 
 const currencyConverter: CurrencyConverter = new CurrencyConverter();
 
