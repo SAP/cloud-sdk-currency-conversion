@@ -7,8 +7,7 @@ import {
   ExchangeRateTypeDetail,
   ConversionParameterForNonFixedRate,
   ExchangeRate,
-  ExchangeRateValue,
-  buildExchangeRate,
+  Value,
   buildExchangeRateTypeDetail
 } from '@sap-cloud-sdk/currency-conversion-models';
 import { isNullish, createLogger } from '@sap-cloud-sdk/util';
@@ -131,21 +130,23 @@ export class SimpleIntegrationObjectsAdapter implements DataAdapter {
   }
 
   private buildExchangeRates(exchangeRateResults: ExchangeRate[]): ExchangeRate[] {
-    const exchangeRateList: ExchangeRate[] = exchangeRateResults.map((result: any) =>
-      buildExchangeRate(
-        { id: result.tenantID },
-        result.dataProviderCode,
-        result.dataSource,
-        result.exchangeRateType,
-        new ExchangeRateValue(result.exchangeRateValue.toString()),
-        buildCurrency(result.fromCurrencyThreeLetterISOCode),
-        buildCurrency(result.toCurrencyThreeLetterISOCode),
-        new Date(result.validFromDateTime),
-        result.isRateValueIndirect,
-        parseFloat(result.fromCurrencyFactor),
-        parseFloat(result.toCurrencyFactor)
-      )
-    );
+    const exchangeRateList: ExchangeRate[] = exchangeRateResults.map((result: any) => ({
+      settings: {
+        tenantIdentifier: { id: result.tenantID },
+        isIndirect: result.isRateValueIndirect,
+        fromCurrencyfactor: parseFloat(result.fromCurrencyFactor),
+        toCurrencyfactor: parseFloat(result.toCurrencyFactor)
+      },
+      data: {
+        ratesDataProviderCode: result.dataProviderCode,
+        ratesDataSource: result.dataSource,
+        exchangeRateType: result.exchangeRateType
+      },
+      value: new Value(result.exchangeRateValue.toString()),
+      fromCurrency: buildCurrency(result.fromCurrencyThreeLetterISOCode),
+      toCurrency: buildCurrency(result.toCurrencyThreeLetterISOCode),
+      validFromDateTime: new Date(result.validFromDateTime)
+    }));
     logger.debug(`Number of exchange rates returned from query is: ${exchangeRateResults.length}`);
     logger.debug(`Exchange rates returned from query is: ${exchangeRateList}`);
     return exchangeRateList;

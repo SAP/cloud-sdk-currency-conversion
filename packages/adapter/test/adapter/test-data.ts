@@ -7,12 +7,12 @@ import {
   ExchangeRateTypeDetail,
   ExchangeRate,
   TenantSettings,
-  ExchangeRateValue,
+  Value,
   Currency,
   buildCurrency,
   buildExchangeRateTypeDetail,
-  buildExchangeRate,
-  buildConversionParameterForNonFixedRate
+  buildConversionParameterForNonFixedRate,
+  setDefaultSettings
 } from '@sap-cloud-sdk/currency-conversion-models';
 const cds = require('@sap/cds');
 
@@ -22,10 +22,10 @@ export const EUR: Currency = buildCurrency('EUR');
 export const USD: Currency = buildCurrency('USD');
 export const INR: Currency = buildCurrency('INR');
 export const JPY: Currency = buildCurrency('JPY');
-export const EXCHANGERATE_VALUE_0_8: ExchangeRateValue = new ExchangeRateValue('0.8');
-export const EXCHANGERATE_VALUE_80: ExchangeRateValue = new ExchangeRateValue('80');
-export const EXCHANGERATE_VALUE_180: ExchangeRateValue = new ExchangeRateValue('180');
-export const EXCHANGERATE_VALUE_100: ExchangeRateValue = new ExchangeRateValue('100');
+export const EXCHANGERATE_VALUE_0_8: Value = new Value('0.8');
+export const EXCHANGERATE_VALUE_80: Value = new Value('80');
+export const EXCHANGERATE_VALUE_180: Value = new Value('180');
+export const EXCHANGERATE_VALUE_100: Value = new Value('100');
 export const RATES_MID = 'MID';
 export const RATES_BID = 'BID';
 export const RATES_ASK = 'ASK';
@@ -126,243 +126,276 @@ export const eurUsdNewConversionParam: ConversionParameterForNonFixedRate = buil
 
 /* Exchange Rate Starts */
 
-export const eurInrMrmEcbMParam: ExchangeRate = buildExchangeRate(
-  tenant,
-  DATA_SOURCE_PROVIDER_CODE,
-  DATA_SOURCE,
-  RATES_MID,
-  EXCHANGERATE_VALUE_80,
-  EUR,
-  INR,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
+export const eurInrMrmEcbMParam: ExchangeRate = {
+  settings: setDefaultSettings(tenant),
+  data: {
+    ratesDataProviderCode: DATA_SOURCE_PROVIDER_CODE,
+    ratesDataSource: DATA_SOURCE,
+    exchangeRateType: RATES_MID
+  },
+  value: EXCHANGERATE_VALUE_80,
+  fromCurrency: EUR,
+  toCurrency: INR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
-export const eurJpyMrmEcbMParam: ExchangeRate = buildExchangeRate(
-  tenant,
-  DATA_SOURCE_PROVIDER_CODE,
-  DATA_SOURCE,
-  RATES_MID,
-  EXCHANGERATE_VALUE_180,
-  EUR,
-  JPY,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
+export const eurJpyMrmEcbMParam: ExchangeRate = {
+  settings: setDefaultSettings(tenant),
+  data: {
+    ratesDataProviderCode: DATA_SOURCE_PROVIDER_CODE,
+    ratesDataSource: DATA_SOURCE,
+    exchangeRateType: RATES_MID
+  },
+  value: EXCHANGERATE_VALUE_180,
+  fromCurrency: EUR,
+  toCurrency: JPY,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
-export const usdJpyMrmEcbMidParam: ExchangeRate = buildExchangeRate(
-  tenant,
-  DATA_SOURCE_PROVIDER_CODE,
-  DATA_SOURCE,
-  RATES_MID,
-  EXCHANGERATE_VALUE_0_8,
-  USD,
-  JPY,
-  S_2020_01_01T02_30_00Z,
-  true,
-  10,
-  1
-);
+export const usdJpyMrmEcbMidParam: ExchangeRate = {
+  settings: {
+    tenantIdentifier: tenant,
+    isIndirect: true,
+    fromCurrencyfactor: 10,
+    toCurrencyfactor: 1
+  },
+  data: {
+    ratesDataProviderCode: DATA_SOURCE_PROVIDER_CODE,
+    ratesDataSource: DATA_SOURCE,
+    exchangeRateType: RATES_MID
+  },
+  value: EXCHANGERATE_VALUE_0_8,
+  fromCurrency: USD,
+  toCurrency: JPY,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
-export const eurUsdMrmEcbMidParam: ExchangeRate = buildExchangeRate(
-  tenant,
-  DATA_SOURCE_PROVIDER_CODE,
-  DATA_SOURCE,
-  RATES_MID,
-  EXCHANGERATE_VALUE_0_8,
-  EUR,
-  USD,
-  S_2020_01_01T02_30_00Z,
-  true,
-  1,
-  10
-);
+export const eurUsdMrmEcbMidParam: ExchangeRate = {
+  settings: {
+    tenantIdentifier: tenant,
+    isIndirect: true,
+    fromCurrencyfactor: 1,
+    toCurrencyfactor: 10
+  },
+  data: {
+    ratesDataProviderCode: DATA_SOURCE_PROVIDER_CODE,
+    ratesDataSource: DATA_SOURCE,
+    exchangeRateType: RATES_MID
+  },
+  value: EXCHANGERATE_VALUE_0_8,
+  fromCurrency: EUR,
+  toCurrency: USD,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
-export const eurInrMrmEcbBidParam: ExchangeRate = buildExchangeRate(
-  tenant,
-  DATA_SOURCE_PROVIDER_CODE,
-  DATA_SOURCE,
-  RATES_BID,
-  EXCHANGERATE_VALUE_80,
-  EUR,
-  INR,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
+export const eurInrMrmEcbBidParam: ExchangeRate = {
+  settings: setDefaultSettings(tenant),
+  data: {
+    ratesDataProviderCode: DATA_SOURCE_PROVIDER_CODE,
+    ratesDataSource: DATA_SOURCE,
+    exchangeRateType: RATES_BID
+  },
+  value: EXCHANGERATE_VALUE_80,
+  fromCurrency: EUR,
+  toCurrency: INR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
-export const usdInrMrmEcbBidParam: ExchangeRate = buildExchangeRate(
-  tenant,
-  DATA_SOURCE_PROVIDER_CODE,
-  DATA_SOURCE,
-  RATES_BID,
-  EXCHANGERATE_VALUE_180,
-  USD,
-  INR,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
+export const usdInrMrmEcbBidParam: ExchangeRate = {
+  settings: setDefaultSettings(tenant),
+  data: {
+    ratesDataProviderCode: DATA_SOURCE_PROVIDER_CODE,
+    ratesDataSource: DATA_SOURCE,
+    exchangeRateType: RATES_BID
+  },
+  value: EXCHANGERATE_VALUE_180,
+  fromCurrency: USD,
+  toCurrency: INR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
-export const eurUsdMrmEcbBidParam: ExchangeRate = buildExchangeRate(
-  tenant,
-  DATA_SOURCE_PROVIDER_CODE,
-  DATA_SOURCE,
-  RATES_BID,
-  EXCHANGERATE_VALUE_0_8,
-  EUR,
-  USD,
-  S_2020_01_01T02_30_00Z,
-  true,
-  1,
-  10
-);
+export const eurUsdMrmEcbBidParam: ExchangeRate = {
+  settings: {
+    tenantIdentifier: tenant,
+    isIndirect: true,
+    fromCurrencyfactor: 1,
+    toCurrencyfactor: 10
+  },
+  data: {
+    ratesDataProviderCode: DATA_SOURCE_PROVIDER_CODE,
+    ratesDataSource: DATA_SOURCE,
+    exchangeRateType: RATES_BID
+  },
+  value: EXCHANGERATE_VALUE_0_8,
+  fromCurrency: EUR,
+  toCurrency: USD,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
-export const usdEurMrmEcbAskParam: ExchangeRate = buildExchangeRate(
-  tenant,
-  DATA_SOURCE_PROVIDER_CODE,
-  DATA_SOURCE,
-  RATES_ASK,
-  EXCHANGERATE_VALUE_0_8,
-  USD,
-  EUR,
-  S_2020_01_01T02_30_00Z,
-  true,
-  1,
-  10
-);
+export const usdEurMrmEcbAskParam: ExchangeRate = {
+  settings: {
+    tenantIdentifier: tenant,
+    isIndirect: true,
+    fromCurrencyfactor: 1,
+    toCurrencyfactor: 10
+  },
+  data: {
+    ratesDataProviderCode: DATA_SOURCE_PROVIDER_CODE,
+    ratesDataSource: DATA_SOURCE,
+    exchangeRateType: RATES_ASK
+  },
+  value: EXCHANGERATE_VALUE_0_8,
+  fromCurrency: USD,
+  toCurrency: EUR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
-export const eurUsdMrmEcbAskParam: ExchangeRate = buildExchangeRate(
-  tenant,
-  DATA_SOURCE_PROVIDER_CODE,
-  DATA_SOURCE,
-  RATES_ASK,
-  EXCHANGERATE_VALUE_0_8,
-  EUR,
-  USD,
-  S_2020_01_01T02_30_00Z,
-  true,
-  1,
-  10
-);
+export const eurUsdMrmEcbAskParam: ExchangeRate = {
+  settings: {
+    tenantIdentifier: tenant,
+    isIndirect: true,
+    fromCurrencyfactor: 1,
+    toCurrencyfactor: 10
+  },
+  data: {
+    ratesDataProviderCode: DATA_SOURCE_PROVIDER_CODE,
+    ratesDataSource: DATA_SOURCE,
+    exchangeRateType: RATES_ASK
+  },
+  value: EXCHANGERATE_VALUE_0_8,
+  fromCurrency: EUR,
+  toCurrency: USD,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
-export const eurInrMrmEcbLastParam: ExchangeRate = buildExchangeRate(
-  tenant,
-  DATA_SOURCE_PROVIDER_CODE,
-  DATA_SOURCE,
-  RATES_LAST,
-  EXCHANGERATE_VALUE_80,
-  EUR,
-  INR,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
+export const eurInrMrmEcbLastParam: ExchangeRate = {
+  settings: setDefaultSettings(tenant),
+  data: {
+    ratesDataProviderCode: DATA_SOURCE_PROVIDER_CODE,
+    ratesDataSource: DATA_SOURCE,
+    exchangeRateType: RATES_LAST
+  },
+  value: EXCHANGERATE_VALUE_80,
+  fromCurrency: EUR,
+  toCurrency: INR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
-export const eurUsdMrmEcbLastParam: ExchangeRate = buildExchangeRate(
-  tenant,
-  DATA_SOURCE_PROVIDER_CODE,
-  DATA_SOURCE,
-  RATES_LAST,
-  EXCHANGERATE_VALUE_80,
-  EUR,
-  USD,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
+export const eurUsdMrmEcbLastParam: ExchangeRate = {
+  settings: setDefaultSettings(tenant),
+  data: {
+    ratesDataProviderCode: DATA_SOURCE_PROVIDER_CODE,
+    ratesDataSource: DATA_SOURCE,
+    exchangeRateType: RATES_LAST
+  },
+  value: EXCHANGERATE_VALUE_80,
+  fromCurrency: EUR,
+  toCurrency: USD,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
-export const usdInrMrmEcbLastParam: ExchangeRate = buildExchangeRate(
-  tenant,
-  DATA_SOURCE_PROVIDER_CODE,
-  DATA_SOURCE,
-  RATES_LAST,
-  EXCHANGERATE_VALUE_180,
-  USD,
-  INR,
-  S_2020_01_01T02_30_00Z,
-  false,
-  1,
-  1
-);
+export const usdInrMrmEcbLastParam: ExchangeRate = {
+  settings: setDefaultSettings(tenant),
+  data: {
+    ratesDataProviderCode: DATA_SOURCE_PROVIDER_CODE,
+    ratesDataSource: DATA_SOURCE,
+    exchangeRateType: RATES_LAST
+  },
+  value: EXCHANGERATE_VALUE_180,
+  fromCurrency: USD,
+  toCurrency: INR,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
-export const usdJpyMrmThrMidParam: ExchangeRate = buildExchangeRate(
-  tenant,
-  DATA_SOURCE_PROVIDER_CODE,
-  'THR',
-  RATES_MID,
-  EXCHANGERATE_VALUE_180,
-  USD,
-  JPY,
-  S_2020_01_01T02_30_00Z,
-  true,
-  1,
-  1
-);
+export const usdJpyMrmThrMidParam: ExchangeRate = {
+  settings: {
+    tenantIdentifier: tenant,
+    isIndirect: true,
+    fromCurrencyfactor: 1,
+    toCurrencyfactor: 1
+  },
+  data: {
+    ratesDataProviderCode: DATA_SOURCE_PROVIDER_CODE,
+    ratesDataSource: 'THR',
+    exchangeRateType: RATES_MID
+  },
+  value: EXCHANGERATE_VALUE_180,
+  fromCurrency: USD,
+  toCurrency: JPY,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
-export const eurUsdMrmThrMidParam: ExchangeRate = buildExchangeRate(
-  tenant,
-  DATA_SOURCE_PROVIDER_CODE,
-  'THR',
-  RATES_MID,
-  EXCHANGERATE_VALUE_180,
-  EUR,
-  USD,
-  S_2020_01_01T02_30_00Z,
-  true,
-  1,
-  1
-);
+export const eurUsdMrmThrMidParam: ExchangeRate = {
+  settings: {
+    tenantIdentifier: tenant,
+    isIndirect: true,
+    fromCurrencyfactor: 1,
+    toCurrencyfactor: 1
+  },
+  data: {
+    ratesDataProviderCode: DATA_SOURCE_PROVIDER_CODE,
+    ratesDataSource: 'THR',
+    exchangeRateType: RATES_MID
+  },
+  value: EXCHANGERATE_VALUE_180,
+  fromCurrency: EUR,
+  toCurrency: USD,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
-export const usdJpyNullMidParam: ExchangeRate = buildExchangeRate(
-  tenant,
-  'NULL',
-  'NULL',
-  RATES_MID,
-  EXCHANGERATE_VALUE_180,
-  USD,
-  JPY,
-  S_2020_01_01T02_30_00Z,
-  true,
-  1,
-  1
-);
+export const usdJpyNullMidParam: ExchangeRate = {
+  settings: {
+    tenantIdentifier: tenant,
+    isIndirect: true,
+    fromCurrencyfactor: 1,
+    toCurrencyfactor: 1
+  },
+  data: {
+    ratesDataProviderCode: 'NULL',
+    ratesDataSource: 'NULL',
+    exchangeRateType: RATES_MID
+  },
+  value: EXCHANGERATE_VALUE_180,
+  fromCurrency: USD,
+  toCurrency: JPY,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
-export const eurUsdNullMidParam: ExchangeRate = buildExchangeRate(
-  tenant,
-  'NULL',
-  'NULL',
-  RATES_MID,
-  EXCHANGERATE_VALUE_180,
-  EUR,
-  USD,
-  S_2020_01_01T02_30_00Z,
-  true,
-  1,
-  1
-);
+export const eurUsdNullMidParam: ExchangeRate = {
+  settings: {
+    tenantIdentifier: tenant,
+    isIndirect: true,
+    fromCurrencyfactor: 1,
+    toCurrencyfactor: 1
+  },
+  data: {
+    ratesDataProviderCode: 'NULL',
+    ratesDataSource: 'NULL',
+    exchangeRateType: RATES_MID
+  },
+  value: EXCHANGERATE_VALUE_180,
+  fromCurrency: EUR,
+  toCurrency: USD,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
-export const eurUsdMrmEcbNewParam: ExchangeRate = buildExchangeRate(
-  tenant,
-  DATA_SOURCE_PROVIDER_CODE,
-  DATA_SOURCE,
-  RATES_NEW,
-  EXCHANGERATE_VALUE_100,
-  EUR,
-  USD,
-  S_2020_01_01T02_30_00Z,
-  true,
-  1,
-  1
-);
+export const eurUsdMrmEcbNewParam: ExchangeRate = {
+  settings: {
+    tenantIdentifier: tenant,
+    isIndirect: true,
+    fromCurrencyfactor: 1,
+    toCurrencyfactor: 1
+  },
+  data: {
+    ratesDataProviderCode: DATA_SOURCE_PROVIDER_CODE,
+    ratesDataSource: DATA_SOURCE,
+    exchangeRateType: RATES_NEW
+  },
+  value: EXCHANGERATE_VALUE_100,
+  fromCurrency: EUR,
+  toCurrency: USD,
+  validFromDateTime: S_2020_01_01T02_30_00Z
+};
 
 /* Exchange Rate Ends */
 
