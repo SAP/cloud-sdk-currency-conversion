@@ -45,7 +45,7 @@
     "@sap-cloud-sdk/core": "^1.32.1",
     "@sap-cloud-sdk/currency-conversion-models": "^0.1.1",
     "@sap-cloud-sdk/util": "^1.32.1",
-    "@sap/cds": "4.3.0",
+    "@sap/cds": "5.1.5",
     "@sap/hana-client": "^2.6.58",
     "sqlite3": "5.0.2"
   }
