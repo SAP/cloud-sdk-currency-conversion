@@ -6,7 +6,7 @@
     "@sap-cloud-sdk/util": "^1.32.1",
     "@sap/audit-logging": "latest",
     "@sap/cds": "4.4.9",
-    "@sap/cds-dk": "^3.2.0",
+    "@sap/cds-dk": "^4.3.1",
     "@sap/hana-client": "^2",
     "@sap/hdi-deploy": "^4",
     "@sap/xsenv": "3.1.0",
